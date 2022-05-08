@@ -1,7 +1,6 @@
 # Table of contents
 
 * [DDD microservice example](README.md)
-* [DDD introduction](ddd-introduction.md)
 * [Uncle Bob's "Clean Architecture"](uncle-bobs-clean-architecture.md)
 * [Structure](structure.md)
 * [Revised Clean Architecture structure](revised-clean-architecture-structure.md)
