@@ -2,11 +2,11 @@
 layout: editorial
 ---
 
-# DDD microservice example
+# Domain Driven Microservices on AWS in Practice
 
-Description.
+TODO overall ambition and purpose
 
-## Goals
+## Learning goals
 
 Two domains Three bounded contexts (2+1 in domains)
 
