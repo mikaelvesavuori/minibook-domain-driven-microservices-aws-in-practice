@@ -1,4 +1,4 @@
-# Boilerplating
+# Technical boilerplating
 
 We will make some high level definitions already regarding boilerplate:
 
