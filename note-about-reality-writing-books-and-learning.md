@@ -1,6 +1,12 @@
-# Note about reality and learning
+# Note about reality, writing books, and learning
 
-This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to on one's own both concoct (out of thin air) a business case regarding a supposed need, lay out a workshop and learning plan, build the system according to the best of my abilities while still doing it (literally) by the book I am writing...and then to live to write about all of that!
+This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to on one's own both:
+
+* Concoct (out of thin air) a business case regarding a, to be honest, fictional need;
+* Lay out a workshop and learning plan,
+* Build the system according to the best of my abilities...
+* ...while still doing it (literally) by the book I am writing...
+* ...and then to live to write about all of that!
 
 Doing all of the parts means that I also get more or less "perfect information", which is never the case in real life. We never know all there is to know and how best to approach it.
 

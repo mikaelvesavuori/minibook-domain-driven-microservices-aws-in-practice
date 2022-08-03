@@ -2,8 +2,9 @@
 
 * [Introduction](README.md)
 * [What we are building: "Get-A-Room"](what-we-are-building-get-a-room.md)
-* [Note about reality and learning](note-about-reality-and-learning.md)
+* [Note about reality, writing books, and learning](note-about-reality-writing-books-and-learning.md)
 * [Preparation](preparation/README.md)
+  * [Doodling, drawing, whiteboarding flows and concepts](preparation/doodling-drawing-whiteboarding-flows-and-concepts.md)
   * [Boilerplating](preparation/boilerplating.md)
 * [Strategic DDD](overview-of-ddd-concepts/README.md)
   * [Setting boundaries](overview-of-ddd-concepts/setting-boundaries.md)
