@@ -8,6 +8,7 @@
   * [Right-sizing our application](overview-of-ddd-concepts/right-sizing-our-application.md)
   * [Structure](overview-of-ddd-concepts/structure.md)
   * [Service communication](overview-of-ddd-concepts/service-communication.md)
+* [Event storming](event-storming.md)
 * [Clean Architecture](clean-architecture/README.md)
   * [Uncle Bob's "Clean Architecture"](clean-architecture/uncle-bobs-clean-architecture.md)
   * [Revised Clean Architecture structure](clean-architecture/revised-clean-architecture-structure.md)
