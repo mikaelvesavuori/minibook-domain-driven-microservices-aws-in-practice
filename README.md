@@ -78,8 +78,6 @@ You will have seen patterns and implementations like:
 
 ## Idea
 
-As https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8, microservices should be defined as: (TODO)
+As \[Chandra Ramalingan writes]\(https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), microservices should be defined as: (TODO)
 
 > Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
->
-> Source:&#x20;
