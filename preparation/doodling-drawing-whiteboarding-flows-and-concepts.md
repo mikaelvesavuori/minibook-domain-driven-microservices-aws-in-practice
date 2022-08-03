@@ -6,8 +6,6 @@ When it's in the early stages I find that sometimes I need to remind folks (some
 
 Personally I think this part is really fun. Just don't let this part be a massive book end for the work you are doing but more like a creative exercise to start feeling the materials and substance of the work.
 
-![](../.gitbook/assets/IMG\_1940.jpeg)
+![Picture of some of my first notes for this project ](../.gitbook/assets/IMG\_1940.jpeg)
 
-\---
-
-**Note**: As a part of my work with building this book and it's coded implementation, this is the stage in which I really for the first time started to see what the division of services might be.
+**Note**: As a part of my work with building this book and its coded implementation, this is the stage in which I really for the first time started to see what the division of services might be.

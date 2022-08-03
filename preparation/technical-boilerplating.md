@@ -1,6 +1,8 @@
 # Technical boilerplating
 
-We will make some high level definitions already regarding boilerplate:
+Because we already have some self-constructed constraints, we have a relatively good idea of what type of packages to bring in.
+
+Thus, we will make some high level definitions already regarding boilerplate:
 
 * [TypeScript](https://www.typescriptlang.org) as our language
 * [Prettier](https://prettier.io) and [ESLint](https://eslint.org) for linting
@@ -13,7 +15,5 @@ We will make some high level definitions already regarding boilerplate:
 * [Visual Studio Code](https://code.visualstudio.com) as the editor
 * AWS libraries for their respective services (DynamoDB, EventBridge...)
 
-This should satisfy the majority of our concerns in the project.
-
-Each individual service will use pretty much the same set of dependencies, scripts, and whatnot.
+This should satisfy the majority of our generic concerns in the project. Moreover, each individual service will use pretty much the same set of dependencies and scripts.
 
