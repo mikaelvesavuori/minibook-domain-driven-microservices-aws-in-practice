@@ -6,6 +6,8 @@ layout: editorial
 
 This online mini-book aims to explain and demonstrate how one might practically apply Domain Driven Design to a room-booking service we are building on Amazon Web Services.
 
+Part of the rationale for undertaking this project is because through the years I've encountered, learned, used, and encouraged DDD and agile design, I have myself never really had a "full-size" springboard to examplify how to do it. Also, because there are many components to this it's easy to kludge everything and spend too much time on details—sometimes techy stuff, some times other things. Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as DevOps) and Agile and various "agile tastes" with the concept of "design" altogether.
+
 ## On Domain Driven Design
 
 Domain Driven Design has grown in the 20-odd years it's been around to be a foundational part of modern software architecture and shaping the methodology with which many work in software. It seems to have been given an enormous upswing after the microservices pattern become more in vogue some 5-10 years ago.
@@ -16,11 +18,11 @@ The "problem", if one can call it that, is that both of the books are big. Like 
 
 ## On design
 
-As for me, who has worked in some way with computers since I was a kid but did not graduate in Computer Science, development is something that was learned on my own. While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams.
+As for me, who has did not graduate in Computer Science but has in some way worked with computers since I was a kid but, development is something that was learned on my own. While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams.
 
 One side of the word "design" that I feel to be misunderstood is around how it relates to practices such as Agile and its various forms (which is something every company and context I've been at has talked about, but not really delivered on) as well as to how the architect(s) fit in within modern software development, the DevOps paradigm, and being generally allergic to upfront planning.
 
-It's nice then to see that this is less a real issue than a perceived one. We can see this in how Agile framework co-founder Robert C. Martin tries to set the record straight in his [Clean Agile: Back to Basics](https://www.oreilly.com/library/view/clean-agile-back/9780135782002/) as well as in the humble "[connect the penthouse with the engine room](https://architectelevator.com)" metaphor stated by Gregor Hohpe. They both express that design is something that _must_ be done, Agile or not, and that modern circumstances do not have to pass on a golden key to some Ivory Tower dude to handle to design on their own.
+It's nice then to see that this is less a real issue than a perceived one. We can see this in how Agile framework co-founder Robert C. Martin tries to set the record straight in his [Clean Agile: Back to Basics](https://www.oreilly.com/library/view/clean-agile-back/9780135782002/) as well as in the humble "[connect the penthouse with the engine room](https://architectelevator.com)" metaphor stated by Gregor Hohpe. They both express that design is something that _must_ be done, Agile or not, and that modern circumstances do not have to pass on a golden key to some Ivory Tower dude to handle the design on their own.
 
 ## Audience
 
