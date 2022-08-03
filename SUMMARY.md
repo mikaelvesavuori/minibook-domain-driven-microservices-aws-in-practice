@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Domain Driven Microservices on AWS in Practice](README.md)
+* [Introduction](README.md)
 * [What we are building: "Get-A-Room"](what-we-are-building-get-a-room.md)
 * [Overview of DDD concepts](overview-of-ddd-concepts/README.md)
   * [Setting boundaries](overview-of-ddd-concepts/setting-boundaries.md)
