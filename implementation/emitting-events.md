@@ -2,6 +2,7 @@
 
 Example:
 
+{% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
 ```typescript
 import { EventBridgeClient, PutEventsCommand } from '@aws-sdk/client-eventbridge';
 
@@ -42,3 +43,4 @@ class EventBridgeEmitter implements EventEmitter {
   }
 }
 ```
+{% endcode %}

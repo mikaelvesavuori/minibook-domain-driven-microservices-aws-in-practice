@@ -2,6 +2,7 @@
 
 Example:
 
+{% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
 ```typescript
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 
@@ -73,3 +74,4 @@ class DynamoDbRepository implements Repository {
   }
 }
 ```
+{% endcode %}

@@ -2,6 +2,7 @@
 
 Example:
 
+{% code title="code/Analytics/SlotAnalytics/src/application/usecases/AddRecordUseCase.ts" lineNumbers="true" %}
 ```typescript
 import { Dependencies } from '../../interfaces/Dependencies';
 import { AnalyticalRecord } from '../../interfaces/AnalyticalRecord';
@@ -14,3 +15,4 @@ export async function AddRecordUseCase(dependencies: Dependencies, record: Analy
   await repository.add(record);
 }
 ```
+{% endcode %}

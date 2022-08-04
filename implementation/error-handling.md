@@ -2,6 +2,7 @@
 
 Example:
 
+{% code title="code/Analytics/SlotAnalytics/src/application/errors/MissingDataFieldsError.ts" lineNumbers="true" %}
 ```typescript
 import { MikroLog } from 'mikrolog';
 
@@ -20,3 +21,4 @@ export class MissingDataFieldsError extends Error {
   }
 }
 ```
+{% endcode %}

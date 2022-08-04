@@ -2,6 +2,7 @@
 
 Example:
 
+{% code title="code/Reservation/SlotReservation/src/infrastructure/authorizers/Authorizer.ts" lineNumbers="true" %}
 ```typescript
 import { APIGatewayProxyResult } from 'aws-lambda';
 
@@ -116,3 +117,4 @@ async function validateCode(slotId: string, verificationCode: string): Promise<b
     });
 }
 ```
+{% endcode %}

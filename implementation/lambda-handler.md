@@ -4,6 +4,7 @@ A relatively common "misimplementation" is to think of the Lambda handler is the
 
 Example:
 
+{% code title="code/Analytics/SlotAnalytics/src/infrastructure/adapters/web/AddRecord.ts" lineNumbers="true" %}
 ```typescript
 import { Context } from 'aws-lambda';
 import { MikroLog } from 'mikrolog';
@@ -42,3 +43,4 @@ export async function handler(event: Record<string, any>, context: Context): Pro
   }
 }
 ```
+{% endcode %}
