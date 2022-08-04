@@ -27,6 +27,6 @@ That said, consider whether you really need strong consistency. There are strate
 
 See: https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries
 
-![](<../.gitbook/assets/Get-A-Room Context Map.png>)
+![](<../../.gitbook/assets/Get-A-Room Context Map.png>)
 
 ##

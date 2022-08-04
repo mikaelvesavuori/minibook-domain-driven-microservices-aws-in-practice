@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
 * [What we are building: "Get-A-Room"](what-we-are-building-get-a-room.md)
+* [On design and DDD](on-design-and-ddd.md)
 * [Note about reality, writing books, and learning](note-about-reality-writing-books-and-learning.md)
 * [Preparation](preparation/README.md)
   * [Beginning DDD](preparation/beginning-ddd.md)
@@ -11,8 +12,8 @@
   * [Terminology and language](overview-of-ddd-concepts/terminology-and-language.md)
   * [Eventstorming](overview-of-ddd-concepts/eventstorming.md)
   * [The business flow](overview-of-ddd-concepts/the-business-flow.md)
-  * [Right-sizing our application](overview-of-ddd-concepts/right-sizing-our-application.md)
-  * [Setting boundaries](overview-of-ddd-concepts/setting-boundaries.md)
+  * [Setting boundaries](overview-of-ddd-concepts/setting-boundaries/README.md)
+    * [Right-sizing our application](overview-of-ddd-concepts/setting-boundaries/right-sizing-our-application.md)
   * [Subdomain vs bounded contexts](overview-of-ddd-concepts/subdomain-vs-bounded-contexts.md)
 * [Cloud Architecture](cloud-architecture/README.md)
   * [Database](cloud-architecture/database.md)
