@@ -16,6 +16,7 @@
     * [Right-sizing our application](overview-of-ddd-concepts/setting-boundaries/right-sizing-our-application.md)
   * [Subdomain vs bounded contexts](overview-of-ddd-concepts/subdomain-vs-bounded-contexts.md)
 * [Cloud Architecture](cloud-architecture/README.md)
+  * [Serverless should be our first option](cloud-architecture/serverless-should-be-our-first-option.md)
   * [Database](cloud-architecture/database.md)
   * [Compute](cloud-architecture/compute.md)
   * [Eventing](cloud-architecture/eventing.md)
