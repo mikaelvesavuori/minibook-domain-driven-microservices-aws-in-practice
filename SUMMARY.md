@@ -40,7 +40,7 @@
     * [Aggregates emit events, no one else](tactical-ddd/events/aggregates-emit-events-no-one-else.md)
     * [Read more](tactical-ddd/events/read-more.md)
   * [Modules](tactical-ddd/modules.md)
-* [Solutioning](solutioning/README.md)
+* [Solutioning](tactical-ddd/solutioning.md)
   * [List slots](solutioning/list-slots.md)
   * [Book a slot](solutioning/book-a-slot.md)
   * [Check in](solutioning/check-in.md)

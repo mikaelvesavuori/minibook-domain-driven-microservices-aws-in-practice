@@ -1,7 +1,3 @@
----
-layout: editorial
----
-
 # Introduction
 
 This online mini-book aims to explain and demonstrate how one might practically apply Domain Driven Design to a room-booking service, using a microservices pattern, that we will build on Amazon Web Services.
