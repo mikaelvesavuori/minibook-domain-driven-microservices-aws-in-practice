@@ -10,15 +10,16 @@ Without the words to serve our purposes, our implementation will always suffer f
 
 Beginning with language has many benefits. One of them is that it's non-technical and something we can discuss with no proxy or intermediary. We can come to an understanding of words and processes and we can therefore learn them and therefore ultimately build something that is expressed through those same words and processes.
 
-Written on [https://thedomaindrivendesign.io/developing-the-ubiquitous-language/](https://thedomaindrivendesign.io/developing-the-ubiquitous-language/):
+Some important features to understand:
 
-* _Ubiquitous Languag_e must be expressed in the _Domain Model_.
-* _Ubiquitous Language_ unites the people of the project team.
-* _Ubiquitous Language_ eliminates inaccuracies and contradictions from domain experts.
-* _Ubiquitous Language_ is not a business language imposed by domain experts.
-* _Ubiquitous Language_ is not a language used in industries.
-* _Ubiquitous Language_ evolves over time, it is not defined entirely in a single meeting.
-* Concepts that are not part of the _Ubiquitous Language_ should be rejected.
+* The UL evolves over time
+* Each domain will likely have its own UL; these are not meant to be "efficient" or shared if that does not make sense
+* The UL is the de facto standard nomenclature, so other similar words and terms should be avoided
+* The domain model and our subsequent implementations express the UL
+
+See more at [https://thedomaindrivendesign.io/developing-the-ubiquitous-language/](https://thedomaindrivendesign.io/developing-the-ubiquitous-language/).
+
+\---
 
 As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.html), Eric Evans writes the following in his book:
 
