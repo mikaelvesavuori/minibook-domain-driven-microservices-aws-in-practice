@@ -1,8 +1,8 @@
 # Introduction
 
-This online mini-book aims to explain and demonstrate how one might practically apply Domain Driven Design to a room-booking service, using a microservices pattern, that we will build on Amazon Web Services.
+This online mini-book aims to explain and demonstrate how one might practically apply Domain Driven Design to a room-booking service, using a microservices pattern that we will build on Amazon Web Services.
 
-As \[Chandra Ramalingan writes]\(https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), microservices should be defined as: (TODO)
+As Chandra Ramalingan writes at https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8, microservices should be defined as: (TODO)
 
 > Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
 
