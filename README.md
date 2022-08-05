@@ -24,7 +24,7 @@ You should be familiar with AWS and development in general, and if possible, it 
 
 I will not assume that you are a certified AWS professional or an architect. My mission here is more to bring together all the things that make modern software what it is: DevOps, development, architecture and understanding of the cloud and how we deploy and run things there.
 
-If anything, the **main** intent in this project is to spend more time discussing intellectual details such as the architecture rather than going all-out on code. The code _will_ be important as that's of course where we implement the things discussed, but in the end it's just one part of the big picture.
+If anything, the **primary** intent of this project is to spend more time discussing intellectual details such as the architecture rather than going all-out on code. The code _will_ be important as that's of course where we implement the things discussed, but in the end it's just one part of the big picture.
 
 ## Learning goals
 
@@ -61,3 +61,19 @@ You will have seen patterns and implementations like:
 * Published Language (and API and event contracts...)
 * Event Sourcing using DynamoDB streams (?)
 * CQS and Command events
+
+## Note about the reality of writing about something while doing the work at the same time
+
+This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to, on one's own:
+
+* Concoct (out of thin air) a business case regarding a, to be honest, fictional need;
+* Lay out a workshop and learning plan,
+* Build the system according to the best of my abilities...
+* ...while still doing it (literally) by the book I am writing...
+* ...and then to live to write about all of that!
+
+Doing all of the parts means that I also get more or less "perfect information", which is never the case in real life. We never know all there is to know and how best to approach it.
+
+So with that said, reality in a real production context will pose other problems than those I had when making this material for you. What is hard on one's own is stuff like having no one to really ideate with, no one to do another part of the labor, no one to help you role play business owner etc. Working with others, however, will give you a somewhat realer problem set, such as discussing, arguing, teaching and learning with others. Never forget that the social side is _big_ for us as tech people.
+
+I feel happy about what I _have_ made though, and I hope at the end of it, that you feel the same!
