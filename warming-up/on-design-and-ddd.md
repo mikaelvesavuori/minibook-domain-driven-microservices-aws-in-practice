@@ -1,3 +1,7 @@
+---
+description: Design is the heart of software, regardless of your stance on coding or not.
+---
+
 # On design and DDD
 
 ## On Domain Driven Design

@@ -1,3 +1,7 @@
+---
+description: Let's take a quick overview of Domain Driven Design.
+---
+
 # Beginning DDD
 
 TODO

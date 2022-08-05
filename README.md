@@ -2,19 +2,19 @@
 
 This online mini-book aims to explain and demonstrate how one might practically apply Domain Driven Design to a room-booking service, using a microservices pattern that we will build on Amazon Web Services.
 
-As Chandra Ramalingan writes at https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8, microservices should be defined as: (TODO)
+As [Chandra Ramalingan writes](https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), while leaning on prior work by [Fowler](https://martinfowler.com/articles/microservices.html) as well as [Newman](https://samnewman.io/books/building\_microservices\_2nd\_edition/), that the microservices architecture style could be summarized as:
 
 > Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
 
-Part of the rationale for undertaking this project is because through the years I've encountered, learned, used, and encouraged DDD and agile design, I have myself never really had a "full-size" springboard to examplify how to do it. Also, because there are many components to this it's easy to kludge everything and spend too much time on details—sometimes techy stuff, some times other things. Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as DevOps) and Agile and various "agile tastes" with the concept of "design" altogether.
+Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and agile design, I have myself never really had a "full-size" springboard to examplify how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day. Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether.
 
-It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I (and I am sure, many) have read on software architecture. My work complements and illustrates some of the basics in a practical scenario, rather than extending them.
+It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I—and I am sure, many out there in the software world—have read on software architecture. My work simply complements and illustrates some of those basics in a practical scenario, rather than extensively elaborating on them.
 
 ## Audience
 
 I am writing this for several intended audiences:
 
-* **The curious Internet-wanderers**: Being an open book on the internet, I assume someone out there might be interested in learning what is taught here.
+* **The curious software developer**: Being an open book on the internet, I assume there are throngs of software developers out there who might be interested in learning what is taught here, if not by me, then at least the themes addressed here.
 * **Colleagues**: Because we talk a lot about these things and since nothing beats actually showing what we mean.
 * **Myself**: As a way to learn more and hone my didactic, communicative, and technical skills.
 
