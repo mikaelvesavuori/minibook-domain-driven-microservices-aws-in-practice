@@ -1,6 +1,8 @@
 # Table of contents
 
 * [Introduction](README.md)
+* [Project resources](project-resources.md)
+* [This is an open source book](this-is-an-open-source-book.md)
 * [What we are building: "Get-A-Room"](what-we-are-building-get-a-room.md)
 * [On design and DDD](on-design-and-ddd.md)
 * [Note about reality, writing books, and learning](note-about-reality-writing-books-and-learning.md)
