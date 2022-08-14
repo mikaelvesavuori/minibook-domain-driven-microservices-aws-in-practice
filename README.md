@@ -10,6 +10,9 @@ Part of the rationale for undertaking this project is because through the years 
 
 It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I—and I am sure, many out there in the software world—have read on software architecture. My work simply complements and illustrates some of those basics in a practical scenario, rather than extensively elaborating on them.
 
+NOTE  “Workflow-oriented solutions (single purpose utility functions) vs conventional entity-oriented APIs/systems and everything in between”\
+
+
 ## Audience
 
 I am writing this for several intended audiences:
