@@ -2,6 +2,8 @@
 
 A relatively common "misimplementation" is to think of the Lambda handler is the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.
 
+Dynamic “composition root” in adapter/controller to load dependencies etc at startup
+
 Example:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/adapters/web/AddRecord.ts" lineNumbers="true" %}

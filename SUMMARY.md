@@ -54,6 +54,7 @@
   * [Verify check-ins](solution-phase/verify-check-ins.md)
 * [Implementation](implementation/README.md)
   * [Lambda handler](implementation/lambda-handler.md)
+  * [Testing](implementation/testing.md)
   * [The Data Transfer Object](implementation/the-data-transfer-object.md)
   * [Error handling](implementation/error-handling.md)
   * [Clean architecture-style use cases](implementation/clean-architecture-style-use-cases.md)

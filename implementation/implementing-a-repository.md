@@ -1,5 +1,8 @@
 # Implementing a repository
 
+\
+describe DB access patterns
+
 Example:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
