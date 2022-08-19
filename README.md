@@ -1,20 +1,8 @@
 # Introduction
 
-This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services. After having read—and coded, if you want—you will have a hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push to the practical. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
 
-### So what's the deal with DDD and microservices?&#x20;
-
-Why this combination of DDD and microservices? Both have become very popular for their own reasons: DDD because it understands that software is not just the engineering part, but also have it logically connects the physical and very real business end to software to accurately represents those ideas. DDD, even Eric Evans' original book from 2003, was also from the start expressive and rich and had many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
-
-Microservices have grown in popularity as they make it easier to build and represent distributed scenarios than building monoliths. As [Chandra Ramalingan writes](https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), while leaning on prior work by [Fowler](https://martinfowler.com/articles/microservices.html) as well as [Newman](https://samnewman.io/books/building\_microservices\_2nd\_edition/), that the microservices architecture style could be summarized as:
-
-> Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
-
-With the advent of Kubernetes and serverless functions, the practical operations around deploying them also significantly improved. Architects could finally _actually_ get those fine-grained services, and developers could finally build them faster and more neatly.
-
-Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day. Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether.
-
-It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I—and I am sure, many out there in the software world—have read on software architecture. My work simply complements and illustrates some of those basics in a practical scenario, rather than extensively elaborating on them.
+After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push to the practical. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
 
 ## Audience
 
@@ -34,6 +22,8 @@ If anything, the **primary** intent of this project is to spend more time discus
 
 First and foremost is of course to make you understood how you practically can produce a concrete, minimal but useful implementation of AWS-based serverless microservices using Domain Driven Design and Clean Architecture and developed with TypeScript.
 
+### Understanding problems in common solutions
+
 You will understand how trivial or simplistic implementations can be harmful:
 
 * Self-implementing an API Gateway (_can_ be useful, but is most probably not)
@@ -41,6 +31,8 @@ You will understand how trivial or simplistic implementations can be harmful:
 * Every function is its own bounded context (too large)
 * Unclear API, contracts, and eventing
 * Single point of failure and not understanding the "Fallacies of Distributed Computing"
+
+### New skills to bring home
 
 You will be able to practically address questions like:
 

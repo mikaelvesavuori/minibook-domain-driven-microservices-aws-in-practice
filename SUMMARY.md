@@ -1,6 +1,8 @@
 # Table of contents
 
 * [Introduction](README.md)
+  * [So what's the deal with DDD and microservices?](readme/so-whats-the-deal-with-ddd-and-microservices.md)
+  * [Friction and problems with cloud, serverless and all that stuff](readme/friction-and-problems-with-cloud-serverless-and-all-that-stuff.md)
 * [This is an open source book](this-is-an-open-source-book.md)
 * [Project resources](project-resources.md)
 * [Workshop](workshop/README.md)
