@@ -18,7 +18,7 @@ The backside of this is that back-end development, which has maybe sometimes bee
 
 ### In short
 
-More people are enabled, but the influx means a wider skills range, meaning that the sector (and we as organizations) have to train people accordingly if they lack core skills that they may not even be able to identify as deficits in the first place.
+More people are enabled to work full stack because of serverless, but this influx also equates to a wider skills range, in turn ending up with the sector (and we as organizations) having to train people accordingly **if they lack core skills that they may not even be able to identify as deficits in the first place**.
 
 
 
@@ -39,7 +39,7 @@ Serverless gives developers a vast extension of capabilities but good use of it 
 
 ### In short
 
-Strong fundamentals in each candidate/employee/team member and aggressive, continuous learning supported by the organization is key here.
+Strong fundamentals in each candidate/employee/team member and aggressive, continuous learning supported by the organization is key here. Retaining and retraining current developers is probably the best value you can get, rather than trusting an uncertain supply.
 
 ## You might need to learn a lot of things anew
 
@@ -58,7 +58,7 @@ There is a minor identity crisis in the functions-as-a-service world that we can
 There are two typical styles:
 
 1. Single purpose utility functions ("workflow-oriented" cases)
-2. Entity-oriented function ("back-end or API" cases)
+2. Entity-oriented functions ("back-end or API" cases)
 
 Worst of all, it's not like it's being very clearly communicated, especially to newcomers. Why I find this detail important is that it points to a certain orthodoxy in the FaaS or microservice world. Are any of these familiar?
 

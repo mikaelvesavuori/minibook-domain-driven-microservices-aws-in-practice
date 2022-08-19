@@ -1,10 +1,10 @@
 # Lambda handler
 
-A relatively common "misimplementation" is to think of the Lambda handler is the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.
+As I wrote in one of the introductory chapters, a relatively common "misimplementation" is to think of the Lambda handler is the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.
 
-Dynamic “composition root” in adapter/controller to load dependencies etc at startup
+The semantic concept of "handler" is somewhat particular to have we talk about function handlers or event handlers. On a more generic software architecture note, this layer could often be translated into what goes into the "controller" term in the MVC school. I've been known to use the "controller" term and set a dedicated folder in the structure at an earlier stage in my career, but I now refrain from it and go with "adapters" instead, simply as its an ever wider concept and since we now open for _any_ type of driver of our functions.
 
-Example:
+Enough introduction, let's go ahead and look at a handler:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/adapters/web/AddRecord.ts" lineNumbers="true" %}
 ```typescript
@@ -46,3 +46,107 @@ export async function handler(event: Record<string, any>, context: Context): Pro
 }
 ```
 {% endcode %}
+
+At the top we get the imports, nothing much to add there, and we see that the handler is exported as an async function. This is per Lambda convention.
+
+I've been somewhat loose on the parameters, as the `event` is just any old Record (object) but the `context` is an actual typed AWS context object. This is up for opinion, sure, but I find that the event itself is just easier to deal with when it is untyped and because its structure may significantly change based on which integration mechanism is used—in our case, if it's via API Gateway or EventBridge. The ensure this doesn't blow up or bloat _all_ of our functions in this service we've made a small `getDTO()` utility function to accurately piece together a fully formed Data Transfer Object from the input. Because it's a utility and not business-oriented we want to avoid any deep considerations or logic in that function, as seen below:
+
+{% code title="code/Analytics/SlotAnalytics/src/infrastructure/utils/getDTO.ts" lineNumbers="true" %}
+```typescript
+import { AnalyticalRecord } from '../../interfaces/AnalyticalRecord';
+
+/**
+ * @description Utility function to get data transfer object from either event or request payload.
+ */
+export function getDTO(event: Record<string, any>): AnalyticalRecord | void {
+  if (!event) return;
+
+  // Match for EventBridge case
+  if (event?.detail) return createEventBridgeDto(event);
+
+  // Match for typical API GW input
+  const body = event.body && typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+  if (body) return createApiGatewayDto(body);
+  else return;
+}
+
+function createEventBridgeDto(event: any) {
+  return {
+    id: event?.detail?.metadata?.id || '',
+    correlationId: event?.detail?.metadata?.correlationId || '',
+    event: event?.detail?.data?.event || '',
+    slotId: event?.detail?.data?.slotId || '',
+    startsAt: event?.detail?.data?.startTime || '',
+    hostName: event?.detail?.data?.hostName || ''
+  };
+}
+
+function createApiGatewayDto(body: any) {
+  return {
+    id: body.id || '',
+    correlationId: body.correlationId || '',
+    event: body.event || '',
+    slotId: body.slotId || '',
+    startsAt: body.startTime || '',
+    hostName: body.hostName || ''
+  };
+}
+
+```
+{% endcode %}
+
+We use the Data Transfer Object, or DTO, simply to carry around a representation of data. We could call this object `Input` or something if we wanted, but I'll keep it simply as `data` here.
+
+Back in the handler, you'll see that we start a logger (`MikroLog` ) so that it's available during our complete function duration (we never know when and if something breaks so let's do that setup at first thing!).
+
+Note also how we wrap the outer perimeter of the handler—being the first thing that is run, after all—in a `try/catch` block. This ensures that we can respond back on the main cases: "All is well", or "it's a dumpster fire". More complex examples could absolutely be dynamic and set things like the error code dependent on the error. Once again, here we are keeping at the fundamentals.
+
+On line 20 we have:
+
+```typescript
+if (!data) throw new MissingDataFieldsError();
+```
+
+We throw a unique exception (or error) based on the lack of data. Unique errors/exceptions is a good thing to start using, as it also means we can set "identities" on all the failure modes of our application.
+
+On lines 22 and 24 the magic starts happening:
+
+```typescript
+const dependencies = setupDependencies();
+
+await AddRecordUseCase(dependencies, data);
+```
+
+Here's a dedicated utility function `setupDependencies()` to create some form of dependencies. For this particular service, we need only a database.
+
+{% code title="code/Analytics/SlotAnalytics/src/infrastructure/utils/setupDependencies.ts" lineNumbers="true" %}
+```typescript
+import { Dependencies } from '../../interfaces/Dependencies';
+
+import { createNewDynamoDbRepository } from '../repositories/DynamoDbRepository';
+import { makeNewLocalRepository } from '../repositories/LocalRepository';
+
+/**
+ * @description Utility that returns a complete dependencies object
+ * based on implementations either "real" infrastructure or mocked ones.
+ */
+export function setupDependencies(localUse = false): Dependencies {
+  const repository = localUse ? makeNewLocalRepository() : createNewDynamoDbRepository();
+
+  return {
+    repository
+  };
+}
+
+```
+{% endcode %}
+
+In other services we use the same pattern but returning more objects. So in this case we are getting either the mock database (for testing and development) or we are getting an instance of DynamoDB. This means we are encapsulating the logic for when we testing, rather than spreading this across everything (note that there are still places where we do need to interact prior to tests, but this is the most important bit).
+
+Why bother with this at all? Well, pretty easy. If we want to follow Uncle Bob's Clean Architecture, as well as following the [D](https://en.wikipedia.org/wiki/Dependency\_inversion\_principle) in [SOLID](https://en.wikipedia.org/wiki/SOLID), we have to bring lower-level (more concrete; more volatile; less business-oriented) components _into_ those that are more business oriented. The magic disconnect between the infrastructure components (like the database or repository) and the use case is now in place. Note how we just run the use case and inject a set of dependencies, making it very easy to replicate and test.
+
+\---
+
+Dynamic “composition root” in adapter/controller to load dependencies etc at startup
+
+Example:
