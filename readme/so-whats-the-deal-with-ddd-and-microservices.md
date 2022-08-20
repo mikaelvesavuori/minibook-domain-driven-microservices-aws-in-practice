@@ -2,7 +2,7 @@
 
 Why this combination of DDD and microservices? Both have become very popular for their own reasons: DDD because it understands that software is not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represents those ideas. DDD, even Eric Evans' original book from 2003, was also from the start expressive and rich and had many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
 
-Microservices have grown in popularity as they, among other things, make it easier to build and represent distributed scenarios than building monoliths. As [Chandra Ramalingan writes](https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), while leaning on prior work by [Fowler](https://martinfowler.com/articles/microservices.html) as well as [Newman](https://samnewman.io/books/building\_microservices\_2nd\_edition/), that the microservices architecture style could be summarized as:
+Microservices have grown in popularity as they, among other things, make it easier to build and represent distributed scenarios than building monoliths. As [Chandra Ramalingan writes](https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), while leaning on prior work by [Fowler](https://martinfowler.com/articles/microservices.html) as well as [Newman](https://samnewman.io/books/building_microservices_2nd_edition/), that the microservices architecture style could be summarized as:
 
 > Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
 
