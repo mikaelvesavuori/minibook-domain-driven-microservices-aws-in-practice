@@ -491,3 +491,9 @@ export class SlotAggregate {
 }
 ```
 {% endcode %}
+
+### Invariants
+
+TODO
+
+The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)
