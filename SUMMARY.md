@@ -55,6 +55,7 @@
   * [Cancel a room reservation](solution-phase/cancel-a-room-reservation.md)
   * [Verify check-ins](solution-phase/verify-check-ins.md)
 * [Implementation](implementation/README.md)
+  * [Modules and structure](implementation/modules-and-structure.md)
   * [Lambda handler](implementation/lambda-handler.md)
   * [The Data Transfer Object](implementation/the-data-transfer-object.md)
   * [Error handling](implementation/error-handling.md)

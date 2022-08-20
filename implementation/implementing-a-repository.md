@@ -1,8 +1,9 @@
 # Implementing a repository
 
-Good old repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. That's the good side, and the bad side is that I am probably not completely misled by this having some correlation to how many traditional back-end developers have been "data-oriented" in their work (often relational). As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
+\
+describe DB access patterns
 
-Anyway, let's actually look at one of our repositories.
+Example:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
 ```typescript
@@ -77,23 +78,3 @@ class DynamoDbRepository implements Repository {
 }
 ```
 {% endcode %}
-
-Let's start with our undercooked factory pattern.
-
-### Factories
-
-A _Factory_ is a function or method that vends an instance of a class without having to specify the concrete class itself.
-
-{% hint style="info" %}
-Read more at [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example)
-{% endhint %}
-
-TODO
-
-```typescript
-export function createNewDynamoDbRepository(): DynamoDbRepository {
-  return new DynamoDbRepository();
-}
-```
-
-TODO
