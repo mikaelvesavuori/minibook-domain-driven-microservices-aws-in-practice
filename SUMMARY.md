@@ -60,6 +60,7 @@
   * [Error handling](implementation/error-handling.md)
   * [Clean architecture-style use cases](implementation/clean-architecture-style-use-cases.md)
   * [Testing](implementation/testing.md)
+  * [Services](implementation/services.md)
   * [Implementing a repository](implementation/implementing-a-repository.md)
   * [Creating value objects](implementation/creating-value-objects.md)
   * [Aggregates and entities](implementation/aggregates-and-entities.md)
