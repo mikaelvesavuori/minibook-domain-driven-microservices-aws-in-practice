@@ -48,14 +48,22 @@ Most testing libraries are somewhat similar, and while AVA is a less-used framew
 Let's understand what we are doing by seeing a minimal test in AVA and what that would be:
 
 ```typescript
-test('It should accept that 1 is 1', async (t) => {
+test('It should verify that 1 is 1', (t) => {
   t.is(1, 1);
 });
 ```
 
-Frankly you could even remove the `async` bit, but you get the point.
+It's pretty basic—The above just verifies that the left-side value (`1`) is the right-side value (`2`). For many tests, using `is()` or `deepEqual()` (for comparing objects) will be enough.
 
-Essentially what happens inside of the test is whatever required setup to actually perform our test. This might look different depending on the nature of what you are doing. I sometimes hear that testing would be hard or messy, but in the majority of cases I find the following to be true:
+{% hint style="info" %}
+Refer to [https://github.com/avajs/ava/blob/main/docs/01-writing-tests.md](https://github.com/avajs/ava/blob/main/docs/01-writing-tests.md) for more detailed instructions on how to use AVA.
+{% endhint %}
+
+Remember, unit tests should be easy to understand, stable, and fast to run, and both those methods make that possible. At the heart of good code and good tests is deterministic input and output. Depending on the exact thing you are testing the nature of the input/output will be somewhat fluid. For a use case the input is a set of dependencies and the required input data. The output is the Data Transfer Object that represents the data that will be pushed through the physical API (our Lambda handler, in terms of layers).
+
+#### What happens within the test?
+
+Essentially what happens inside of the test itself is whatever required setup to actually perform our test. This might look different depending on the nature of what you are doing. I sometimes hear that testing would be hard or messy, but in the majority of cases I find the following to be true:
 
 * A developer makes for an excellent tester, in terms of skills needed to perform the job. The opposite is not true.
 * Well-structured and well-written code takes trivial effort to test.
