@@ -4,6 +4,14 @@ This online mini-book aims to explain and demonstrate how one might practically 
 
 After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push to the practical. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
 
+The project will demonstrate rich and powerful patterns, presented in a digestible way. It will, as best as I can, hold back on some mannerisms that may detract from the core learnings I have to impart.
+
+## Out of scope
+
+This is a book with a broad range. There is an incredible amount of specialist literature and resources to go to for a multitude of areas that we'll raise here; I'm doing my best to be transparent and link to them.
+
+The project itself won't be perfect. There are always things to improve (or goldplate, if you wish) and more advanced patterns to bring in. That's OK.
+
 ## Audience
 
 I am writing this for several intended audiences:

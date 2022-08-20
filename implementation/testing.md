@@ -109,9 +109,15 @@ One of the classic books on software engineering is Robert C. Martin's book [Cle
 4. Independent.
 5. Repeatable.
 
+TODO: Verify quotes/list
+
 All of that seems fairly reasonable to me. This is not the place to go deep on each one, but suffice to say that some struggle with getting all of these handled.
 
 Absorb the above, Google around, get and read the book, and begin there.
+
+{% hint style="info" %}
+Robert Martin writes a lot. This one is really good and interesting, having a conversational type of format: [https://blog.cleancoder.com/uncle-bob/2017/10/03/TestContravariance.html](https://blog.cleancoder.com/uncle-bob/2017/10/03/TestContravariance.html)
+{% endhint %}
 
 ### What is the test coverage to go for?
 
