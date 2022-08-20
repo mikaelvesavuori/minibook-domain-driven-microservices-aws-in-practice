@@ -99,7 +99,7 @@ function createApiGatewayDto(body: any) {
 
 We use the Data Transfer Object, or DTO, simply to carry around a representation of data. We could call this object `Input` or something if we wanted, but I'll keep it simply as `data` here.
 
-Back in the handler, you'll see that we start a logger (`MikroLog` ) so that it's available during our complete function duration (we never know when and if something breaks so let's do that setup at first thing!).
+Back in the handler, you'll see that we start a logger (`MikroLog` ) so that it's available during our complete function duration (we never know when and if something breaks so let's do that setup at first thing!). See this as the right place for you to set up any other similar components if you have any.
 
 Note also how we wrap the outer perimeter of the handler—being the first thing that is run, after all—in a `try/catch` block. This ensures that we can respond back on the main cases: "All is well", or "it's a dumpster fire". More complex examples could absolutely be dynamic and set things like the error code dependent on the error. Once again, here we are keeping at the fundamentals.
 
@@ -151,7 +151,7 @@ In the other services we use this same pattern but sometimes return more objects
 
 Why bother with this at all? Well, pretty easy. If we want to follow Uncle Bob's Clean Architecture, as well as following the [D](https://en.wikipedia.org/wiki/Dependency\_inversion\_principle) in [SOLID](https://en.wikipedia.org/wiki/SOLID), we have to bring lower-level (more concrete; more volatile; less business-oriented) components _into_ those that are more business oriented. The magic disconnection we want to create between the infrastructural components (like the database or repository) and the actual use case is now in place.
 
-Note how we just run the use case, injecting it with a set of dependencies making it very easy to replicate and test. We call this pattern [dependency injection](https://en.wikipedia.org/wiki/Dependency\_injection) (DI); more specifically some have called the approach used here as "poor man's DI" or "pure DI". In my opinion it's just the way that makes no sense: it adds no dependencies, it's easy to use, and it is completely non-magical. You have this [opinion echoed by people like Khalil Stemmler](https://khalilstemmler.com/articles/software-design-architecture/coding-without-di-container/) as well.
+Note how we just run the use case, injecting it with a set of dependencies making it very easy to replicate and test. We call this pattern [dependency injection](https://en.wikipedia.org/wiki/Dependency\_injection) (DI)—more specifically some havS called the approach used here as "poor man's DI" or "pure DI". In my opinion it's just the way that makes most sense: It adds no dependencies, it's easy to use, and it is completely non-magical. You have this [opinion echoed by people like Khalil Stemmler](https://khalilstemmler.com/articles/software-design-architecture/coding-without-di-container/) as well.
 
 Finally, the correct place to set this "object graph" of dependencies is in what is called the "[composition root](https://blog.ploeh.dk/2011/07/28/CompositionRoot/)", which in our case is the handler function, just like we see it being used here.
 
