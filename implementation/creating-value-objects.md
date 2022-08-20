@@ -1,6 +1,8 @@
 # Creating value objects
 
-Example:
+If there is something I know I need to build more often, it's value objects.
+
+Get-A-Room doesn't have very many value objects (two, in fact). Let's look at the the TimeSlot one:
 
 {% code title="code/Reservation/SlotReservation/src/domain/valueObjects/TimeSlot.ts" overflow="wrap" lineNumbers="true" %}
 ````typescript
@@ -35,3 +37,9 @@ export class TimeSlot {
 }
 ````
 {% endcode %}
+
+So, we can see that this one returns a Data Transfer Object, thus the object somewhat unfortunately (as opposed to what I've been writing earlier) separates data and behavior. While, to be fair, there is just a single method, there is no reusability either. Perhaps this can be seen as acceptable in the limited range of uses that we get to use `TimeSlot` for.
+
+On the plus side, we are neatly encapsulating a lot of tedious detail out of the actual usage contexts. This also ensures that validation is done and that the integrity is correct and can be trusted.
+
+TODO: add error if more than 24 hours?
