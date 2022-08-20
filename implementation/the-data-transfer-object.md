@@ -77,8 +77,10 @@ On the blog [The Domain Driven Design we find a set of useful tips](https://thed
 > * Think long before you create a Domain Services, they are used as real Silver Bullets by the developers, but end up being the biggest causes of the _Anemic Model_.
 > * Be careful with ORM, they are responsible for creating Domain Objects automatically, producing real containers of public setters and public getters, which leads to an _Anemic Model_.
 
-Let's not steal the thunder from the later sections on entities, but maybe you are seeing a pattern here: Really do avoid objects that are mutable and that separate data from behavior.
+Let's not steal the thunder from the later sections on entities, but maybe you are seeing a pattern here: Really do avoid objects that are mutable and that separate data from behavior, at least internally and logically within your own system or service.
+
+Prefer passing instances of classes of entities or value objects rather than DTOs. DTOs do make it easier to do "dumb objects" and are much more portable (the portability is the reason we want them in the first place), especially if you are integrating, say with APIs, but then you lose the behavior. What is the driving need: The data or the behavior? Choose wisely.
 
 ### In closing
 
-The Data Transfer Object is an excellent way to transport data. The battle is just to use DTOs at the strategic places where it makes sense. We'll see more use of it later, but as some heuristics that make sense to me we can find that the DTO is used as early (example: API input), and as late (as the response going back to the Lambda handler i.e. adapter layer) as possible.
+The Data Transfer Object is an excellent way to transport data. The battle is around using DTOs at the strategic places where it makes sense. We'll see more use of it later, but as some heuristics that make sense to me we can find that the DTO is used as early (example: API input), and as late (as the response going back to the Lambda handler i.e. adapter layer) as possible.
