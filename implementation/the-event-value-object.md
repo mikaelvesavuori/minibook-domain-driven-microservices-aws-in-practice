@@ -4,7 +4,11 @@ Description.
 
 ## Emitting events
 
-Example:
+The way we are addressing the events and eventing infrastructure follows this model:
+
+`EventEmitter` -> `EmittableEvent -> Event`
+
+&#x20;Let's see it in action:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
 ```typescript
@@ -49,7 +53,7 @@ class EventBridgeEmitter implements EventEmitter {
 ```
 {% endcode %}
 
-asdf
+We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons, so that we can use a local mock rather than the full-blown EventBridge client.
 
 ## The events
 
@@ -274,3 +278,33 @@ export class UnattendedEvent extends EmittableEvent {
 }
 ```
 {% endcode %}
+
+Admittedly the event structure (despite our decoupling of the emitter itself) is tied to EventBridge that is acceptable as we are actually only using EventBridge in our project. If we would support truly different emitters we would perhaps need to add further abstractions on the event shape. In the context of this project we can accept that as a trivia item.
+
+### Metadata
+
+TODO
+
+### Detail type
+
+TODO
+
+### DTO
+
+TODO
+
+### Make method
+
+TODO
+
+### Get method
+
+TODO
+
+### Get analytics method
+
+TODO
+
+### Extended classes
+
+TODO
