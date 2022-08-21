@@ -1,6 +1,16 @@
 # Aggregates and entities
 
-Example:
+Revisiting our relations between aggregates and entities we see that:
+
+* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
+* Aggregates are objects that access and operate on entities. To be clear, an aggregate is always itself an entity, but the opposite is not necessarily true.
+* An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
+
+## The Slot aggregate
+
+I wouldn't be surprised if you already are aware that we'll be looking at the meatiest and most significant part of our codebase. This is good! If we have it this far, using the other tactical concepts, we are truly now at the core of the business logic.
+
+Expect a much longer read this time. No worries, we are going to look at select parts in due course.
 
 {% code title="code/Reservation/SlotReservation/src/domain/aggregates/SlotAggregate.ts" lineNumbers="true" %}
 ```typescript
@@ -491,3 +501,49 @@ export class SlotAggregate {
 }
 ```
 {% endcode %}
+
+## Basics
+
+As expected, there's the standard imports, but there is no Factory function. I just don't often find it very helpful to encapsulate an aggregate using one.
+
+## Constructor
+
+TODO
+
+```
+repository: Repository;
+eventEmitter: EventEmitter;
+metadataConfig: MetadataConfigInput;
+logger: MikroLog;
+analyticsBusName: string;
+domainBusName: string;
+securityApiEndpoint: string;
+
+constructor(dependencies: Dependencies) {
+  const { repository, eventEmitter, metadataConfig } = dependencies;
+  this.repository = repository;
+  this.eventEmitter = eventEmitter;
+  this.metadataConfig = metadataConfig;
+  this.logger = MikroLog.start();
+
+  if (!repository || !eventEmitter) throw new MissingDependenciesError();
+
+  this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
+  this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
+  this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
+
+  if (!this.domainBusName || !this.analyticsBusName)
+    throw new MissingEnvVarsError(
+      JSON.stringify([
+        { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
+        { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
+      ])
+    );
+}
+```
+
+## Invariants
+
+TODO
+
+The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)

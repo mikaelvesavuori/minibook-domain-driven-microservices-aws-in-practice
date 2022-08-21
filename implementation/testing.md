@@ -1,6 +1,10 @@
 # Testing
 
-Write _positive_ tests for the "happy flows" and _negative_ tests for the "unhappy flows".
+The testing approach used here is (for the theoretically minded) in the mostly "classicist" testing camp, which means that we test behaviors and expected output, but nothing regarding the actual implementation details _within_ the thing we test.
+
+Like much programming, **writing good tests should depend on abstractions (interfaces), not concretions**. We can use _test doubles_ (mocks, stubs, spies, fakes) to work for us, rather than using infrastructure and implementations that might be problematic. Examples of that could be external services, unfinished services, anything going over a network, persistence technologies, and so on.
+
+Finally, our maxim is to: Write _positive_ tests for the "happy flows" and _negative_ tests for the "unhappy flows".
 
 ## Positive tests
 
@@ -91,80 +95,5 @@ function MessagePrinter(message: string) {
 A useful related pattern that deserves to be mentioned and be inspired by is the "[guard clause](https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html)", a pattern in which we return early on pre-conditions and can effectively cut back on `if-else` statements. The reason I am bringing it up is that we should strive to keep functions and methods as flat (on the left margin) as possible, meaning more readable (and possibly testable!) code.
 {% endhint %}
 
+TODO
 
-
-\--
-
-explain testing and what the approach has been
-
-depend on abstractions (interfaces), not concretions
-
-## Relating to the Classist (Detroit/Chicago school) vs Mockist (London school) approaches
-
-asdf
-
-> The mockist strategy is also known by London School strategy, Outside-in, or white box testing. The mockist TDD style tests system interactions.
->
-> — Source: [https://romainbrunie.medium.com/mockist-v-classical-testing-strategy-d967f1bc263c](https://romainbrunie.medium.com/mockist-v-classical-testing-strategy-d967f1bc263c)
-
-asdf
-
-> The classicist strategy is also known by Detroit School strategy, Inside-out, black box testing, or state based testing. The classical TDD style tests system boundaries. A classic TDDer can use any test double. It might use mock if the collaboration between the SUT and the collaborator make state verification impossible.
->
-> — Source: [https://romainbrunie.medium.com/mockist-v-classical-testing-strategy-d967f1bc263c](https://romainbrunie.medium.com/mockist-v-classical-testing-strategy-d967f1bc263c)
-
-## Basics of a sound approach
-
-One of the classic books on software engineering is Robert C. Martin's book [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882). It holds a handful of advice when it comes to testing.
-
-1. One assert per test.
-2. Readable.
-3. Fast.
-4. Independent.
-5. Repeatable.
-
-TODO: Verify quotes/list
-
-All of that seems fairly reasonable to me. This is not the place to go deep on each one, but suffice to say that some struggle with getting all of these handled.
-
-Absorb the above, Google around, get and read the book, and begin there.
-
-{% hint style="info" %}
-Robert Martin writes a lot. This one is really good and interesting, having a conversational type of format: [https://blog.cleancoder.com/uncle-bob/2017/10/03/TestContravariance.html](https://blog.cleancoder.com/uncle-bob/2017/10/03/TestContravariance.html)
-{% endhint %}
-
-### Mock as little as possible and avoid specific tools for it as far as possible
-
-Test doubles (mocks, stubs, fakes, spies) are definitely useful, but I've found it highly effective to be firm on testing a single behavior per test (see above). While a test _might_ package a single behavior into, sometimes, multiple asserts, as long as it logically is _one thing we are testing_ I find that to be an acceptable minor deviation.
-
-Something I've also learned while working with people over the years is that there is sometimes a bigger reliance on tooling and frameworks to handle details like mocking. I find this to add complexity and dependencies for something that ideally should be able to be done in a manual and lightweight manner. There's a lot of reading in the area of test doubles, and particularly on mocks and the risks and issues that come with them.
-
-For my part I have found the following useful:
-
-* A named good example has been MSW and it's network mocking so that one can effectively test network interactions (responses/requests) in a very simple way.
-* Using "local-type" implementations (as we will see with the repository pattern and dependency injection) to approximate behavior.
-* As I will also shortly restate, we should have a rough reliance on \~95% (well, the absolute majority) black box testing (asserting that a given input responds with a deterministic output; no focus on inner workings!).
-* In black box testing, the _farther out_ we are (e.g. testing from the use-cases layer) the coarser-grained our understanding of the system is. That's why I always "fill in the gaps" where branch coverage is not full (or nearly full) in tests that exercise relevant functionality. Typically this would be something like:
-  * Tests for use cases -> Behavior focused (general; almost like a unit test-flavored system test)
-  * Tests for functions (such as infrastructure utils) -> Behavior focused (typical unit test scope)
-  * Tests for classes (public methods; refactor private methods to utility functions that can be individually tested, if relevant) -> Behavior focused
-
-### What is the test coverage to go for?
-
-100% should be the goal. Sometimes it's not practical or possible to get 100%, but anything significantly less than full coverage should make you ask what you are trying to get out of the testing in the first place.
-
-Remember that even 100% test coverage does not rule out all logical, meaningful scenarios you might want to verify. So if I were a worse (but rather realistic) person maybe I'd set up the maxim:
-
-`100% test coverage is not the end. It's where we begin.`
-
-### Should I have one test per class/function/whatever?
-
-Some smart people would say no.
-
-I would say: Write tests from the widest unit tests (use cases) first and then fill in additional tests (in separate files, of course) for each class/function/method that has code branches that are not covered by such wider "use case unit tests".  Don't forget to always do negative testing as well!
-
-{% hint style="info" %}
-You can see how much code coverage you have in most testing frameworks.
-{% endhint %}
-
-Given that you probably have the possibility to throw some errors in most classes/functions then it's a realistic assumption that you will end up with individual test files for most of your code base. In those files you should test the difference or delta, i.e. the "missing parts", not everything from scratch, once again. Using this approach means that you don't do excessive and redundant testing, but that you actually fill in bit-by-bit the missing code branches. In total you will quickly and expediently move to better and better coverage.
