@@ -502,15 +502,21 @@ export class SlotAggregate {
 ```
 {% endcode %}
 
-## Basics
+## Stepping through the code
 
 As expected, there's the standard imports, but there is no Factory function. I just don't often find it very helpful to encapsulate an aggregate using one.
 
-## Constructor
+The code in the class is in two major chunks: Private methods and the public ("API") methods.
 
-TODO
+The examples will be presented in "roughly" sequential order, though logically reservation comes before the check-in. Those are switched in order because I want to gradually progress on their relative complexity (what little there is).
 
-```
+### Constructor
+
+The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the Slot aggregate less coupled to any infrastructural concerns.
+
+TODO: Check order of imports and throwing MissingDependenciesError
+
+```typescript
 repository: Repository;
 eventEmitter: EventEmitter;
 metadataConfig: MetadataConfigInput;
@@ -539,6 +545,157 @@ constructor(dependencies: Dependencies) {
         { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
       ])
     );
+}
+```
+
+### Use case #1: Make daily slots
+
+The first publicly accessible use case is making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones.
+
+```typescript
+/**
+ * @description Make all the slots needed for a single day (same day/"today").
+ *
+ * "Zulu time" is used, where GMT+0 is the basis.
+ *
+ * @see https://time.is/Z
+ */
+public async makeDailySlots(): Promise<void> {
+  const slots: SlotDTO[] = [];
+
+  const timeSlot = new TimeSlot();
+  const currentTime = this.getCurrentTime();
+  const numberHours = 10;
+  const startHour = 8;
+
+  for (let slotCount = 0; slotCount < numberHours; slotCount++) {
+    const hour = startHour + slotCount;
+    const { startTime, endTime } = timeSlot.startingAt(hour);
+    const newSlot = this.makeSlot({ currentTime, startTime, endTime });
+    slots.push(newSlot);
+  }
+
+  const addSlots = slots.map(async (slot: SlotDTO) => {
+    await this.repository.updateSlot(slot);
+
+    const { slotId, hostName, slotStatus, timeSlot } = slot;
+
+    const event = new CreatedEvent({
+      event: {
+        eventName: 'CREATED', // Transient state
+        slotId,
+        slotStatus,
+        hostName,
+        startTime: timeSlot.startTime
+      },
+      eventBusName: this.domainBusName,
+      metadataConfig: this.metadataConfig
+    });
+
+    await this.emitEvents(event);
+  });
+
+  await Promise.all(addSlots);
+}
+```
+
+### Use case #2: Check in
+
+The rest of the use cases have a format that resembles the one we look at here, the "check in" case.
+
+We load a slot based on the ID we have received, destructure some fields, verify that we have the correct slot status (it must be `RESERVED` to work), and then call our private `updateSlot()` method with the slot data and new status. When that's done it's time to make the correct event (here, the `CheckedInEvent`) and emit that with our private `emitEvents()` method.
+
+All in all, we have ensured the state satisfies our business needs, the new invariant is correctly shaped, made the update, and informed our domain of the change via an event.
+
+```typescript
+/**
+ * @description Updates a Slot to be in `CHECKED_IN` invariant state.
+ *
+ * Can only be performed in `RESERVED` state.
+ *
+ * @emits `CHECKED_IN`
+ */
+public async checkIn(slotId: SlotId): Promise<void> {
+  const slot = await this.loadSlot(slotId);
+  const { slotStatus, hostName, timeSlot } = slot;
+  const { startTime } = timeSlot;
+  if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
+
+  const newStatus = 'CHECKED_IN';
+  await this.updateSlot(slot, newStatus);
+
+  const event = new CheckedInEvent({
+    event: {
+      eventName: newStatus,
+      slotId,
+      slotStatus: newStatus,
+      hostName,
+      startTime
+    },
+    eventBusName: this.domainBusName,
+    metadataConfig: this.metadataConfig
+  });
+
+  await this.emitEvents(event);
+}
+```
+
+### Use case #3: Reserve slot
+
+Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do.
+
+Next, we load the slot data for the requested slot, destructure the data for use, verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
+
+Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check in.
+
+```typescript
+/**
+ * @description Updates a Slot to be in `RESERVED` invariant state.
+ *
+ * Can only be performed in `OPEN` state.
+ *
+ * @emits `RESERVED`
+ */
+public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
+  this.validateInputData(slotInput, true);
+  const { slotId, hostName } = slotInput;
+
+  const slot = await this.loadSlot(slotId);
+  const { slotStatus, timeSlot } = slot;
+  const { startTime } = timeSlot;
+  if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
+
+  // We do the verification code stuff before committing to the transaction
+  const verificationCode = await this.getVerificationCode(slotId);
+  if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
+
+  const newStatus = 'RESERVED';
+
+  await this.updateSlot(
+    {
+      ...slot,
+      hostName: hostName || ''
+    },
+    newStatus
+  );
+
+  const event = new ReservedEvent({
+    event: {
+      eventName: newStatus,
+      slotId,
+      slotStatus: newStatus,
+      hostName,
+      startTime
+    },
+    eventBusName: this.domainBusName,
+    metadataConfig: this.metadataConfig
+  });
+
+  await this.emitEvents(event);
+
+  return {
+    code: verificationCode
+  };
 }
 ```
 
