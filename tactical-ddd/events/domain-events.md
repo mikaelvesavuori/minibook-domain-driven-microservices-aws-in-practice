@@ -6,7 +6,7 @@ See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/
 
 ![Domain events to enforce consistency between multiple aggregates within the same domain](../../.gitbook/assets/domain-model-ordering-microservice.png)
 
-![Handling multiple actions per domain](../../.gitbook/assets/aggregate-domain-event-handlers.png)
+![Handling multiple actions per domain](<../../.gitbook/assets/aggregate-domain-event-handlers (1).png>)
 
 As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in scope of our domain may subscribe to.
 

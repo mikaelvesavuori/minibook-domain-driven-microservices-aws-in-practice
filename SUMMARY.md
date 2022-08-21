@@ -65,7 +65,6 @@
   * [Implementing a repository](implementation/implementing-a-repository.md)
   * [Creating value objects](implementation/creating-value-objects.md)
   * [Aggregates and entities](implementation/aggregates-and-entities.md)
-  * [Emitting events](implementation/emitting-events.md)
   * [The event value object](implementation/the-event-value-object.md)
   * [Lambda authorizer](implementation/lambda-authorizer.md)
 * [References](references.md)

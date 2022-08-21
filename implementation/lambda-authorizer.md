@@ -1,6 +1,8 @@
 # Lambda authorizer
 
-Example:
+The Lambda authorizer is somewhat convoluted due to the particulars of how AWS' format works.
+
+Here's the code:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/authorizers/Authorizer.ts" lineNumbers="true" %}
 ```typescript
@@ -118,3 +120,26 @@ async function validateCode(slotId: string, verificationCode: string): Promise<b
 }
 ```
 {% endcode %}
+
+Most of its contents are pure boilerplate that you can copy between projects to your heart's content.
+
+The particulars in the handler are:
+
+```typescript
+if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
+
+// Get required values
+const header = event.headers['Authorization'];
+const [slotId, verificationCode] = header.split('#');
+if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
+
+// Verify code
+const isCodeValid = await validateCode(slotId, verificationCode);
+if (!isCodeValid) throw new InvalidVerificationCodeError();
+```
+
+First of all we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll now it's a configuration issue and nothing else.
+
+Then we see how the implementation expects an `Authorization` header to have a specific format with `{SLOT_ID}#{VERIFICATION_CODE}`. Therefore we'll split by the hash, check the presence of them, and throw an error if either is missing.
+
+The actual validation then is nothing more than calling the endpoint that has been configured. If it is incorrect we return an error indicating this. If all is good, then we'll hit the positive branch of `generatePolicy()`.
