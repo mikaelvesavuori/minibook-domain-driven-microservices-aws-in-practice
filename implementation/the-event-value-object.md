@@ -82,7 +82,7 @@ import { NoMatchInEventCatalogError } from '../../application/errors/NoMatchInEv
  * @description Vend a "Event Carried State Transfer" type event with state
  * that can be emitted with an emitter implementation.
  */
-class EmittableEvent {
+abstract class EmittableEvent {
   event: EventBridgeEvent;
   eventBusName: string;
   metadataConfig: MetadataConfigInput;
