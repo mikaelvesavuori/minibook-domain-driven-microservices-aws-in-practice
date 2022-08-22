@@ -6,7 +6,7 @@ Description.
 
 The way we are addressing the events and eventing infrastructure follows this model:
 
-`EventEmitter` -> `EmittableEvent -> Event`
+`EventEmitter` -> `EmittableEvent` -> `Event`
 
 &#x20;Let's see it in action:
 
@@ -57,7 +57,7 @@ We see that there is a basic Factory there, and then the `EventBridgeEmitter` ju
 
 ## The events
 
-Example:
+The `EmittableEvent` value object might look long and daunting, but it's actually very simple. The  situation we have to deal with is that the event shape is rather deep meaning it does take some energy to construct it.
 
 {% code title="code/Reservation/SlotReservation/src/domain/valueObjects/Event.ts" lineNumbers="true" %}
 ```typescript
@@ -283,28 +283,32 @@ Admittedly the event structure (despite our decoupling of the emitter itself) is
 
 ### Metadata
 
-TODO
+The `produceMetadata` method does what it says on the box. It's not that complicated but allows us the possibility to vend a metadata object that is always as expected.
 
-### Detail type
+### Matching the detail type
 
-TODO
+Very basic, dumb implementation to match the event name to a recased version.
 
 ### DTO
 
-TODO
+First we make the EventDTO. This has the overall shape we actually require.
 
 ### Make method
 
-TODO
+The `make()` method takes our event DTO and forms it into the EventBridgeEvent that can actually be put on our event bus.
 
 ### Get method
 
-TODO
+In order to use the class (remember, data _and_ behavior!) rather than a dumb plain object, we'll allow a method to access the current representation.
 
 ### Get analytics method
 
-TODO
+Just as the regular `get()` method, the `getAnalyticsVariant()` method returns a representation of the event. The reasons we want to have this as a specific method is:
+
+* The analytics event bus is not the same as the regular one
+* We want to redact the (potentially sensitive) ID
+* The analytics context does not need the slot status
 
 ### Extended classes
 
-TODO
+There is nothing unique concerning the classes that we should use, so we can contain the "base" class and make trivial extensions to allow use for the derived classes instead.
