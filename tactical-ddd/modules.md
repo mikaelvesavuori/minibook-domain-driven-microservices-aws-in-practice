@@ -126,9 +126,7 @@ This collects the types and interfaces. The reason I set this as a root-level it
 
 ## Clean architecture-style use cases
 
-## We have seen this diagram before, haven't we?
-
-![](../.gitbook/assets/CleanArchitecture.jpg)
+We have seen this diagram before, haven't we?
 
 This far we have seen how these might work:
 
