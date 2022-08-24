@@ -1,5 +1,8 @@
 # Services
 
+_Services_ are stateless objects that perform some logic that do not fit with an operation on an _Entity_ or _Value Object_.\
+They perform domain-specific operations, which can involve multiple domain objects.
+
 ???
 
 TODO
@@ -8,14 +11,14 @@ TODO
 
 TODO
 
-> Use Cases (a Clean Architecture term) are similar to **Application Services** in DDD. At least their _relative positioning_ is.&#x20;
+> Use Cases (a Clean Architecture term) are similar to **Application Services** in DDD. At least their _relative positioning_ is.
 >
 > In DDD, **Application Services** (application layer concerns, obviously) represent commands or queries (like `createComment` - COMMAND or `getCommentById` - QUERY) that:
 >
-> - Contain no domain-specific business logic.
-> - Are used in order to fetch domain entities (and anything else) from persistence and the outside world.
-> - Either passes of control to an Aggregate to execute domain logic by using a method of the Aggregate, or passes off several entities to a Domain Service to facilitate their interaction.
-> - Have low-levels of [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
+> * Contain no domain-specific business logic.
+> * Are used in order to fetch domain entities (and anything else) from persistence and the outside world.
+> * Either passes of control to an Aggregate to execute domain logic by using a method of the Aggregate, or passes off several entities to a Domain Service to facilitate their interaction.
+> * Have low-levels of [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity).
 >
 > — Source: [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
 

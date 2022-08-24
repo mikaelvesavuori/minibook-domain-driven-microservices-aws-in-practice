@@ -40,8 +40,20 @@ _Events_ indicate significant occurrences that have occurred in the domain and n
 _Modules_ are little mentioned by the developers, however, their use can be very interesting.\
 Modules help us segregate concepts, can be defined as a _Java package_or a _C# namespace_, and always follow the _Ubiquitous Language_.
 
-\
 
 
 You need to understand that not all of these concepts need to be applied to your _Domain Model_, you need to do an analysis so that it does not add unnecessary complexity to your project.
+
+
+
+This section describes key passages of the code and the overall implementation rather than rehashing the complete and rather extensive code base. The approach will be checking out and analyzing examples of patterns, especially for the tactical DDD concepts:
+
+* Modules
+* Services
+* Repositories
+* Factories
+* Value objects
+* Entities
+* Aggregates
+* Events
 
