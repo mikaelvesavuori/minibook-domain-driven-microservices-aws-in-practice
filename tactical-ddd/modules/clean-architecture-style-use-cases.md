@@ -2,7 +2,7 @@
 
 We have seen this diagram before, haven't we?
 
-![](../.gitbook/assets/CleanArchitecture.jpg)
+![](../../.gitbook/assets/CleanArchitecture.jpg)
 
 This far we have seen how these might work:
 

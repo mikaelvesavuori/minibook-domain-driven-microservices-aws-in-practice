@@ -3,7 +3,7 @@
 TODO
 
 ![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
-https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../.gitbook/assets/CleanArchitecture.jpg)
+https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../../../.gitbook/assets/CleanArchitecture.jpg)
 
 The intention with all of these ideas for how to structure an application are all well-meaning, but I've also see and reflected on how a higher level of "layers" or "circles" can complicate things quite quickly.
 
