@@ -1,21 +1,13 @@
+---
+description: >-
+  The least-discussed but structurally most fundamental pattern concerns our
+  Modules and the structure these put on our work.
+---
+
 # Modules
 
 _Modules_ are little mentioned by the developers, however, their use can be very interesting.\
-Modules help us segregate concepts, can be defined as a _Java package_or a _C# namespace_, and always follow the _Ubiquitous Language_.
-
-## Practice
-
-We've already touched on structure several times. This time it's going to be both high-level of how Modules relate as a DDD concept but also how our project is actually divided.
-
-{% hint style="info" %}
-Read more at [https://www.culttt.com/2014/12/10/modules-domain-driven-design](https://www.culttt.com/2014/12/10/modules-domain-driven-design)
-{% endhint %}
-
-asdf
-
-## Clean architecture
-
-
+Modules help us segregate concepts, can be defined as a _Java package_ or a _C# namespace_, and always follow the _Ubiquitous Language_.
 
 Much of DDD wisdom and attempts at concretely structuring files in a DDD-oriented sense will address whether to go with an approach based on "package by layer" or "package by feature".
 
@@ -25,7 +17,16 @@ Three things to note here:
 2. Clean Architecture changes the structure and naming a bit. We will base our core understanding on CA and its nomenclature, as it's more intuitive and still packs the same punch as regular DDD.
 3. TODO
 
-TODO
+## Serverless project organization
+
+In our case, the principal module structure (for code) is:
+
+* `code/Analytics/SlotAnalytics`: asdf
+* `code/Reservation/SlotReservation:` asdf
+* `code/Reservation/SlotDisplay:` asdf
+* `code/VerificationCode/VerificationCode:` asdf
+
+## Clean architecture
 
 asdf
 
@@ -77,8 +78,6 @@ The outermost layer is generally composed of frameworks and tools such as the Da
 This layer is where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm.
 ```
 
-##
-
 TODO
 
 ![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
@@ -126,7 +125,13 @@ This collects the types and interfaces. The reason I set this as a root-level it
 
 ## Clean architecture-style use cases
 
-We have seen this diagram before, haven't we?
+We've already touched on structure several times. This time it's going to be both high-level of how Modules relate as a DDD concept but also how our project is actually divided.
+
+{% hint style="info" %}
+Read more at [https://www.culttt.com/2014/12/10/modules-domain-driven-design](https://www.culttt.com/2014/12/10/modules-domain-driven-design)
+{% endhint %}
+
+asdf
 
 This far we have seen how these might work:
 
