@@ -27,6 +27,7 @@
     * [Cancel a room reservation](implementation/cloud-architecture/cancel-a-room-reservation.md)
     * [Verify check-ins](implementation/cloud-architecture/verify-check-ins.md)
   * [Technical boilerplating](implementation/technical-boilerplating.md)
+  * [Domain driven Lambdas with a use case approach](implementation/domain-driven-lambdas-with-a-use-case-approach.md)
   * [Lambda handler](implementation/lambda-handler.md)
   * [The Data Transfer Object](implementation/the-data-transfer-object.md)
   * [Error handling](implementation/error-handling.md)
