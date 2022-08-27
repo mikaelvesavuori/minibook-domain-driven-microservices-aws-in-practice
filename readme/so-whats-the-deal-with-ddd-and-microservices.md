@@ -31,6 +31,20 @@ With the advent of Kubernetes and serverless functions, the practical operations
 
 ## The problem
 
+So if DDD is \~20 years old, isn't that ancient and archaic by today's standards?
+
+This is a very valid question. However, without going on a philosophical detour, we need to remember that some things in computing and technology change frequently, while others do not. Consider the following:
+
+* __[_Design Patterns: Elements of Reusable Object-Oriented Software_](https://www.goodreads.com/book/show/85009.Design\_Patterns) (Gamma, Johnson, Vlissides, Helm) was written in 1994
+* __[_The Pragmatic Programmer: From Journeyman to Master_](https://www.goodreads.com/book/show/4099.The\_Pragmatic\_Programmer) (Hunt, Thomas) was written in 1999
+* __[_Refactoring: Improving the Design of Existing Code_](https://www.goodreads.com/book/show/44936.Refactoring) (Fowler) was written in 1999
+* __[_Patterns of Enterprise Application Architecture_](https://www.goodreads.com/book/show/70156.Patterns\_of\_Enterprise\_Application\_Architecture) (Fowler, Rice, Foemmel, Hieatt, Mee, Stafford) was written in 2002
+* [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.goodreads.com/book/show/3735293-clean-code) (Martin) was written in 2008
+
+{% hint style="info" %}
+For more examples, see [https://softwareengineering.stackexchange.com/questions/124630/is-there-an-expiration-date-for-well-regarded-but-old-books-on-programming](https://softwareengineering.stackexchange.com/questions/124630/is-there-an-expiration-date-for-well-regarded-but-old-books-on-programming)
+{% endhint %}
+
 I will quote `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is\_domain\_driven\_design\_still\_the\_recommended/)":
 
 > Well what is in the original DDD book is not what tends to be written about or used in practice. The book is about how to successfully and repeatedly implement the plumbing to support a complex problem domain object model. It advocates that standard plumbing so you can _concentrate_ on object modeling the problem domain.
