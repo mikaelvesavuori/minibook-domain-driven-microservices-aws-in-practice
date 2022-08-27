@@ -59,9 +59,13 @@ The bigger issue with DDD and related terms is that with popularity and the acro
 
 Quoting the long block above I definitely want to fall over on the wrong side of history!
 
-Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day. Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether.
+To be fair, I've had this situation in mind while writing and I believe you will have a broader yet practical understanding of DDD without us overcomplicating things more than warranted.&#x20;
 
-It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I—and I am sure, many out there in the software world—have read on software architecture. My work simply complements and illustrates some of those basics in a practical scenario, rather than extensively elaborating on them.
+{% hint style="info" %}
+It is my highest recommendation that you also read the source materials, as those are some of the most excellent books and articles I—and I am sure, many out there in the software world—have read on software architecture.
+
+My own work with this book and project simply complements and illustrates some of those basics in a practical scenario, rather than extensively elaborating on them.
+{% endhint %}
 
 ## But...!
 
