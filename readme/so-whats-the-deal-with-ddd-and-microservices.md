@@ -1,10 +1,31 @@
-# So what's the deal with DDD and microservices?
+---
+description: What made the concepts "click" together?
+---
 
-Why this combination of DDD and microservices? Both have become very popular for their own reasons: DDD because it understands that software is not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represents those ideas. DDD, even Eric Evans' original book from 2003, was also from the start expressive and rich and had many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
+# So what's the deal with Domain Driven Design and microservices?
 
-Microservices have grown in popularity as they, among other things, make it easier to build and represent distributed scenarios than building monoliths. As [Chandra Ramalingan writes](https://medium.com/walmartglobaltech/building-domain-driven-microservices-af688aa1b1b8), while leaning on prior work by [Fowler](https://martinfowler.com/articles/microservices.html) as well as [Newman](https://samnewman.io/books/building\_microservices\_2nd\_edition/), that the microservices architecture style could be summarized as:
+Why this combination of DDD and microservices? Both have become very popular for their own reasons.
 
-> Loosely coupled service-oriented architecture, where each service is enclosed within a well-defined bounded context, enabling rapid, frequent, and reliable delivery of applications.
+DDD was a game changer (and is still somewhat singular) in that it insists on software being not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represent those ideas. Therefore, DDD was from the start contingent on _language_ as a primary tool to create cohesion and allow for expressive and rich modeling. It also came with many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
+
+Microservices have grown in popularity as they, among other things, make it easier to build and represent distributed scenarios than building monoliths. As stated by [Amundsen, Nadareishvili, Mitra, and McLarty](https://www.oreilly.com/library/view/microservice-architecture/9781491956328/) and referenced at [O'Reilly](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/), microservices are:
+
+> * Small in size
+> * Messaging enabled
+> * Bounded by contexts
+> * Autonomously developed
+> * Independently deployable
+> * Decentralized
+> * Built and released with automated processes
+>
+> — Source: [https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/)
+
+{% hint style="info" %}
+For more reading, see for example:
+
+* [https://martinfowler.com/articles/microservices.html](https://martinfowler.com/articles/microservices.html)
+* [https://samnewman.io/books/building\_microservices\_2nd\_edition/](https://samnewman.io/books/building\_microservices\_2nd\_edition/)
+{% endhint %}
 
 With the advent of Kubernetes and serverless functions, the practical operations around deploying them also significantly improved. Architects could finally _actually_ get those fine-grained services, and developers could finally build them faster and more neatly.
 

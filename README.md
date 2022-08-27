@@ -1,26 +1,36 @@
+---
+description: >-
+  Welcome to the fast track, taking you from DDD novice to actually
+  understanding a real, modern application built with it in mind.
+---
+
 # Introduction
 
 This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
 
-**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides (heavily leaning on the business end) more than on prescriptive implementation, though it does provide very clear design patterns.
+**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides of software development (heavily leaning on the business end) more than on prescriptive implementation, though it does provide very clear design patterns. While our application will not be truly complex, it is complex enough to warrant a structured and business/domain-oriented approach.
 
-**Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms.
+**Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms. Microservices are a good fit with our technology stack as well as helping us enforce clearer boundaries between system components as per DDD.
 
-Throughout the book several other concepts and methodologies will be introduced to further extend our approach and coded project.
+There is nothing extravagantly special in terms of reasons for choosing **AWS**. While the services and their particulars are certainly unique to AWS, there is nothing with the overall architecture that cannot be transported to Azure, Google Cloud Platform, or other clouds. The specific path we are walking here will be around [serverless technologies](https://en.wikipedia.org/wiki/Serverless\_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). AWS provides excellent paths for us to build and run the application.
+
+Throughout the book several other concepts and methodologies will be introduced to further extend our approach and implementation details of our project.
 
 ### What you'll learn and do
 
-The project will demonstrate rich and powerful patterns, presented in a digestible way. It will, as best as I can, hold back on some mannerisms that may detract from the core learnings I have to impart.
+The project will demonstrate rich and powerful patterns—binding together serverless, microservices, DDD, Clean Architecture, TypeScript and more—presented in a digestible way. It will, as best as I can, hold back on some "mannerisms" and complexities in the DDD and tech world that may detract from the core learnings I have to impart.
 
-After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push toward a practical example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+After having read this minibook—and coded alongside the provided project, if you want—you will have a **hands-on feeling for how a project can go from a scenario (an "ask") to something that represents a well-structured, domain-oriented application**.
 
-I will also share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
+Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the OG, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+
+I will also of course share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
 
 ## Out of scope
 
-This is a book with a broad range. There is an incredible amount of specialist literature and resources to go to for a multitude of areas that we'll raise here; I'm doing my best to be transparent and link to them.
+This is a book with a broad range. There is an incredible amount of specialist literature and resources to lean into for a multitude of areas that we'll raise here; I'm doing my best to be transparent and link to them. Don't necessarily expect all answers to be given here, you'll probably have better luck just continuing your research elsewhere.
 
-The project itself won't be perfect. There are always things to improve (or goldplate, if you wish) and more advanced patterns to bring in. That's OK.
+The project itself won't be perfect either. There are always things to improve (or goldplate, if you wish) and more advanced patterns to bring in. That's OK. However, I feel confident in that the project should be well and good enough to demonstrate with clarity the primary concepts: DDD, microservices, and running it in AWS.
 
 ## Audience
 
