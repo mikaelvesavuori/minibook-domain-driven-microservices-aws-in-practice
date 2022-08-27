@@ -2,9 +2,19 @@
 
 This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
 
-After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push to the practical. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides (heavily leaning on the business end) more than on prescriptive implementation, though it does provide very clear design patterns.
+
+**Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms.
+
+Throughout the book several other concepts and methodologies will be introduced to further extend our approach and coded project.
+
+### What you'll learn and do
 
 The project will demonstrate rich and powerful patterns, presented in a digestible way. It will, as best as I can, hold back on some mannerisms that may detract from the core learnings I have to impart.
+
+After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push toward a practical example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+
+I will also share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
 
 ## Out of scope
 
@@ -22,13 +32,15 @@ I am writing this for several intended audiences:
 
 ## Assumptions
 
-You can call yourself or work as whatever, but you will most likely be some kind of developer. You should be familiar with AWS and development in general, and if possible, it is ideal if you know TypeScript. I will not assume that you are a certified AWS professional or an architect. My mission here is more to bring together all the things that make modern software what it is: DevOps, development, architecture and an understanding of the cloud and how we deploy and run things there.
+My mission here is more to bring together all the things that make modern software what it is: DevOps, development, architecture and an understanding of the cloud and how we deploy and run things there.
 
-If anything, the **primary** intent of this project is to spend more time discussing intellectual details such as the architecture rather than going all-out on code. The code _will_ be important as that's of course where we implement the things discussed, but in the end it's just one part of the big picture. TODO check
+You can call yourself whatever or work as whatever, but you will most likely be some kind of developer or engineer or architect.
+
+You should be familiar with AWS and development in general, and if possible, it is ideal if you know TypeScript. I will not assume that you are a certified AWS professional or an architect.&#x20;
 
 ## Learning goals
 
-First and foremost is of course to make you understood how you practically can produce a concrete, minimal but useful implementation of AWS-based serverless microservices using Domain Driven Design and Clean Architecture and developed with TypeScript.
+First and foremost of the learning goals is of course to make you understand how to practically produce a concrete, minimal, but useful implementation of AWS-based serverless microservices using Domain Driven Design and Clean Architecture and develop it using TypeScript.
 
 ### Understanding problems in common solutions
 
