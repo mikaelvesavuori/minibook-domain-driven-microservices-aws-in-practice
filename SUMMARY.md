@@ -1,7 +1,7 @@
 # Table of contents
 
 * [Introduction](README.md)
-  * [So what's the deal with Domain Driven Design and microservices?](readme/so-whats-the-deal-with-ddd-and-microservices.md)
+  * [DDD and microservices go well together](readme/so-whats-the-deal-with-ddd-and-microservices.md)
   * [On design and DDD](warming-up/on-design-and-ddd.md)
   * [Friction and problems with cloud, serverless and all that stuff](readme/friction-and-problems-with-cloud-serverless-and-all-that-stuff.md)
 * [This is an open source book](this-is-an-open-source-book.md)
