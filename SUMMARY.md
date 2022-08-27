@@ -1,9 +1,9 @@
 # Table of contents
 
 * [Introduction](README.md)
-  * [DDD and microservices go well together](readme/so-whats-the-deal-with-ddd-and-microservices.md)
-  * [On design and DDD](warming-up/on-design-and-ddd.md)
-  * [Friction and problems with cloud, serverless and all that stuff](readme/friction-and-problems-with-cloud-serverless-and-all-that-stuff.md)
+  * [On design](warming-up/on-design-and-ddd.md)
+  * [Why DDD and microservices are a match](readme/so-whats-the-deal-with-ddd-and-microservices.md)
+  * [Putting DDD in the serverless context](readme/friction-and-problems-with-cloud-serverless-and-all-that-stuff.md)
 * [This is an open source book](this-is-an-open-source-book.md)
 * [Project resources](project-resources.md)
 * [Workshop](workshop/README.md)
