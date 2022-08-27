@@ -1,4 +1,4 @@
-# References
+# References and resources
 
 * [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * [Comparison of Domain-Driven Design and Clean Architecture Concepts](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
@@ -29,8 +29,8 @@
 * https://www.jamesmichaelhickey.com/how-do-i-persist-ddd-aggregates/
 * https://khalilstemmler.com/articles/graphql/ddd/schema-design/
 * https://dgraph.io/blog/post/ddd-with-graphql/
-
-***
+* [https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/seedwork-domain-model-base-classes-interfaces](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/seedwork-domain-model-base-classes-interfaces)
+* [https://github.com/Sairyss/domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon)
 
 ## DDD
 

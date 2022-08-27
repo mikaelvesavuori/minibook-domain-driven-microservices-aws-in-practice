@@ -41,4 +41,4 @@
   * [Repositories](tactical-ddd/repositories.md)
   * [Factories](tactical-ddd/factories.md)
   * [Events](tactical-ddd/events.md)
-* [References](references.md)
+* [References and resources](references.md)
