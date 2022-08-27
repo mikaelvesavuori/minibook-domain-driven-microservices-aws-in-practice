@@ -6,6 +6,10 @@ Like much programming, **writing good tests should depend on abstractions (inter
 
 Finally, our maxim is to: Write _positive_ tests for the "happy flows" and _negative_ tests for the "unhappy flows".
 
+{% hint style="info" %}
+I am working on a mini-book to address testing in further detail. When it's in a sufficiently detailed state I will update this area with a link!
+{% endhint %}
+
 ## Positive tests
 
 Positive tests are the tests you are most likely already familiar with. These tests verify that some functionality is delivering as per expectations. Simple as that!
