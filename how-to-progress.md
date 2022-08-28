@@ -76,13 +76,28 @@ Diagrams.net works perfectly fine for both UML-style diagrams and your typical f
 
 ### Write technical documentation
 
-Either for an own project, something at work, an open source project, or whatever really.
+Write. Either for an own project, something at work, an open source project, or whatever really. Just write. We all learn it in school, but—and I know I am hard here—an engineer or architect who cannot write or communicate efficiently is not worth their salt. Sad to say, but that quality is not something I experience a lot...
 
-Different languages have different standards or mannerisms. For our project, we used [JSDoc](https://jsdoc.app) with a light stylistic mannerism to not re-document anything that's obvious in the TypeScript types.
+Different languages have different standards or mannerisms. For our project, we used [JSDoc](https://jsdoc.app) with a light stylistic mannerism to not re-document anything that's obvious in the TypeScript types. For example, in the case of .NET you might want to look at [DocFX](https://docs.microsoft.com/en-us/shows/on-net/intro-to-docfx).
+
+One of my favorite, and quite extensive, articles on technical writing is InnoQ's [_Principles of technical documentation_](https://www.innoq.com/en/articles/2022/01/principles-of-technical-documentation/).
+
+Obviously technical writing is vital for tech companies. Google has [published several courses](https://developers.google.com/tech-writing/overview) you can take, as has GitLab, [_Technical Writing Fundamentals_](https://about.gitlab.com/handbook/engineering/ux/technical-writing/fundamentals/).
+
+For an interesting approach to technical writing, you should check out [Diátaxis](https://diataxis.fr).
+
+{% hint style="info" %}
+It would be strange to not be able to identify "good docs when you see them". For some examples of good writing, see:
+
+* [Mozilla Developer Network Web Docs](https://developer.mozilla.org/en-US/docs/Learn)
+* [Cloudflare Docs](https://developers.cloudflare.com)
+* [Kubernetes Documentation](https://kubernetes.io/docs/home/)
+* [Google Cloud documentation](https://cloud.google.com/docs)
+{% endhint %}
 
 ### Push for a "ubiquitous language" in an existing project
 
-Summing xxx
+TODO
 
 ### Try out EventStorming with colleagues or friends
 
