@@ -4,7 +4,19 @@ description: Let's take a quick overview of Domain Driven Design.
 
 # DDD Lightning Tour
 
-The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition is actually very good and condensed. Let's check it out:
+DDD was a game changer (and is still somewhat singular) in that it insists on software being not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represent those ideas. Therefore, DDD was from the start contingent on _language_ as a primary tool to create cohesion and allow for expressive and rich modeling. It also came with many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
+
+Domain Driven Design has grown in the 20-odd years it's been around to be a foundational part of modern software architecture and shaping the methodology with which many work in software. It seems to have been given an enormous upswing after the microservices pattern become more in vogue some 5-10 years ago.
+
+For me personally, reading about Domain Driven Design—first through articles and then through Eric Evans' [blue book](https://www.domainlanguage.com/ddd/blue-book/) (2003) and Vaughn Vernon's [red book](https://kalele.io/books/) (2013)—made for an exciting summer some years back: It was really obvious (!) that we need to connect the "business" with the implementation. The explosive thing about the books, however, was that they went well and beyond the platitudes of the _statement_ (as you read it in the last sentence) to actually detailing patterns, strategies and ways to get there.
+
+The "problem", if one can call it that, is that both of the books are big. Like really big. I think they fall squarely into the lap of certain types of folks who still enjoy the intellectual exercise and sometimes relatively abstract way of learning that goes with the territory. Thankfully there are complementary resources to pad out your understanding—though as always with this type of literature, it is wise to understand the source material.
+
+Already Vernon wrote in his first book that sometimes DDD is "first embraced as a technical tool set" (Vernon 2013, p. xxi) saying that some refer to this modus as "DDD-Lite". This will bring forth a number of useful patterns, but will miss out on the glue that binds together DDD as a complete concept.
+
+## OK, so what is DDD?
+
+The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition is actually very good and condensed. I'm going to reference it as-is. It says that...
 
 > **Domain-driven design** (**DDD**) is a [software design](https://en.wikipedia.org/wiki/Software\_design) approach focusing on modelling software to match a [domain](https://en.wikipedia.org/wiki/Domain\_\(software\_engineering\)) according to input from that domain's experts.
 >
@@ -18,9 +30,23 @@ The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition 
 > * basing complex designs on a model of the domain;
 > * initiating a creative collaboration between technical and [domain experts](https://en.wikipedia.org/wiki/Domain\_expert) to iteratively refine a conceptual model that addresses particular domain problems.
 
-TODO
+For a software engineer or architect the above should at least superficially sound clear and reasonably. Two terms, however, should outline themselves as being in repeated use and being somewhat mysterious or vague in meaning: _domain_ and _model_. These are core to understanding Domain Driven Design.
 
-Core to understanding Domain Driven Design is understanding what _domain_ means. The domain can be distilled into a _model_**.**
+### The domain
+
+The domain can be thought as the principal subject or materia of the project. It may be as broad or as narrow as necessary. Eric Evans defines it as:
+
+> \[...] a sphere of knowledge, influence, or activity. The subject area to which the user applies a program is the domain of the software.&#x20;
+>
+> — Source: [https://domainlanguage.com/wp-content/uploads/2016/05/DDD\_Reference\_2015-03.pdf](https://domainlanguage.com/wp-content/uploads/2016/05/DDD\_Reference\_2015-03.pdf)
+
+It should be somewhat clear in most circumstances what the implicit domain boundaries are. DDD eschews implicit boundaries and is particular on boundaries being collabratively and explicitly defined.
+
+### The model
+
+Eric Evans spends quite some space in the start of his book on the notion of a "model" and what model-driven design means. Being model-driven can be likened to virtually being domain-driven. By having a shared understanding, and respecting that there is a need for zooming in/out, we can condense our knowledge to an efficient and useful model that is possible to share with others without losing meaning in the process.
+
+The intangible _domain_ can be distilled into a tangible and malleable _(domain) model,_ which can act as a vehicle for securing the shared understanding. It is the "[organised and structured knowledge of the problem](https://stackoverflow.com/questions/68463938/what-is-model-in-ddd)". In total, the domain model can exist as one or more individual pieces of documentation (text, diagrams, code...) as long as it adequately represents the problem in a meaningful, truthful, but necessarily simplified meaning.
 
 There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge\_Luis\_Borges) quote that you may be familiar with:
 
@@ -28,27 +54,13 @@ There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge\_Luis\_Borges)
 > \
 > — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A\_Universal\_History\_of\_Infamy), 1946 (from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
 
-Besides being the nightmare of enterprise architects and surveyors, grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail. That's where the very human ability to abstract complex knowledge into models comes in.
-
-Eric Evans spends quite some space in the start of his book on the notion of a "model" and what model-driven design means. Being model-driven can be likened to virtually being domain-driven. By having a shared understanding, and respecting that there is a need for zooming in/out, we can condense our knowledge to an efficient and useful model.
+Besides being the nightmare of enterprise architects and surveyors, **grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail**. That's where the very human ability to abstract complex knowledge into models comes in. DDD taps into this quality while being completely open to the ways in which a group might do it.
 
 TODO more
 
-### The patterns of DDD
+## The patterns of DDD
 
 ![How the patterns match up, as presented in Eric Evans's book (2003)](../.gitbook/assets/DomainDrivenDesignReference.png)
-
-## Domain Driven Design overview
-
-DDD was a game changer (and is still somewhat singular) in that it insists on software being not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represent those ideas. Therefore, DDD was from the start contingent on _language_ as a primary tool to create cohesion and allow for expressive and rich modeling. It also came with many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
-
-Domain Driven Design has grown in the 20-odd years it's been around to be a foundational part of modern software architecture and shaping the methodology with which many work in software. It seems to have been given an enormous upswing after the microservices pattern become more in vogue some 5-10 years ago.
-
-For me personally, reading about Domain Driven Design—first through articles and then through the [blue book](https://www.domainlanguage.com/ddd/blue-book/) and [red book](https://kalele.io/books/)—made for an exciting summer some years back: It was really obvious (!) that we need to connect the "business" with the implementation. The explosive thing about the books, however, was that they went well and beyond the platitudes of the _statement_ (as you read it in the last sentence) to actually detailing patterns, strategies and ways to actually get there.
-
-The "problem", if one can call it that, is that both of the books are big. Like really big. I think they fall squarely into the lap of certain types of folks who still enjoy the intellectual exercise and sometimes relatively abstract way of learning that goes with the territory. Thankfully there are complementary resources to pad out your understanding—though as always with this type of literature, it is wise to understand the source material.
-
-Already Vernon wrote in his first book that sometimes DDD is "first embraced as a technical tool set" (Vernon 2013, p. xxi) saying that some refer to this modus as "DDD-Lite". This will bring forth a number of useful patterns, but will miss out on the glue that binds together DDD as a complete concept.
 
 ## Tactical DDD
 
