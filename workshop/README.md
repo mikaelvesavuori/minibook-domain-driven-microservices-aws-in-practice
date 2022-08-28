@@ -8,9 +8,9 @@ The expensive and outdated room booking system at your company has been making l
 
 You've just had a brainstorming session and a requirements workshop together with stakeholders from the business and office management side of things, as well as with some front end developers in the company.
 
-For now, these are the identified obvious requirements:
+For now, these are the identified high-level requirements:
 
-* Reserve a single room in a single facility (your office) and your time zone
+* Reserve a _single_ room in a _single_ facility (your office) and your time zone
 * Reserve the room in slots of 1 hour at the start of each hour
 * Allow for the cancellation of room reservations
 * Your team will focus on providing the back end, APIs and such, front end is out of scope for your team
@@ -25,4 +25,4 @@ When it comes to integration work:
   * The room name or ID
   * The start and end times of the slot
 
-How would you address this challenge?
+**How would you address this challenge?**

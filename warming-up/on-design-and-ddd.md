@@ -16,4 +16,4 @@ Nothing has improved my own skills as much as setting up small projects with cle
 
 After having read this minibook, and maybe even trying to build the application on your own, take some time to reflect on what didn't make sense, what was hard, what you feel you can do better. Can the language improve? Can the abstractions be better handled? Can you be more expressive with relations between systems?
 
-Reading is not the end goal—designing and reflecting on the results of the process is.
+Reading is not the end goal—designing and reflecting on the results of the process is. And domain-driven design is a solid foundation to build our design flow around, as well as informing how we practically develop our software.

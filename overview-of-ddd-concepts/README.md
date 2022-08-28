@@ -1,2 +1,3 @@
-# Overview of DDD concepts
+# Strategic DDD
 
+TODO description and definition

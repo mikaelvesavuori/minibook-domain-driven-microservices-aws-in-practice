@@ -4,18 +4,6 @@ description: So what's the deal with Domain Driven Design and microservices?
 
 # Why DDD and microservices are a match
 
-## Domain Driven Design overview
-
-DDD was a game changer (and is still somewhat singular) in that it insists on software being not just the engineering part, but also how it logically connects the physical and very real business end to software to accurately represent those ideas. Therefore, DDD was from the start contingent on _language_ as a primary tool to create cohesion and allow for expressive and rich modeling. It also came with many prescriptive ideas divided between the higher-level "strategic DDD" and the implementation patterns part of the "tactical DDD".
-
-Domain Driven Design has grown in the 20-odd years it's been around to be a foundational part of modern software architecture and shaping the methodology with which many work in software. It seems to have been given an enormous upswing after the microservices pattern become more in vogue some 5-10 years ago.
-
-For me personally, reading about Domain Driven Design—first through articles and then through the [blue book](https://www.domainlanguage.com/ddd/blue-book/) and [red book](https://kalele.io/books/)—made for an exciting summer some years back: It was really obvious (!) that we need to connect the "business" with the implementation. The explosive thing about the books, however, was that they went well and beyond the platitudes of the _statement_ (as you read it in the last sentence) to actually detailing patterns, strategies and ways to actually get there.
-
-The "problem", if one can call it that, is that both of the books are big. Like really big. I think they fall squarely into the lap of certain types of folks who still enjoy the intellectual exercise and sometimes relatively abstract way of learning that goes with the territory. Thankfully there are complementary resources to pad out your understanding—though as always with this type of literature, it is wise to understand the source material.
-
-## Microservices overview
-
 To understand microservices is to be aware of the "prior art", namely Service Oriented Architecture (SOA) that dates back to the 1990s. Without making this into a history class, the scope of SOA was wider than that of microservices and built on a technical foundation that for natural reasons is not necessarily the basis of modern organizations. It may be fair to call microservices a particular subset of evolved SOA.
 
 {% hint style="info" %}

@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
   * [On design](warming-up/on-design-and-ddd.md)
+  * [DDD Lightning Tour](readme/beginning-ddd.md)
   * [Why DDD and microservices are a match](readme/so-whats-the-deal-with-ddd-and-microservices.md)
   * [Putting DDD in the serverless context](readme/friction-and-problems-with-cloud-serverless-and-all-that-stuff.md)
 * [This is an open source book](this-is-an-open-source-book.md)
@@ -10,7 +11,6 @@
   * [What we will be building](workshop/what-we-are-building-get-a-room.md)
   * [How to follow along](workshop/how-to-follow-along.md)
 * [Strategic DDD](overview-of-ddd-concepts/README.md)
-  * [Beginning DDD](warming-up/beginning-ddd.md)
   * [Doodling, drawing, whiteboarding flows and concepts](warming-up/doodling-drawing-whiteboarding-flows-and-concepts.md)
   * [Terminology and language](overview-of-ddd-concepts/terminology-and-language.md)
   * [EventStorming](overview-of-ddd-concepts/eventstorming.md)
