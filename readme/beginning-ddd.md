@@ -4,9 +4,7 @@ description: Let's take a quick overview of Domain Driven Design.
 
 # DDD Lightning Tour
 
-TODO
-
-[Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) starts with this definition,
+The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition is actually very good and condensed. Let's check it out:
 
 > **Domain-driven design** (**DDD**) is a [software design](https://en.wikipedia.org/wiki/Software\_design) approach focusing on modelling software to match a [domain](https://en.wikipedia.org/wiki/Domain\_\(software\_engineering\)) according to input from that domain's experts.
 >
@@ -19,6 +17,22 @@ TODO
 > * placing the project's primary focus on the core [domain](https://en.wikipedia.org/wiki/Domain\_\(software\_engineering\)) and domain logic;
 > * basing complex designs on a model of the domain;
 > * initiating a creative collaboration between technical and [domain experts](https://en.wikipedia.org/wiki/Domain\_expert) to iteratively refine a conceptual model that addresses particular domain problems.
+
+TODO
+
+Core to understanding Domain Driven Design is understanding what _domain_ means. The domain can be distilled into a _model_**.**
+
+There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge\_Luis\_Borges) quote that you may be familiar with:
+
+> “In this empire, the art of cartography was taken to such a peak of perfection that the map of a single province took up an entire city and the map of the empire, an entire province. **In time, these oversize maps outlived their usefulness and the college of cartographers drew a map of the empire equal in format to the empire itself, coinciding with it point by point**. The following generations, less obsessed with the study of cartography, decided that this overblown map was useless and somewhat impiously abandoned it to the tender mercies of the sun and seasons. There are still some remains of this map in the western desert, though in very poor shape, the abode of beasts and beggars. No other traces of the geographical disciplines are to be seen throughout the land.”\
+> \
+> — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A\_Universal\_History\_of\_Infamy), 1946 (from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
+
+Besides being the nightmare of enterprise architects and surveyors, grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail. That's where the very human ability to abstract complex knowledge into models comes in.
+
+Eric Evans spends quite some space in the start of his book on the notion of a "model" and what model-driven design means. Being model-driven can be likened to virtually being domain-driven. By having a shared understanding, and respecting that there is a need for zooming in/out, we can condense our knowledge to an efficient and useful model.
+
+TODO more
 
 ### The patterns of DDD
 

@@ -28,6 +28,8 @@ I will also of course share resources and references throughout in case you are 
 
 ## Why I'm writing this book
 
+I'm an architect and developer who feels that DDD made me a better professional. I'm neither an "expert" or "leading voice" on this. But I would be remiss if I couldn't share my passion for software engineering and how I—and perhaps you too—can connect the dots between the cloud, DDD, and microservices.
+
 Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day.
 
 Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether. More on that later.
