@@ -42,11 +42,43 @@ A spin on this is to actually do a real (low-key) project, maybe for some friend
 
 ### Learn diagramming
 
-TODO
+Diagramming is a core skill of senior engineers and most architects. They allow, when they are good, an easy-to-digest and precise format. As an author, I find that it's often more accurate than text and faster to finish than writing, too.
+
+The sad truth is that many diagrams that I've seen are miserable because of some combination of (for example):
+
+* Mixed views in the same diagram
+* Confusing, overall
+* Inconsistent style
+* Aesthetically displeasing
+
+While these are just some of the many parameters that could go wrong, **the **_**most pressing**_** problem is that many times you are happy to have a diagram at all, in the first place**.
+
+So: Diagram everything and make others do it too.
+
+If you've been around the block, you might wonder "Should I just learn UML?". It's a rich and formal way of diagramming, but to be frank, few are orthodox about it. Most will learn the basics and then stay happy with what they took to heart, ergo, not all of it. But if you _do_ want to go full UML, there's the GitHub repo for [_Learn UML2.\* in simple terms_](https://github.com/imalitavakoli/learn-uml2). On the book side, the classic book on the subject is Martin Fowler's [_UML Distilled_](https://martinfowler.com/books/uml.html).
+
+Lucidchart is a commercial tool that you may or may not want to use. They do however offer a [wide range of tutorials for how to work with many types of diagrams](https://www.lucidchart.com/pages/tour). It's a good start.
+
+For software tools, you might want to consider:
+
+* [Lucidchart](https://lucid.co)
+* [Whimsical](https://whimsical.com)
+* [Figma](https://www.figma.com), which has the [FigJam](https://www.figma.com/figjam/) online whiteboard feature; [more on diagramming here](https://www.figma.com/learn-diagramming/what-is-diagramming/)
+* [Excalidraw](https://excalidraw.com)
+* [Diagrams.net](https://www.diagrams.net) (previously Draw.io)
+* [Miro](https://miro.com)
+
+{% hint style="info" %}
+My personal picks are Excalidraw for online collaborative whiteboarding and Diagrams.net for professional work that I can predominantly work on solo and then share as a file asset.
+
+Diagrams.net works perfectly fine for both UML-style diagrams and your typical free-form diagrams.
+{% endhint %}
 
 ### Write technical documentation
 
 Either for an own project, something at work, an open source project, or whatever really.
+
+Different languages have different standards or mannerisms. For our project, we used [JSDoc](https://jsdoc.app) with a light stylistic mannerism to not re-document anything that's obvious in the TypeScript types.
 
 ### Push for a "ubiquitous language" in an existing project
 
