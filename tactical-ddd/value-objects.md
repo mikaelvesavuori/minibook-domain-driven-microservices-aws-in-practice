@@ -1,10 +1,13 @@
+---
+description: >-
+  After the weight of entities, producing non-entity objects might invite one to
+  use "easy" and regressive patterns fished out of the recesses of one's memory
+  bank. "These aren't important!" Wrong.
+---
+
 # Value objects
 
-### Value Objects
-
-What differentiates a _Value Object_ from an _Entity_ is that, _Value Objects_are immutable and do not have a unique identity, are defined only by the values of their attributes. The consequence of this immutability is that in order to update a _Value Object_, you must create a new instance to replace the old one.
-
-What differentiates a _Value Object_ from an _Entity_ is that, _Value Objects_are immutable and do not have a unique identity, are defined only by the values of their attributes. The consequence of this immutability is that in order to update a _Value Object_, you must create a new instance to replace the old one.
+What differentiates a _Value Object_ from an _Entity_ is that, _Value Objects_ are immutable and do not have a unique identity, are defined only by the values of their attributes. The consequence of this immutability is that in order to update a _Value Object_, you must create a new instance to replace the old one.
 
 ## Practice
 
