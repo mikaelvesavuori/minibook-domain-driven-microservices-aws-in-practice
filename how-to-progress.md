@@ -86,7 +86,7 @@ Obviously technical writing is vital for tech companies. Google has [published s
 
 For an interesting approach to technical writing, you should check out [Diátaxis](https://diataxis.fr).
 
-{% hint style="info" %}
+{% hint style="success" %}
 It would be strange to not be able to identify "good docs when you see them". For some examples of good writing, see:
 
 * [Mozilla Developer Network Web Docs](https://developer.mozilla.org/en-US/docs/Learn)
