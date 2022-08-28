@@ -1,9 +1,3 @@
----
-description: >-
-  "Service" is an overloaded concept and they're often over-used in non-DDD
-  contexts. Let's find out how they are very selectively used in our context.
----
-
 # Services
 
 _Services_ are stateless objects that perform some logic that do not fit with an operation on an _Entity_ or _Value Object_.\

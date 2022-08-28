@@ -1,8 +1,8 @@
 ---
 description: >-
   To continue the "strategy = bones" analogy, this is where we put arms and legs
-  and head on the right joints. "Doing the thing right" phase, we could also
-  say.
+  and head on the right joints. A proverbial "Doing the thing right" phase, we
+  could also say.
 ---
 
 # Tactical DDD

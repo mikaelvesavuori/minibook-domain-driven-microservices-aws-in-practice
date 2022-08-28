@@ -1,10 +1,4 @@
----
-description: >-
-  No house without a design, a plot of land, a dream, municipal waste collection
-  agreement... You get the point.
----
-
-# Groundwork
+# Ground work
 
 This section zooms in on minor, but important, factors that concern our overall engineering but do not map directly to DDD.
 

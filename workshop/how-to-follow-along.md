@@ -1,9 +1,3 @@
----
-description: >-
-  The code isn't a fighter jet, but some guidance might be in order for you to
-  get the best out of it.
----
-
 # How to follow along
 
 TODO entire page

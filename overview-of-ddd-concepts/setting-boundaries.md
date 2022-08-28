@@ -1,10 +1,3 @@
----
-description: >-
-  It's not fun to say "no" but without saying "no" there is no control we can
-  exert over our domain landscape. "Boundaries" are the DDD way of including or
-  excluding something in a context.
----
-
 # Setting boundaries
 
 ```
@@ -76,6 +69,6 @@ See: https://www.infoq.com/news/2019/06/bounded-context-eric-evans/
 
 ## Practice
 
-![](<../.gitbook/assets/Get-A-Room Context Map.png>)
+![](<../../.gitbook/assets/Get-A-Room Context Map.png>)
 
 ##

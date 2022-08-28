@@ -1,7 +1,3 @@
----
-description: The battle plan for our technical infrastructure.
----
-
 # Cloud Architecture
 
 ## Going serverless-first

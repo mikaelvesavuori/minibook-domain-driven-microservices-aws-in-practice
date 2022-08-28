@@ -1,8 +1,8 @@
----
-description: "Numero uno when it comes to patterns —\_repositories are well-established as ways to separate implementation from interface."
----
-
 # Repositories
+
+_Repositories_ are mainly used to deal with storage, they abstract concerns about data storage. They are responsible for persisting _Aggregates_.
+
+### Repositories
 
 _Repositories_ are mainly used to deal with storage, they abstract concerns about data storage. They are responsible for persisting _Aggregates_.
 

@@ -1,7 +1,3 @@
----
-description: There's a full application for us to discover!
----
-
 # What we will be building
 
 This example and workshop focuses on overall system design and the goal of setting up an event-driven architecture.
