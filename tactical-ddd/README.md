@@ -1,3 +1,10 @@
+---
+description: >-
+  To continue the "strategy = bones" analogy, this is where we put arms and legs
+  and head on the right joints. "Doing the thing right" phase, we could also
+  say.
+---
+
 # Tactical DDD
 
 It's high time to put those "tactical" patterns in Domain Driven Design to work, breathing life into our domain model.
