@@ -1,16 +1,42 @@
+---
+description: >-
+  Welcome to the fast track, taking you from DDD novice to actually
+  understanding a real, modern application built with it in mind.
+---
+
 # Introduction
 
 This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
 
-After having read—and coded, if you want—you will have a **hands-on feeling for how a project can go from a scenario to something that represents a well-structured, domain-oriented application**. Just like Vaughn Vernon's "Implementing Domain Driven Design" drove Eric Evans's book to a more practical level, my intent here is to maximize that push to the practical. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides of software development (heavily leaning on the business end) more than on prescriptive implementation, though it does provide very clear design patterns. While our application will not be truly complex, it is complex enough to warrant a structured and business/domain-oriented approach.
 
-The project will demonstrate rich and powerful patterns, presented in a digestible way. It will, as best as I can, hold back on some mannerisms that may detract from the core learnings I have to impart.
+**Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms. Microservices are a good fit with our technology stack as well as helping us enforce clearer boundaries between system components as per DDD.
+
+There is nothing extravagantly special in terms of reasons for choosing **AWS**. While the services and their particulars are certainly unique to AWS, there is nothing with the overall architecture that cannot be transported to Azure, Google Cloud Platform, or other clouds. The specific path we are walking here will be around [serverless technologies](https://en.wikipedia.org/wiki/Serverless\_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). AWS provides excellent paths for us to build and run the application.
+
+Throughout the book several other concepts and methodologies will be introduced to further extend our approach and implementation details of our project.
+
+## Why I'm writing this book
+
+Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day.
+
+Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether. More on that later.
+
+## What you'll learn and do
+
+The project will demonstrate rich and powerful patterns—binding together serverless, microservices, DDD, Clean Architecture, TypeScript and more—presented in a digestible way. It will, as best as I can, hold back on some "mannerisms" and complexities in the DDD and tech world that may detract from the core learnings I have to impart.
+
+After having read this minibook—and coded alongside the provided project, if you want—you will have a **hands-on feeling for how a project can go from a scenario (an "ask") to something that represents a well-structured, domain-oriented application**.
+
+Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the OG, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+
+I will also of course share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
 
 ## Out of scope
 
-This is a book with a broad range. There is an incredible amount of specialist literature and resources to go to for a multitude of areas that we'll raise here; I'm doing my best to be transparent and link to them.
+This is a book with a broad range. There is an incredible amount of specialist literature and resources to lean into for a multitude of areas that we'll raise here; I'm doing my best to be transparent and link to them. Don't necessarily expect all answers to be given here, you'll probably have better luck just continuing your research elsewhere.
 
-The project itself won't be perfect. There are always things to improve (or goldplate, if you wish) and more advanced patterns to bring in. That's OK.
+The project itself won't be perfect either. There are always things to improve (or goldplate, if you wish) and more advanced patterns to bring in. That's OK. However, I feel confident in that the project should be well and good enough to demonstrate with clarity the primary concepts: DDD, microservices, and running it in AWS.
 
 ## Audience
 
@@ -22,13 +48,37 @@ I am writing this for several intended audiences:
 
 ## Assumptions
 
-You can call yourself or work as whatever, but you will most likely be some kind of developer. You should be familiar with AWS and development in general, and if possible, it is ideal if you know TypeScript. I will not assume that you are a certified AWS professional or an architect. My mission here is more to bring together all the things that make modern software what it is: DevOps, development, architecture and an understanding of the cloud and how we deploy and run things there.
+My mission here is more to bring together all the things that make modern software what it is: DevOps, development, architecture and an understanding of the cloud and how we deploy and run things there.
 
-If anything, the **primary** intent of this project is to spend more time discussing intellectual details such as the architecture rather than going all-out on code. The code _will_ be important as that's of course where we implement the things discussed, but in the end it's just one part of the big picture. TODO check
+You can call yourself whatever or work as whatever, but you will most likely be some kind of developer or engineer or architect.
+
+You should be familiar with AWS and development in general, and if possible, it is ideal if you know TypeScript. I will not assume that you are a certified AWS professional or an architect.&#x20;
 
 ## Learning goals
 
-First and foremost is of course to make you understood how you practically can produce a concrete, minimal but useful implementation of AWS-based serverless microservices using Domain Driven Design and Clean Architecture and developed with TypeScript.
+First and foremost of the learning goals is of course to make you understand how to practically produce a concrete, minimal, but useful implementation of AWS-based serverless microservices using Domain Driven Design and Clean Architecture and develop it using TypeScript.
+
+### New skills to bring home
+
+You will be able to practically address questions like:
+
+* How to do strategic DDD: Definining a domain model, outlining bounded contexts, making context maps, specifying a ubiquitous language...
+* How to map bounded contexts/subdomains etc. into a serverless microservice implementation
+* Deciding on the type of relationship and integrations between domains and contexts, including: Published Language, Anti-Corruption Layer, Shared Kernel, Open Host Service, Customer/Supplier, Conformist, and Partnership
+* Implementing tactical DDD with value objects, entities, aggregates, (application and domain) services, factories, and domain events
+* Ease and improve on DDD with a module structure inspired by Clean Architecture
+* Understand event patterns like 1:1 (send to topic owned by single, other bounded context), fan-out (and shared topics across bounded contexts), event bus (such as EventBridge), CQRS
+* How to do choreographed event messaging
+* How to do orchestrated workflows (across multiple domains/bounded contexts) and transactional consistency plus rollbacks (TODO)
+* Persisting data with Repositories and Aggregates, and doing so across bounded contexts
+* Using serverless/microservices testing strategies to increase productivity and confidence
+
+You will have seen patterns and implementations like:
+
+* Domain Event Publisher
+* Published Language (and API and event contracts...)
+* Event Sourcing using DynamoDB streams (TODO)
+* CQS and Command events (TODO)
 
 ### Understanding problems in common solutions
 
@@ -37,34 +87,8 @@ You will understand how trivial or simplistic implementations can be harmful:
 * Self-implementing an API Gateway (_can_ be useful, but is most probably not)
 * Distributed monolith
 * Every function is its own bounded context (too large)
-* Unclear API, contracts, and eventing
+* Unclear APIs, contracts, and events
 * Single point of failure and not understanding the "Fallacies of Distributed Computing"
-
-### New skills to bring home
-
-You will be able to practically address questions like:
-
-* How to do strategic DDD (bounded context, context maps, domain model, ubiquitous language...)
-* How to map bounded contexts/subdomains etc. into a serverless/microservices implementation
-* Deciding on Published Language, Anti-Corruption Layer, Shared Kernel, Open Host Service, Customer/Supplier, Conformist, or Partnership for interacting/relating/integrating with/between bounded contexts (Vaughn Vernon, IDDD)
-* Implement tactical DDD with value objects, entities, aggregates, (application and domain) services, factories, and domain events
-* Ease and improve DDD structure with Clean Architecture
-* Understand event patterns like 1:1 (send to topic owned by single, other bounded context), fan-out (and shared topics across bounded contexts), event bus (such as EventBridge), CQRS
-* How to do choreographed eventing
-* How to do orchestrated workflows (across multiple domains/bounded contexts) and transactional consistency plus rollbacks
-* Persisting data, and doing so across bounded contexts
-* Using ideas from Team Topologies to steer team interactions
-* Using TBD to increase productivity
-* Using branch-by-abstraction and other strategies for safe service evolution
-* Serverless/microservices testing strategies
-
-You will have seen patterns and implementations like:
-
-* Domain Event Publisher
-* Deferring event publication (?)
-* Published Language (and API and event contracts...)
-* Event Sourcing using DynamoDB streams (?)
-* CQS and Command events
 
 ## Note about the reality of writing about something while doing the work at the same time
 

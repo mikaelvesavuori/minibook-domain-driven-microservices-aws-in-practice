@@ -1,12 +1,6 @@
----
-description: >-
-  How we translate complex object-oriented and single-process thinking into the
-  cloud-native space.
----
+# Friction and problems with cloud, serverless and all that stuff
 
-# Putting DDD in the serverless context
-
-We live in a time of change when it comes to technology and cloud with ever higher degrees of abstraction being presented as commercial products.
+We are in a time of change when it comes to technology and cloud with ever higher degrees of abstraction being presented as commercial products.
 
 I will equate microservices roughly with serverless. Indeed they are not the same, but the scope of this chapter is also generally broader and more imprecise than what we will work on later.
 
@@ -25,6 +19,8 @@ The backside of this is that back-end development, which has maybe sometimes bee
 ### In short
 
 More people are enabled to work full stack because of serverless, but this influx also equates to a wider skills range, in turn ending up with the sector (and we as organizations) having to train people accordingly **if they lack core skills that they may not even be able to identify as deficits in the first place**.
+
+
 
 ## There's a pretty big skills shortage
 
