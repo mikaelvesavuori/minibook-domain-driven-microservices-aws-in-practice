@@ -56,7 +56,7 @@ You should be familiar with AWS and development in general, and if possible, it 
 
 ## Structure
 
-You will the `Introduction` section first, as expected, where (beyond this page) you'll also get a smooth ride into some of the questions and concerns I've had, and that you may have as well when it comes to the cloud, DDD, microservices, and how they mix. This is followed by some other meta-materials.
+You will find the `Introduction` section first, as expected, where (beyond this page) you'll also get a smooth ride into some of the questions and concerns I've had, and that you may have as well when it comes to the cloud, DDD, microservices, and how they mix. This is followed by some other meta-materials.
 
 The book proper starts at `Scenario`. Here we will look at the requirements set out for our application, as well as inspecting the coded example to fit with those requirements, and how you can use it locally on your machine.
 
@@ -106,7 +106,7 @@ You will understand how trivial or simplistic implementations can be harmful:
 
 ## Note about the reality of writing about something while doing the work at the same time
 
-This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to, on one's own:
+This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to (on one's own):
 
 * Concoct (out of thin air) a business case regarding a, to be honest, fictional need;
 * Lay out a workshop and learning plan,
