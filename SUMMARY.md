@@ -39,4 +39,5 @@
   * [Repositories](tactical-ddd/repositories.md)
   * [Factories](tactical-ddd/factories.md)
   * [Events](tactical-ddd/events.md)
+* [How to progress](how-to-progress.md)
 * [References and resources](references.md)

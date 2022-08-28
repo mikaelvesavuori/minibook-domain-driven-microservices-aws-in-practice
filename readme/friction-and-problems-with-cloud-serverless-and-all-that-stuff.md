@@ -70,8 +70,10 @@ Worst of all, it's not like it's being very clearly communicated, especially to 
 * "Microservices are single purpose functions"
 * "Microservices are no longer than a screen of text"
 
-{% hint style="info" %}
-**Hint**: I've said and written all of those at some point and I am 100% sure you have seen most of those already if you have read up on this subject.
+{% hint style="warning" %}
+I've said and written all of those ideas or principles at some point and I am 100% sure you have seen most of those already if you have read up on this subject.
+
+They aren't incorrect, as much as they are too narrow.
 {% endhint %}
 
 So the fact is that they are not really wrong, but that they have become doctrinal rather than indicative or guiding.

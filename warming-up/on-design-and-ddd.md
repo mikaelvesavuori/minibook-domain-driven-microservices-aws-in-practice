@@ -16,7 +16,7 @@ I've since come to the opinion, or perhaps understanding, that somewhat universa
 * Any other derivative of the same attitude.
 
 {% hint style="danger" %}
-No, all my experiences are not aligned with this, but there is some persistent truth to the above in my professional career. It's more of a question of quantity of how apparent the attitude becomes.
+No, all my experiences are not aligned with this, but there is some persistent truth to the above in my professional career. It's more of a question of quantity of how apparent the attitude becomes rather than if the problem surfaces at all.
 {% endhint %}
 
 One side of the word "design" that I feel to be misunderstood is around how it relates to practices such as Agile and its various forms—which is something every company and context I've been at has talked about, but not really delivered on—as well as to how the architect role fits in within modern software development, the DevOps paradigm, and being generally allergic to upfront planning.
