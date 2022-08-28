@@ -1,3 +1,10 @@
+---
+description: >-
+  The veritable gilded halls of DDD which, like the best songs in a concert,
+  come in after quite a bit of build-up: This is the "Master of Puppets" of DDD
+  patterns... "Master of Patterns"?
+---
+
 # Entities and aggregates
 
 An _Entity_ is a potentially changeable object, which has a unique identifier. _Entities_ have a life of their own within their _Domain Model_, which enables you to obtain the entire transition history of this _Entity_.

@@ -1,3 +1,9 @@
+---
+description: >-
+  The handler isn't sacred, it's just infrastructure. Doing the handler right
+  affords us portability and decoupling from our implementation.
+---
+
 # Lambda handler
 
 As I wrote in one of the introductory chapters, a relatively common "misimplementation" is to think of the Lambda handler is the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.

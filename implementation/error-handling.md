@@ -1,3 +1,10 @@
+---
+description: >-
+  Don't get me wrong but your code will break, so let's just aggressively
+  prepare for handling errors and exceptions rather pulling out the ukulele and
+  singing Kumbaya.
+---
+
 # Error handling
 
 {% hint style="info" %}

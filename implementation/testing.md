@@ -1,3 +1,9 @@
+---
+description: >-
+  Our test strategy is confidence-based and builds on our system being highly
+  intentional. What the hell does that mean? Let me show you.
+---
+
 # Testing
 
 The testing approach used here is (for the theoretically minded) in the mostly "classicist" testing camp, which means that we test behaviors and expected output, but nothing regarding the actual implementation details _within_ the thing we test.

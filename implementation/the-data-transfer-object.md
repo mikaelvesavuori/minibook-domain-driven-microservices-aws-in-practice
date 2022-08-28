@@ -1,3 +1,9 @@
+---
+description: >-
+  Shuffling around data can be a mess. The DTO concept helps us tidy things up
+  so they won't look like a toddler's birthday party.
+---
+
 # The Data Transfer Object
 
 A bit of a misunderstood gold nugget, which gets a more nuanced use in a DDD context.

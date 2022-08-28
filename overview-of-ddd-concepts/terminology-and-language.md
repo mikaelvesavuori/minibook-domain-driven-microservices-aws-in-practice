@@ -1,3 +1,7 @@
+---
+description: Language and shared terminology is the central part of DDD.
+---
+
 # Terminology and language
 
 The core of DDD is something that for us non-English is kind of a mouthful: the "ubiquitous language". _Ubiquitous_ in this context means that it's everywhere around us, when we are in the domain. You can think of it as being the common or natural jargon and words that people use. As such, it's most likely non-technical (at least in the software sense) and probably heavy on the business side.

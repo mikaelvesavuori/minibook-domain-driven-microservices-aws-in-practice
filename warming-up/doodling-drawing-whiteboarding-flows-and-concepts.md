@@ -14,7 +14,16 @@ Early preparation or "pre-prep" on the concept stage is something I value a lot.
 
 Making something good is not about being a genius, but being able to feel comfortable in _playing with the substance of the work_. Getting used to it (its constraints, its properties, the stakeholders, priorities...) is therefore very important. I'm sure you might have been in many meetings where you are introduced to a new project and various angles or questions that (later) feel totally natural didn't get a single thought aired in that initial meeting. That's why I like this pre-prep doodling, so you are gradually "getting used" to the new work.
 
-I think it's a really valid concept to do such spitballing on paper (if you are **** alone) or on a whiteboard (if you are with more people). At this stage it's more about getting your mind used to the business case, any terminology you might know (or need to know!), some flow charts to describe where you might be going, etc.
+I think it's a really valid concept to do such [spitballing](https://www.merriam-webster.com/dictionary/spitball)...
+
+* on **paper,** if you are **** alone, or
+* on a **whiteboard**, if you are with more people.
+
+{% hint style="info" %}
+While physical media may seem ancient to some it's much more versatile, it has no real formatting restrictions, and it enables thinking/writing/doodling that is less constrained than that enforced by digital options.
+{% endhint %}
+
+At this stage it's more about getting your mind used to the business case, any terminology you might know (or need to know!), some flow charts to describe where you might be going, etc.
 
 When it's in the early stages I find that sometimes I need to remind folks (sometimes even myself) that these really _are just_ drafts or rough sketches and not a full-fledged way of building something.
 

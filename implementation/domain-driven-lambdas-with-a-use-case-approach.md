@@ -1,3 +1,9 @@
+---
+description: >-
+  The secret sauce for building domain-driven microservices is highly dependent
+  on the "use case" layer.
+---
+
 # Domain driven Lambdas with a use case approach
 
 We are going to use an approach I've found to be well suited to writing testable and good implementations.

@@ -1,14 +1,10 @@
 # Tactical DDD
 
-See [https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd)
+It's high time to put those "tactical" patterns in Domain Driven Design to work, breathing life into our domain model.
 
-From [https://thedomaindrivendesign.io/what-is-tactical-design/](https://thedomaindrivendesign.io/what-is-tactical-design/)
+This section describes key passages of the code and the overall implementation rather than rehashing the _complete_ and rather extensive code base.
 
-The _Tactical Design_ helps us create an elegant _Domain Model_ using _Building Blocks_, see below the main _Building Blocks_:
-
-You need to understand that not all of these concepts need to be applied to your _Domain Model_, you need to do an analysis so that it does not add unnecessary complexity to your project.
-
-This section describes key passages of the code and the overall implementation rather than rehashing the complete and rather extensive code base. The approach will be checking out and analyzing examples of patterns, especially for the tactical DDD concepts:
+We will inspect and analyze some of the usage of all (TODO most?) of the tactical patterns:
 
 * Modules
 * Services

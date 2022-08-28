@@ -1,3 +1,7 @@
+---
+description: Using a basic authorization mechanism is better than nothing.
+---
+
 # Lambda authorizer
 
 The Lambda authorizer is somewhat convoluted due to the particulars of how AWS' format works.
