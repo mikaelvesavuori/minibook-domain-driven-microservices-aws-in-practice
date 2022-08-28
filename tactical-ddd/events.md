@@ -4,6 +4,10 @@ _Events_ indicate significant occurrences that have occurred in the domain and n
 
 See Evolving Event in Distributed Systems for a deeper look at how eventing is handled in this project.
 
+### Events
+
+_Events_ indicate significant occurrences that have occurred in the domain and need to be reported to other stakeholders belonging to the domain. It is common for _Aggregates_ to publish events.
+
 ## Service communication
 
 ```

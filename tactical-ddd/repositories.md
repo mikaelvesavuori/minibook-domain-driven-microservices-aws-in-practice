@@ -2,6 +2,10 @@
 
 _Repositories_ are mainly used to deal with storage, they abstract concerns about data storage. They are responsible for persisting _Aggregates_.
 
+### Repositories
+
+_Repositories_ are mainly used to deal with storage, they abstract concerns about data storage. They are responsible for persisting _Aggregates_.
+
 ## Practice
 
 Good old repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. That's the good side, and the bad side is that I am probably not completely misled by this having some correlation to how many traditional back-end developers have been "data-oriented" in their work (often relational). As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
