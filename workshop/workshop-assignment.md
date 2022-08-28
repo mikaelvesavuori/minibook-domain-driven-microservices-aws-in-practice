@@ -1,3 +1,0 @@
-# Workshop assignment
-
-TODO
