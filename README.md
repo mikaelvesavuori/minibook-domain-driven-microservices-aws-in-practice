@@ -16,12 +16,6 @@ There is nothing extravagantly special in terms of reasons for choosing **AWS**.
 
 Throughout the book several other concepts and methodologies will be introduced to further extend our approach and implementation details of our project.
 
-## Why I'm writing this book
-
-Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day.
-
-Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether. More on that later.
-
 ## What you'll learn and do
 
 The project will demonstrate rich and powerful patterns—binding together serverless, microservices, DDD, Clean Architecture, TypeScript and more—presented in a digestible way. It will, as best as I can, hold back on some "mannerisms" and complexities in the DDD and tech world that may detract from the core learnings I have to impart.
@@ -31,6 +25,12 @@ After having read this minibook—and coded alongside the provided project, if y
 Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the OG, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
 
 I will also of course share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
+
+## Why I'm writing this book
+
+Part of the rationale for undertaking this project is because through the years in which I've encountered, learned, used, and encouraged DDD and Agile design, I have myself never really had a "full-size" springboard to examplify just how to do it. Also, because there are many components to this whole package, it's easy to kludge everything and spend too much time on details—sometimes techy stuff, sometimes the theory, or whatever else that felt most important that particular day.
+
+Perhaps most importantly, I find it highly relevant in our day and age where there seems sometimes to exist a conflict between developer empowerment (such as expressed through DevOps and Agile) with the very concept of "design" altogether. More on that later.
 
 ## Out of scope
 
@@ -53,6 +53,20 @@ My mission here is more to bring together all the things that make modern softwa
 You can call yourself whatever or work as whatever, but you will most likely be some kind of developer or engineer or architect.
 
 You should be familiar with AWS and development in general, and if possible, it is ideal if you know TypeScript. I will not assume that you are a certified AWS professional or an architect.&#x20;
+
+## Structure
+
+You will the `Introduction` section first, as expected, where (beyond this page) you'll also get a smooth ride into some of the questions and concerns I've had, and that you may have as well when it comes to the cloud, DDD, microservices, and how they mix. This is followed by some other meta-materials.
+
+The book proper starts at `Scenario`. Here we will look at the requirements set out for our application, as well as inspecting the coded example to fit with those requirements, and how you can use it locally on your machine.
+
+Next up is `Strategic DDD`. This section captures many of the core concepts of this first, less implementation-oriented, phase when we build domain-driven systems. You'll start seeing how we can describe a Ubiquitous Language, how we do domain modeling and context mapping, how we use EventStorming to better understand our system-to-be and its flows, and more.
+
+At this point we may be rearing to go, but we'll first stop by the `Groundwork` section in which we will approach our cloud architecture and basic technical patterns. Since this isn't strictly related to the DDD parts of our implementation, we can instead zoom in on how to set up a cloud-native, serverless frame or boilerplate for our microservices that can be evolved with business logic and Clean Architecture patterns further down the line.
+
+With that part done, finally we get to go knee-deep in detail in `Tactical DDD`. In this section we'll get to use the vital patterns that separates a decent application from a great one, seeing for example how we can write aggregates that make sense in microservices.
+
+Throughout the book I'll do my best to reference good materials, either online or in literature. The last section, `References and resources`, does what it sounds like: Providing you with a compilation of further research.&#x20;
 
 ## Learning goals
 
