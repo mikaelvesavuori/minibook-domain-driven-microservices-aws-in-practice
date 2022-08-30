@@ -7,6 +7,10 @@ description: >-
 
 # Setting boundaries
 
+While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, then I'd say that the bounded context is the most powerful tool. Language makes us defines the concepts in play and how and what they represent. Setting boundaries on contexts, on the other hand, carve out the landscape, defining where responsibilities lay.
+
+
+
 ```
 Now we're ready to go from domain model to application design. Here's an approach that you can use to derive microservices from the domain model.
 
@@ -34,25 +38,13 @@ That said, consider whether you really need strong consistency. There are strate
 
 See: https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries
 
+<figure><img src="../.gitbook/assets/Get-A-Room Context Map.png" alt=""><figcaption><p>TODO: Diagram with only contexts</p></figcaption></figure>
+
+TODO
+
 ## Right-sizing our application
 
-
-
-| One...                     | ...represents?                                                  |
-| -------------------------- | --------------------------------------------------------------- |
-| Microservice               | No more than 1 bounded context                                  |
-| Git repository (mono-repo) | 1 microservice (composed of 1 or more functions etc.)           |
-| Lambda function            | 1 "feature" (aggregate, use case...)                            |
-| API Gateway                | The usecase/business-oriented entrypoint to the bounded context |
-
-See: https://serverlessfirst.com/setting-boundaries/
-
-> Evans believes that microservices is the biggest opportunity, but also the biggest risk we have had for a long time. What we should be most interested in is the capabilities they give us to fulfil the needs of the business we are working with, but he also warns against the bandwagon effect. One problem he sees is that many believe that a microservice is a bounded context, but he thinks that’s an oversimplification. He instead sees four kinds of contexts involving microservices.
-
-1. `Service Internal` ("Using only this type, we would end up with services that don’t know how to talk to each other")
-2. `API of Service` ("One challenge here is how teams design and adapt to different APIs. Data-flow direction could determine development dependency with consumers always conforming to an upstream data flow, but Evans think there are alternatives")
-3. `Cluster of codesigned services` ("When several services are designed to work with each other to accomplish something, they together form a bounded context. Evans notes that the internals of the individual services can be quite different with models different from the model used in the API")
-4. `Interchange Context` ("There are no services in this context; it’s all about messages, schemas and protocols")
+TODO
 
 See: https://www.infoq.com/news/2019/06/bounded-context-eric-evans/
 
@@ -74,10 +66,14 @@ And in a previous article, we discovered that use cases were either commands or 
 
 See: https://www.infoq.com/news/2019/06/bounded-context-eric-evans/
 
+<figure><img src="../.gitbook/assets/Get-A-Room Context Map.png" alt=""><figcaption><p>TODO: Diagram with only contexts + (sub)domain etc</p></figcaption></figure>
+
+TODO
+
 ## Context maps
 
 TODO
 
-![](<../.gitbook/assets/Get-A-Room Context Map.png>)
+![TODO: Complete with relations etc](<../.gitbook/assets/Get-A-Room Context Map.png>)
 
 ##

@@ -23,7 +23,7 @@
     * [Check out](implementation/cloud-architecture/check-out.md)
     * [Cancel a room reservation](implementation/cloud-architecture/cancel-a-room-reservation.md)
     * [Verify check-ins](implementation/cloud-architecture/verify-check-ins.md)
-  * [The logical business flow](implementation/the-business-flow.md)
+  * [The logical business flow](overview-of-ddd-concepts/the-business-flow.md)
   * [Technical boilerplating](implementation/technical-boilerplating.md)
   * [Domain driven Lambdas with a use case approach](implementation/domain-driven-lambdas-with-a-use-case-approach.md)
   * [Lambda handler](implementation/lambda-handler.md)

@@ -105,6 +105,8 @@ For me part, I've found that Robert C. Martin's "clean architecture" is a better
 | asdf | Application Business Rules (Use Cases)        | application                              |
 | asdf | Enterprise Business Rules (Entities)          | domain                                   |
 
+TODO
+
 ## Infrastructure
 
 The "grown up" way to think about infrastructure is that they are generic functions, classes and objects that help set up non-domain-related functionality. Good examples of this include repositories, very generic utility functions, Lambda event handlers (the outer layer), and anything else that has no (or very little) unique value in the specific context.

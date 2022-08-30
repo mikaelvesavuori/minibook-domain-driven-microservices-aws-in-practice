@@ -4,34 +4,47 @@ description: Language and shared terminology is the central part of DDD.
 
 # Terminology and language
 
-The core of DDD is something that for us non-English is kind of a mouthful: the "ubiquitous language". _Ubiquitous_ in this context means that it's everywhere around us, when we are in the domain. You can think of it as being the common or natural jargon and words that people use. As such, it's most likely non-technical (at least in the software sense) and probably heavy on the business side.
+The core term in DDD is something that for us non-native English speaks is kind of a mouthful: the "ubiquitous language".
+
+_**Ubiquitous**_** in this context means that it's "everywhere around us", when we are in the domain**. You can think of it as being the common or natural jargon and words that people use when they work together in that context. As such, it's most likely non-technical in nature (at least in the software sense) and probably heavy on the business side.
 
 Words are the core in DDD because they, as philosopher Ludwig Wittgenstein once wrote, shape the limits of the world for us:
 
 > The limits of my language stand for the limits of my world. The limits of my language are the limits of my mind. All I know is what I have words for.
+>
+> — Ludwig Wittgenstein, "Tractatus Logico-Philosophicus" (1921)
 
-Without the words to serve our purposes, our implementation will always suffer from that lack. It's not hard to find memes on how product managers, clients, and developers in a range of ways end of screwing up for each other, or how software ends up being completely detached from the realities of the actual business need. Of course no one _wanted_ to actually end up in that situation, yet they did.
+Without the words to serve our purposes, our implementation will always suffer from such a lack. It is more efficient to discuss and collaborate and build a common shared "worldview" that can later be manifested, than haphazardly building and failing with something that does not match the actual needs because too little grounding was done.
 
-Beginning with language has many benefits. One of them is that it's non-technical and something we can discuss with no proxy or intermediary. We can come to an understanding of words and processes and we can therefore learn them and therefore ultimately build something that is expressed through those same words and processes.
+It's not hard to find memes on how product managers, clients, and developers in a range of ways end up screwing each other over, or how software bellyflops into a completely detached state from the realities of the actual business needs. Of course no one _wanted_ to actually end up in that situation, yet they did. I have been part of such failures, and I am sure you have been too.
 
-Some important features to understand:
+Beginning with language has many benefits. One of them is that it's non-technical and something we can discuss without a proxy or intermediary. We can come to an understanding of words and processes and we can therefore learn them, thereby ultimately building something that is expressed through those same words and processes. We get to match the logical and semantic constructs with coded incarnations of them.
 
-* The UL evolves over time
-* Each domain will likely have its own UL; these are not meant to be "efficient" or shared if that does not make sense
-* The UL is the de facto standard nomenclature, so other similar words and terms should be avoided
-* The domain model and our subsequent implementations express the UL
-
-See more at [https://thedomaindrivendesign.io/developing-the-ubiquitous-language/](https://thedomaindrivendesign.io/developing-the-ubiquitous-language/).
-
-\---
+If it's not clear yet, all of this work has to be done in a cross-functional group where domain experts are part. Domain experts is a broad term but you can think of this as any people who have driving roles and knowledge in your business context. The result is the collaborative work, rather than any sub-group having more (or less) privilege than any other. When an accepted set of terms is produced, [word is bond](https://www.urbandictionary.com/define.php?term=Word%20is%20bond).
 
 As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.html), Eric Evans writes the following in his book:
 
-> By using the model-based language pervasively and not being satisfied until it flows, we approach a model that is complete and comprehensible, made up of simple elements that combine to express complex ideas.
+> By using the model-based language pervasively and not being satisfied until it flows, we approach a model that is complete and comprehensible, made up of simple elements that combine to express complex ideas. \[...]
 >
-> ...
+> Domain experts should object to terms or structures that are awkward or inadequate to convey domain understanding; developers should watch for ambiguity or inconsistency that will trip up design.
 >
-> Domain experts should object to terms or structures that are awkward or inadequate to convey domain understanding; developers should watch for ambiguity or inconsistency that will trip up design.\
->
+> — Eric Evans (TODO)
 
-![](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
+Some important features to understand:
+
+* The Ubiquitous Language is the _de facto_ standard nomenclature, so other similar words and terms must be avoided.
+* The domain model and our subsequent implementations express the Ubiquitous Language.
+* The Ubiquitous Language evolves organically over time. As per above, this needs to be reflected similarly in the software artifacts.
+* Each domain will likely have its own Ubiquitous Language because of their respective meanings and semantics.
+* Ubiquitous "Languages" are not meant to be efficient. Neither are they shared (well, if that doesn't make sense and is actually the way it is).
+
+## Documenting the ubiquitous language
+
+You can use whatever default means you have of documenting, as long as it's common knowledge that this information is authoritative and co-owned and accessible to all who need to be able to see/edit it.
+
+In the reference implementation this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario this format is probably quickly exhausted as definitions may need to be richer and examplified. Note also how we ascribe term to specific domains.\
+
+
+![TODO](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
+
+In the next page we will see how EventStorming can be an additional or alternative approach to accumulating a domain model and language.
