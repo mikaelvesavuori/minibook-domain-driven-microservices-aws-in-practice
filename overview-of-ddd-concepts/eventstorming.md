@@ -20,10 +20,6 @@ According to Brandolini, the original non-technical, physical format is the pref
 
 It's completely possible to emulate the practicalities of Eventstorming in a remote, digital way. Tools like [Miro](https://miro.com) work just fine, and you can even do most of this with [Figma](https://www.figma.com) or [Excalidraw](https://excalidraw.com) if you really wanted to. Working by myself I resorted to my trusty old [Diagrams.net](https://www.diagrams.net) as it also made it easy to export for this book and the code repository.
 
-## How to run a workshop
-
-TODO
-
 ## My solution
 
 In the below picture you can see the end state of how I addressed this particular project. What is not quite apparent is of course the evolution of terms over time. In my first sketches and first rounds of work, for example the term `Reserve` was not used. Instead, it was `Book`. But you don't really book a room, right, rather you reserve it.

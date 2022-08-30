@@ -74,7 +74,9 @@ And in a previous article, we discovered that use cases were either commands or 
 
 See: https://www.infoq.com/news/2019/06/bounded-context-eric-evans/
 
-## Practice
+## Context maps
+
+TODO
 
 ![](<../.gitbook/assets/Get-A-Room Context Map.png>)
 
