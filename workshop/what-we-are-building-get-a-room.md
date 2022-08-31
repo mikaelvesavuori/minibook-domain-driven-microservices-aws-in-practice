@@ -1,10 +1,8 @@
 ---
-description: There's a full application for us to discover!
+description: Let's get down to brass tax, shall we?
 ---
 
-# What we will be building
-
-## Scenario
+# Scenario
 
 The expensive and outdated room booking system at your company has been making life miserable for pretty much everyone there. Your team has volunteered to replace the system with a cost-efficient custom-made implementation, with a target of doing so within the space of a couple of weeks. To drive down cost and maintenance you've already settled on using serverless cloud technologies as the core components. Now comes the real question: How do you _design_ the system?
 
@@ -28,30 +26,4 @@ When it comes to integration work:
   * The start and end times of the slot
 
 **How would you address this challenge?**
-
-## Structure
-
-The root of the GitHub code repository will contain the following pertinent bits:
-
-* `code`: Source code for the reference solution, divided into domains and then bounded context
-* `data-modeling`: JSON files that show us an initial and final state of data that used between contexts/systems
-* `diagrams`: Diagrams for the solution
-
-## Data modeling
-
-The `data-modeling` folder contains various forms of data which we can model and fill in for our use case.
-
-I've found it a powerful tactic to do this type of work, as it's lightweight, fairly easy for non-technical people to understand, and can be a collaborative exercise. You can also actually use the JSON objects when you are writing your actual implementation later!
-
-{% hint style="success" %}
-We can skip any envelope level here and just focus on the original data contents instead.
-{% endhint %}
-
-{% hint style="success" %}
-For dynamic values, set the field similar to the format `"<Some description here>"`.
-{% endhint %}
-
-## Goals
-
-TODO
 

@@ -97,11 +97,15 @@ It would be strange to not be able to identify "good docs when you see them". Fo
 
 ### Push for a "ubiquitous language" in an existing project
 
-TODO
+As long as we have a business/tech split in a project or organization, whatever side you are on will always be easier to work with—if you are a techie, you could start using the tactical patterns right now. But what good will it make, beyond maybe just being a more disciplined refactoring of whatever code you already have?&#x20;
+
+That's why I think you should spend time building the circumstances to enable effective collaboration between the most important groups, so that you can actually create the core semantic artifacts and have these in a documented format.
+
+Starting where you are _now_ should makes this less scary, and you probably already have an idea of what's going on around you.
 
 ### Try out EventStorming with colleagues or friends
 
-TODO
+With the ubiquitous language defined, perhaps it's time to scale up and go for the full monty? In that case EventStorming could be an option. The ideas are easy enough, and as always, good facilitation might be the biggest requirement that's not listed upfront. Either ask someone who has done this, or accept that we all learn by doing.
 
 ## Know your sh\*t
 

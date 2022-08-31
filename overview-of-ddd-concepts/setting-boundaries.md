@@ -1,7 +1,7 @@
 ---
 description: >-
   It's not fun to say "no" but without saying "no" there is no control we can
-  exert over our domain landscape. "Boundaries" are the DDD way of including or
+  exert over our domain landscape. Boundaries are the DDD way of including or
   excluding something in a context.
 ---
 
