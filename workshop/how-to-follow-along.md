@@ -1,12 +1,16 @@
 ---
-description: >-
-  The code isn't a fighter jet, but some guidance might be in order for you to
-  get the best out of it.
+description: There's a whole project to learn from (or build if you are so inclined).
 ---
 
 # How to follow along
 
-TODO entire page
+The general format of the rest of this book will be in the style of a guided tour, meaning that I will write sequentially (post-fact) about the key parts involved in landing a solution I feel encompasses what this book is trying to tell.
+
+This example focuses on overall system design and the goal of setting up an event-driven architecture that fits our scenario.
+
+{% hint style="info" %}
+In the interest of time and energy, certain features of a full solution are therefore excluded from the scope of this exercise. Also, we should spend less time on details like worrying for conflicting names of rooms, as that is not what we are focusing our cognitive effort on.
+{% endhint %}
 
 You can...
 
@@ -14,7 +18,7 @@ You can...
 
 or
 
-* **Do this as a full-on workshop**: Clone the repo, run `npm install` and `npm start`, then read about the patterns and try it out in your own self-paced way.
+* **Do this as a full-on exercise**: Clone the repo, run `npm install` and `npm start` in the respective project folders, then read about the patterns and try it out in your own self-paced way.
 
 ## Structure
 
@@ -49,7 +53,7 @@ The below commands are those I believe you will want to use. See `package.json` 
 * `npm run build`: Package and build the code with Serverless Framework
 
 {% hint style="info" %}
-Also, the code's "mono repo" structure is more for convenience than a "decision" as such.
+Also note that the code's "[mono repo](https://monorepo.tools)" structure is more for convenience than a true "decision" as such.
 {% endhint %}
 
 ## Prerequisites
@@ -57,12 +61,6 @@ Also, the code's "mono repo" structure is more for convenience than a "decision"
 _These only apply if you want to deploy code._
 
 * Amazon Web Services (AWS) account with sufficient permissions so that you can deploy infrastructure. A naive but simple policy would be full rights for CloudWatch, Lambda, API Gateway, X-Ray, S3, and CodeDeploy.
-* GitHub account to host your Git fork and for running CI with GitHub Action.
-* Create a mock API payload on Mockachino.
-* **Suggested**: For example a Cloudflare account for hosting your static documentation on Cloudflare Pages.
-* **Optional**: Bump account to host your API description. You can remove the Bump section from `.github/workflows/main.yml` if you want to skip this.
-
-All of the above services can be had for free!
 
 ### 1. Clone or fork the repo
 

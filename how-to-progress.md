@@ -105,7 +105,9 @@ Starting where you are _now_ should makes this less scary, and you probably alre
 
 ### Try out EventStorming with colleagues or friends
 
-With the ubiquitous language defined, perhaps it's time to scale up and go for the full monty? In that case EventStorming could be an option. The ideas are easy enough, and as always, good facilitation might be the biggest requirement that's not listed upfront. Either ask someone who has done this, or accept that we all learn by doing.
+With the ubiquitous language defined, perhaps it's time to scale up and go for the full monty? In that case EventStorming could be an option. The ideas are easy enough, and as always, good facilitation might be the biggest requirement that's not listed upfront.
+
+Either ask someone who has done this before, or accept that we all learn by doing and **just do it**. The book is cheap, you can always [learn-by-video](https://www.youtube.com/watch?v=mLXQIYEwK24), and there are plenty of good articles describing how to run a workshop.
 
 ## Know your sh\*t
 

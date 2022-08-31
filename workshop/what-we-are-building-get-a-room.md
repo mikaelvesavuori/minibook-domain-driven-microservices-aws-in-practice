@@ -19,7 +19,7 @@ For now, these are the identified high-level requirements:
 
 When it comes to integration work:
 
-* Assume that the front end will require an updated views on bookings
+* Assume that the front end should be able to request an updated views on bookings
 * Assume that the front end will provide as input:
   * The user name
   * The room name or ID
