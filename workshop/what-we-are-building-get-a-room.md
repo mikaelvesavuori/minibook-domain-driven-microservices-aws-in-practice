@@ -31,19 +31,25 @@ When it comes to integration work:
 
 ## Structure
 
-The root of the GitHub code repository will contain the following pertinent bits: (TODO)
+The root of the GitHub code repository will contain the following pertinent bits:
 
-* `code`: Source code
-* `data-modeling`: JSON files to use when starting to model the data
+* `code`: Source code for the reference solution, divided into domains and then bounded context
+* `data-modeling`: JSON files that show us an initial and final state of data that used between contexts/systems
 * `diagrams`: Diagrams for the solution
 
 ## Data modeling
 
 The `data-modeling` folder contains various forms of data which we can model and fill in for our use case.
 
-We can skip any envelope level here and just focus on the original data contents instead.
+I've found it a powerful tactic to do this type of work, as it's lightweight, fairly easy for non-technical people to understand, and can be a collaborative exercise. You can also actually use the JSON objects when you are writing your actual implementation later!
 
+{% hint style="success" %}
+We can skip any envelope level here and just focus on the original data contents instead.
+{% endhint %}
+
+{% hint style="success" %}
 For dynamic values, set the field similar to the format `"<Some description here>"`.
+{% endhint %}
 
 ## Goals
 
