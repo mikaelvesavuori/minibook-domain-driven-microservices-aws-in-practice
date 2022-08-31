@@ -12,6 +12,7 @@
   * [How to follow along](workshop/how-to-follow-along.md)
   * [Doodling, drawing, whiteboarding flows and concepts](workshop/doodling-drawing-whiteboarding-flows-and-concepts.md)
 * [Strategic DDD](overview-of-ddd-concepts/README.md)
+  * [The domain(s)](overview-of-ddd-concepts/the-domain-s.md)
   * [Terminology and language](overview-of-ddd-concepts/terminology-and-language.md)
   * [Setting boundaries](overview-of-ddd-concepts/setting-boundaries.md)
   * [EventStorming](overview-of-ddd-concepts/eventstorming.md)

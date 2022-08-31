@@ -7,7 +7,9 @@ description: >-
 
 # Setting boundaries
 
-While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, then I'd say that the bounded context is the most powerful tool. Language makes us defines the concepts in play and how and what they represent. Setting boundaries on contexts, on the other hand, carve out the landscape, defining where responsibilities lay.
+While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, I'd say that **the defining of bounded contexts remains the most powerful tool**. Language makes us define the concepts in play, as well as what (and how) they represent something. Setting boundaries on contexts, on the other hand, carves out the landscape, pointing out where responsibilities lay.
+
+First&#x20;
 
 
 
