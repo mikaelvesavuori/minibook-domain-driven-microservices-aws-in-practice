@@ -62,6 +62,8 @@ TODO more
 
 ![How the patterns match up, as presented in Eric Evans's book (2003)](../.gitbook/assets/DomainDrivenDesignReference.png)
 
+TODO
+
 ## Tactical DDD
 
 See [https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd)

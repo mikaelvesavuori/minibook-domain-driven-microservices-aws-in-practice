@@ -115,3 +115,6 @@ During my years working with microservices, as with anything, I have learned tha
 
 ## In closing
 
+Any architecture style, framework, and approach will bring something to learn and adapt to. DDD has stuck around successfully for a long time and adapted well to the changes in the technology landscape. Over time we've also seen in actuality how to bring the essence of DDD while making it easier to work with.
+
+The state of the matter is still, as has been the case since 2003, that DDD (in totality) is not a panacea for all software design cases. This should not come as a surprise to anyone even tangentially interested in Domain Driven Design.
