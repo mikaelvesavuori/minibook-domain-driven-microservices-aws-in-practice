@@ -2,7 +2,7 @@
 description: The battle plan for our technical infrastructure.
 ---
 
-# Deciding on a Cloud Architecture
+# Cloud Architecture
 
 ## Going serverless-first
 

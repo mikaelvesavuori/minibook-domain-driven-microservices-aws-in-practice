@@ -57,21 +57,29 @@ So: Diagram everything and make others do it too.
 
 If you've been around the block, you might wonder "Should I just learn UML?". It's a rich and formal way of diagramming, but to be frank, few are orthodox about it. Most will learn the basics and then stay happy with what they took to heart, ergo, not all of it. But if you _do_ want to go full UML, there's the GitHub repo for [_Learn UML2.\* in simple terms_](https://github.com/imalitavakoli/learn-uml2). On the book side, the classic book on the subject is Martin Fowler's [_UML Distilled_](https://martinfowler.com/books/uml.html).
 
+{% hint style="info" %}
 Lucidchart is a commercial tool that you may or may not want to use. They do however offer a [wide range of tutorials for how to work with many types of diagrams](https://www.lucidchart.com/pages/tour). It's a good start.
+{% endhint %}
+
+For models and tools/frameworks beyond UML, consider:
+
+* The [C4 model](https://c4model.com), "Context, Containers, Components, and Code"
+* [ContextMapper](https://contextmapper.org), "A Modeling Framework for Strategic Domain-driven Design"
 
 For software tools, you might want to consider:
 
+* [Excalidraw](https://excalidraw.com)
+* [Diagrams.net](https://www.diagrams.net) (previously Draw.io)
+* [WebSequenceDiagrams](https://www.websequencediagrams.com), online sequence diagrams
 * [Lucidchart](https://lucid.co)
 * [Whimsical](https://whimsical.com)
 * [Figma](https://www.figma.com), which has the [FigJam](https://www.figma.com/figjam/) online whiteboard feature; [more on diagramming here](https://www.figma.com/learn-diagramming/what-is-diagramming/)
-* [Excalidraw](https://excalidraw.com)
-* [Diagrams.net](https://www.diagrams.net) (previously Draw.io)
 * [Miro](https://miro.com)
 
 {% hint style="info" %}
-My personal picks are Excalidraw for online collaborative whiteboarding and Diagrams.net for professional work that I can predominantly work on solo and then share as a file asset.
+My personal picks are **Excalidraw** for online collaborative whiteboarding and **Diagrams.net** for professional work that I can predominantly work on solo and then share as a file asset. Diagrams.net works perfectly fine for both UML-style diagrams and your typical free-form diagrams.
 
-Diagrams.net works perfectly fine for both UML-style diagrams and your typical free-form diagrams.
+No sane person suffers through manually making sequence diagrams in a typical drawing tool; use **WebSequenceDiagrams** instead.
 {% endhint %}
 
 ### Write technical documentation
@@ -113,7 +121,22 @@ Either ask someone who has done this before, or accept that we all learn by doin
 
 ### Design and build solutions
 
-TODO
+As stated in the beginning of this book, I really see no other way to be good at designing software than, well, by designing software.
+
+While it's easy to get lost in all the specific services popping up in the vast arsenals of AWS and their ilk, you should abstract from services to capabilities. One book that I find has been very good at tying together the last 10-15 years of development practices and modern technologies into one concise overview is [_Continuous Architecture in Practice: Software Architecture in the Age of Agility and Devops_](https://www.goodreads.com/en/book/show/55893833-continuous-architecture-in-practice) (2021; Erder, Woods, Pureur). Don't expect to go deepdiving here, but as inspiration to see the big picture that book might do the trick.
+
+Designing is more about process and thought than about a given artifact to represent it. If you want to design as part of "exercise" then consider learning or using tools listed in the `Learn diagramming` advice.
+
+And of course: Don't forget to build the things you design. Nothing is quite as powerful in conveying the learnings as feeling the pain yourself.
+
+### Present your solutions and decisions
+
+You might want to take the chance to also brush up on actually presenting the work:
+
+* Learn to write [Architecture Decision Records](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html), a format that is becoming very popular to describe decisions.
+* Get good at [Keynote/Powerpoint/Google Slides etc.](https://hbr.org/2013/06/how-to-give-a-killer-presentation), because you _will_ use this at some point to present your work.
+
+Combine this with the diagramming work as needed.
 
 ## Know your sh\*t
 
@@ -121,7 +144,7 @@ TODO
 
 There's excellent and more condensed material available these days than in the days of yore. It doesn't replace the original texts as much as it offers a more accessible path for many readers.
 
-I recommend Vladik Khononov's [_Learning Domain-Driven Design: Aligning Software Architecture and Business Strategy_](https://www.goodreads.com/en/book/show/57573212-learning-domain-driven-design) (O'Reilly, 2021). It's easier to get into (and through!) than the blue and red books and it's very good in its own right. Like this mini-book, it has to skip the deeper stuff, but that's precisely why I think you should start with Khononov's book.
+Perhaps this "DDD in 2 hours" type of thing started with Vaughn Vernon's [_Domain-Driven Design Distilled_](https://www.goodreads.com/en/book/show/28602719-domain-driven-design-distilled) (2016). For a not-quite-so-thin book, I recommend Vladik Khononov's [_Learning Domain-Driven Design: Aligning Software Architecture and Business Strategy_](https://www.goodreads.com/en/book/show/57573212-learning-domain-driven-design) (O'Reilly, 2021). It's easier to get into (and through!) than the blue and red books and it's very good in its own right. Like this mini-book, it has to skip the deeper stuff, but that's precisely why I think you should start with Khononov's book.
 
 While you wait for the book to be delivered, you can get [_Domain Driven Design Quickly_](https://www.infoq.com/minibooks/domain-driven-design-quickly/) by Abel Avram and Floyd Marinescu for free, in the form of a PDF.
 
