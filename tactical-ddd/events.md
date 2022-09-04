@@ -8,10 +8,6 @@ _Events_ indicate significant occurrences that have occurred in the domain and n
 
 See Evolving Event in Distributed Systems for a deeper look at how eventing is handled in this project.
 
-### Events
-
-_Events_ indicate significant occurrences that have occurred in the domain and need to be reported to other stakeholders belonging to the domain. It is common for _Aggregates_ to publish events.
-
 ## Service communication
 
 ```
@@ -40,11 +36,11 @@ Ultimately, using event driven architecture optimises our IT landscape for decou
 
 See more at:
 
-* [![](https://docs.microsoft.com/favicon.ico)Best Practice - An Introduction To Domain-Driven Design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
-* [![](https://martinfowler.com/favicon.ico)bliki: DomainDrivenDesign](https://martinfowler.com/bliki/DomainDrivenDesign.html)
-* [![](https://en.wikipedia.org/static/favicon/wikipedia.ico)Domain-driven design](https://en.wikipedia.org/wiki/Domain-driven\_design)
-* [![](https://cdn.infoq.com/statics\_s1\_20220719070551/favicon.ico)Domain Driven Design and Development In Practice](https://www.infoq.com/articles/ddd-in-practice/)
-* [![](https://blog.cleancoder.com/assets/clean\_code\_72\_color.png)Clean Coder Blog](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+* [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
+* [https://martinfowler.com/bliki/DomainDrivenDesign.html](https://martinfowler.com/bliki/DomainDrivenDesign.html)
+* [https://en.wikipedia.org/wiki/Domain-driven\_design](https://en.wikipedia.org/wiki/Domain-driven\_design)
+* [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
+* [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
 
 ### Events are APIs and have contracts too
@@ -109,7 +105,7 @@ A Command in the context of events could be `RemoveStockItem`.
 
 An example of a Query event would be `GetStockStateForItem`. You may recognize this from how even a classic REST API would work, though in that case using an endpoint. Because events are asynchronous, the system design for reading back data through events is by default somewhat complicated, as another surface to do the reading must be introduced. This is to say that _the event itself will not carry back the data_, instead the event will produce (for example) an update in the related data store that may be read back consistently.
 
-This pattern may evolve into full-blown CQRS. See more at [![](https://docs.microsoft.com/favicon.ico)CQRS pattern - Azure Architecture Center](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs).
+This pattern may evolve into full-blown CQRS. See more at [https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
 
 On top of _Commands_ and _Queries_ we have _Notifications_, which is what most people will understood events to be about. A notification is the conceptually simplest one, as it only represents that something happened, think `StockItemRemoved`.
 
@@ -121,7 +117,7 @@ Only aggregates must emit events since they enforce business rules. In practice 
 2. Our system instantiates a class for our aggregate and fulfils the operation (if valid)
 3. Our system emits an event to notify that the operation has occurred
 
-From [![](https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d715196)DDD: Handle domain events directly in aggregate?](https://stackoverflow.com/a/67309855) :
+From [https://stackoverflow.com/questions/67307449/ddd-handle-domain-events-directly-in-aggregate/67309855#67309855](https://stackoverflow.com/questions/67307449/ddd-handle-domain-events-directly-in-aggregate/67309855#67309855):
 
 > An aggregate has the responsibility of maintaining the [invariants](https://domaincentric.net/blog/modelling-business-rules-invariants-vs-corrective-policies) required by the business logic (e.g. limits on how many pallets are in a given location or a prohibition on pallets containing certain items from being placed in a given location).
 >
@@ -130,9 +126,9 @@ From [![](https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico?v=ec617d71
 See:
 
 * [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
-* [![](https://martinfowler.com/favicon.ico)bliki: DDD\_Aggregate](https://martinfowler.com/bliki/DDD\_Aggregate.html)
-* [![](https://img.alicdn.com/tfs/TB1ugg7M9zqK1RjSZPxXXc4tVXa-32-32.png)An In-Depth Understanding of Aggregation in Domain-Driven Design](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034)
-* [![](https://cdn.sstatic.net/Sites/softwareengineering/Img/favicon.ico?v=c4f35a1e3900)Can an aggregate only ever consume commands and produce events?](https://softwareengineering.stackexchange.com/questions/368358/can-an-aggregate-only-ever-consume-commands-and-produce-events)
+* [https://martinfowler.com/bliki/DDD\_Aggregate.html](https://martinfowler.com/bliki/DDD\_Aggregate.html)
+* [https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034)
+* [https://softwareengineering.stackexchange.com/questions/368358/can-an-aggregate-only-ever-consume-commands-and-produce-events](https://softwareengineering.stackexchange.com/questions/368358/can-an-aggregate-only-ever-consume-commands-and-produce-events)
 
 ## Persisting events
 
