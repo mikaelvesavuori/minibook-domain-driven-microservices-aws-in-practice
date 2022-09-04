@@ -24,7 +24,7 @@ I live in the assumption that academically trained engineers will scoff at every
 
 Perhaps of my personal traits the design and structure parts have always been interesting, to the point of being my favorite parts of software engineering, and therefore been concerns that have naturally occupied quite some time on my end. I took a huge step in my career when I decided to switch fully to formal software engineering in 2015. However, this was nerve-wracking because, as anyone who is self-aware at all will recognize, suddenly you have to deal with people who are super-skilled experts in the subject. You become very self-critical approaching such a situation. Years later, for better or worse, I know what many know who have worked in the industry: That the software engineering field, and the people in it, are extremely diverse to the point of being hard to generalize in any capability.
 
-One thing I do want to generalize on is the role of design. I've come to the opinion, or perhaps understanding, that somewhat universally, developers/engineers spend a lot less time on design than they should. A combination of attitudes seem to be pervasive, trying to fend away this reality:
+One thing I do want to generalize on is **the role of design**, or perhaps more fitting the lack of such a role. I've come to the opinion (understanding...?) that somewhat universally, developers/engineers spend a lot less time on design than they are ought to do. A combination of attitudes seem to be pervasive, trying to fend away this reality:
 
 * "Let the architect do it", or
 * "There's no time and/or budget for design", or
@@ -35,17 +35,27 @@ One thing I do want to generalize on is the role of design. I've come to the opi
 No, all my experiences are not aligned with this, but there is some persistent truth to the above in my professional career. It's more of a question of quantity of how apparent the attitude becomes rather than if the problem surfaces at all.
 {% endhint %}
 
-One side of the word "design" that I feel to be misunderstood is around how it relates to practices such as Agile and its various forms—which is something every company and context I've been at has talked about, but not really delivered on—as well as to how the architect role fits in within modern software development, the DevOps paradigm, and being generally allergic to upfront planning.
+### Design does not equal BUFD (Big Up-Front Design)
+
+One side of the word "design" that I feel to be misunderstood is around **how design relates to practices such as Agile** and its various forms—which is something every company and context I've been at has talked about, but not really delivered on—as well as to how the architect role fits in within modern software development, the DevOps paradigm, and being generally allergic to up-front planning.
+
+It's nice then to see that this is less a real issue (i.e. not being supported in the orthodox Agile mindset) than it is a perceived issue, perpetuated by misguided business analysts, project/product managers, other peripheral figures and then the odd engineer here and there. We find evidence for this in how Agile framework co-founder Robert C. Martin tries to set the record straight in his [Clean Agile: Back to Basics](https://www.oreilly.com/library/view/clean-agile-back/9780135782002/) as well as in the humble "[connect the penthouse with the engine room](https://architectelevator.com)" metaphor stated by Gregor Hohpe. **They both express that **_**design**_** is something that must be done**, Agile or not, and that modern circumstances do not have to pass on a golden key to some Ivory Tower dude to handle the design on their own.
+
+### Software design is not only the architect's territory
 
 While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams as well as work on architecture proper.
 
-It's nice then to see that this is less a real issue (i.e. not being supported in the orthodox Agile mindset) than it is a perceived issue, perpetuated by misguided business analysts, project/product managers, engineers, and others. We can see this in how Agile framework co-founder Robert C. Martin tries to set the record straight in his [Clean Agile: Back to Basics](https://www.oreilly.com/library/view/clean-agile-back/9780135782002/) as well as in the humble "[connect the penthouse with the engine room](https://architectelevator.com)" metaphor stated by Gregor Hohpe. **They both express that **_**design**_** is something that must be done**, Agile or not, and that modern circumstances do not have to pass on a golden key to some Ivory Tower dude to handle the design on their own.
+Here too, as above, we see perhaps most clearly in Robert C. Martin's books, that there is almost a reluctance to talk about architects and architectures and rather spend time on design as a primary concept.
 
-I'm conscious of the over-simplification that will shortly take place, but urge you to consider to point: **Without the basics you can't do the work, but without design it will never be good work**. So:
+With more complex software needs, more complex technology, and more intricate organizations, it isn't strange to see that we now have a more multi-faceted range of architects operating today. Yet, this does not in any way relieve the burden (?) of design, especially on the system level, from the engineers.
+
+### Triplet of skills
+
+I'm conscious of the over-simplification that will shortly take place, but urge you to consider to point: **Without the basics you can't do the work, but without design it will never be **_**good**_** work**. So:
 
 * Knowledge of proper **syntax** is what, hopefully, makes you able to pocket a paycheck for your work in the first place.
-* Knowledge of proper **semantics** is what makes you write good, clean code (Uncle Bob etc.) on the _local_ level, file-by-file.
-* Knowledge of proper **design** is what allows you to build _complete_ solutions that are competent.
+* Knowledge of proper **semantics** is what makes you write good, clean code (Think Uncle Bob advice etc.) on the _local_ level, file-by-file.
+* Knowledge of proper **design** is what allows you to build _complete_ solutions that are competent and grow better over time.
 
 This is a huge topic to unpack, what with its layers of psychology, leadership, organization, engineering, and other sub-areas coming into play. Henceforth what I am interested is stating that **design is important and it's your job as an engineer to handle it**. If you have an architect, then the conversation should likely hover around this topic. How you get to consistently conversing around this area is another problem I will not necessarily address.
 
