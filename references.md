@@ -42,6 +42,7 @@ description: >-
 
 ## DDD
 
+* [https://leejamesgilmore.medium.com/serverless-domain-driven-design-6da44e151cfa](https://leejamesgilmore.medium.com/serverless-domain-driven-design-6da44e151cfa)
 * https://www.gentlydownthe.stream/
 * https://vladikk.com/2018/01/26/revisiting-the-basics-of-ddd/
 * https://increment.com/software-architecture/primer-on-functional-architecture/

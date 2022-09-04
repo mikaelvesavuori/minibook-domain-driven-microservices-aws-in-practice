@@ -16,9 +16,12 @@ It's about time we make it clear what this "domain" thing is, right?
 >
 > — Source: [https://vaadin.com/blog/ddd-part-1-strategic-domain-driven-design](https://vaadin.com/blog/ddd-part-1-strategic-domain-driven-design)
 
-Recollecting what I have read and how I personally think about the domain, for me the term is fairly straightforward and intuitive. If you struggle with the concept (and its siblings core/supporting/generic sub/domain) then remember that these are are logical constructs, rather than theory-heavy notions. They aren't.
+Recollecting what I have read and how I personally think about the _domain_ concept, for me the term has always been fairly straightforward and intuitive. If you do struggle with the concept (and its siblings core/supporting/generic sub/domain) then remember that these are logical constructs, rather than theory-heavy notions. Understanding the relative sizes and relations of an organization or the parts of a project is something that has to be done in-situ, together with the people who:
 
-The problem I've found is that for some reason people just don't tend to go around all day speaking of "domains". You'll probably walk away heavy-handed if you ask the common business person in your organization "Hey there, [what's the deal with](https://www.youtube.com/watch?v=v1cVl7KHsGA) our domains?". Also, to divide systems into domains after they are fully designed is also useless.
+* Know their way around the project/org, and
+* Will make things hard for you if they are not part of making these divisions into the various domain types.&#x20;
+
+The problem I've found is that for some reason people just don't tend to go around all day speaking of "domains". You'll probably walk away heavy-handed if you ask the common business person in your organization "Hey there, [what's the deal with](https://www.youtube.com/watch?v=v1cVl7KHsGA) our domains?". Also, to divide systems into domains after they are fully designed is useless too. It should be done, at least coarsely, already in the initial design.
 
 Instead, what you might want to do is to **introduce DDD as a framework, most importantly its ubiquitous language and domain concepts**, and begin discussing and doodling what the intended flows are if the scenario requires building something new. Equally important, and even more so if you are consulting or otherwise external to the organization, is to interview and map how the organization works (with some focus on the technology, if not only to understand how it may differ from the intended business domains).
 
