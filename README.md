@@ -8,7 +8,11 @@ description: >-
 
 This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
 
-**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides of software development (heavily leaning on the business end) more than on prescriptive implementation, though it does provide very clear design patterns. While our application will not be truly complex, it is complex enough to warrant a structured and business/domain-oriented approach.
+{% hint style="info" %}
+The service is provided in a reference shape and throughout the book we will refer to this example.
+{% endhint %}
+
+**Domain Driven Design** is a software design approach that has been around for almost 20 years, and has gained massive attention with the surge of microservices and related technologies. DDD focuses on logical, semantic, and structural sides of software development (heavily leaning on the business end) more than on prescriptive implementation, though it does also provide a number of good design patterns. DDD is an ideal approach for complex and/or enterprise-leaning software but can be cumbersome for small, self-contained projects. While our own application will not be deeply complex, it is sufficiently advanced to warrant a structured, domain-oriented approach.
 
 **Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms. Microservices are a good fit with our technology stack as well as helping us enforce clearer boundaries between system components as per DDD.
 
