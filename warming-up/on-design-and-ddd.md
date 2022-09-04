@@ -6,15 +6,21 @@ description: >-
 
 # On design
 
-It's probably reasonable to believe most of us building software today began doing so by some combination of trial-and-error and following guided steps. As for me, who didn't graduate in Computer Science—but have in some way or another worked with computers since I was a kid—development is something that was learned on my own.
+**Design and architecture are effectively the same, at least in their intents. At some point you won't have technical problems, only design problems relating to poor models, poor decisions, and poor structure.**
+
+It's probably reasonable to believe most of us building software today began doing so by some combination of trial-and-error and following guided steps. As for me, who didn't graduate in Computer Science—but have in some way or another worked with computers since I was a kid—development is something that was learned on my own. In 1997, at the ripe age of 11, I would read any magazine that contained primitive HTML/web guides until the covers split. And oh boy did I spend time.
 
 Like with any non-programming languages, also in programming there is of course a need to understand the _syntax_ ("grammar") and _semantics_ ("meaning") of the language. To some extent, it makes sense to start here. But relatively obscured, in my experience, is the need to understand the _design_ of programs.
+
+Learning how to make something—anything, really—on a computer seems often to miss out on the higher-level aspects, such as _design_, i.e. "how do we put it all together in a good way?". This part is dangerously close to the trade secrets, and I've experienced this when studying anything between generative music, to painting and concept art, to—in our case—programming. Being new to the subject, we occupy so much of our time on the minor details, all-important as they seem at the time. Knee-deep in paracetamol pills and questioning the decision to learn programming in the first place, of course one is not in the ideal position to consider program design. Not "seeing the forest for the trees" is a fitting expression when we are in a learning mode.
 
 {% hint style="danger" %}
 I think the analogy of _design_ in non-programming languages might (...) work, but it's worth treading with caution: We build programs that are logical constructs in a way regular languages are not in a comparative way.
 {% endhint %}
 
-If you are anything like me, your first (perhaps young) years were a confusing mess of trying to understand why exactly programs were structured the way they were, particularly when you began transitioning from single-file coding to "real" programs.
+If you are anything like me, your first (perhaps young) years were a confusing mess of trying to understand _why exactly_ programs were structured the way they were, particularly when you began transitioning from single-file coding to "real" programs. I also remember from my own teaching days first-hand how students would be in equal measures entranced and dumbfounded by things even working with what could look like a bad stage magician's trick and a small length of wire binding it together.
+
+I live in the assumption that academically trained engineers will scoff at everything written so far, since they perhaps had to read books like [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.goodreads.com/book/show/85009.Design\_Patterns) (1993; Gamma, Johnson, Vlissides, Helm). Unfortunately, reading is a slow and brittle process, and simply reading does not guarantee understanding or adherence. In my practical and work experience I find that typically the "academic" aspects of building software are seldom natural parts of the conversation.
 
 While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams as well as work on architecture proper.
 
