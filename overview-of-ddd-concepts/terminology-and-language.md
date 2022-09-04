@@ -42,16 +42,59 @@ Some important features to understand:
 
 You can use whatever default means you have of documenting, as long as it's common knowledge that this information is authoritative and co-owned and accessible to all who need to be able to see/edit it.
 
-\--
+{% hint style="info" %}
+Remember that the ubiquitous language is dynamic and ever-changing. It needs to be able to evolve, and we have to be receptive for that. As the language changes, we must similarly assure that the implementation stays intact and semantically aligned. Effectively any language change will be a technical change.
+{% endhint %}
 
-Let's go back to our requirements and start sniffing out a language:
+### Starting to understand the core domain language
 
-* **Reserve** a single room in a single facility (your office) and your time zone
-* **Reserve** the room in **slots** of 1 hour at the start of each hour
-* Allow for the **cancellation** of **room reservations**
-* Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be cancelled automatically
+Let's go back to our functional requirements and start sniffing out a language:
 
-\--
+* **Reserve** a single **room** in a single **facility** (your office) and your time zone.
+* **Reserve** the room in **slots** of 1 hour at the start of each hour.
+* Allow for the **cancellation** of **room reservations.**
+* Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be **cancelled** automatically.
+
+With this, we have now collected `Reserve`, `Room`, `Slot`, `Facility`, `Cancellation`, `Room reservation`, `Checked-in`.
+
+### Filling in the blanks
+
+Unsurprisingly, the language was fairly well-prepared already in the requirements. In a real-life scenario it would be wise to either discuss/workshop around flows and requirements and peeling out the terminology as you go, or to opt for EventStorming to help with that.
+
+In our case we could, at least after workshopping around the intended flows, see that we are missing for example `Checked-out`.
+
+### Pruning the language
+
+We can start cleaning the language a bit.
+
+`Room reservation` sounds too verbose—we can cut this to just `Reservation` as these are always logically related only to `Room`s and their (time) `Slot`s.
+
+| Concept      | Type  |
+| ------------ | ----- |
+| Reserve      | Verb  |
+| Room         | Noun  |
+| Slot         | Noun  |
+| Facility     | Noun  |
+| Cancellation | Noun  |
+| Reservation  | Noun  |
+| Check in     | Verb  |
+| Check out    | Verb  |
+| Checked-in   | State |
+| Checked-out  | State |
+
+{% hint style="info" %}
+Later we will look at how EventStorming is a similar (optional, alternative) route we can take to do this and much more.
+{% endhint %}
+
+### The Analytics domain language
+
+In the Analytics domain we find one unique concept: The (analytics) `Record`.
+
+### The Security domain language
+
+The Security domain has, also, only a single unique concept: The (verification) `Code`.
+
+## Delivery
 
 In the reference implementation this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario this format is probably quickly exhausted as definitions may need to be richer and examplified. Note also how we ascribe term to specific domains.\
 
