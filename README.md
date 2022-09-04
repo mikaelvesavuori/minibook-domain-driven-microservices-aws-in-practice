@@ -2,6 +2,8 @@
 description: >-
   Welcome to the fast track, taking you from DDD novice to actually
   understanding a real, modern application built with it in mind.
+cover: .gitbook/assets/undraw_Solution_mindset_re_57bf.png
+coverY: 0
 ---
 
 # Introduction

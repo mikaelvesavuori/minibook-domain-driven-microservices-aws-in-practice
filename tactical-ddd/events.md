@@ -1,5 +1,5 @@
 ---
-description: Events make your distributed services world "go round, round".
+description: Events make your distributed services world "go round, round, round".
 ---
 
 # Events
