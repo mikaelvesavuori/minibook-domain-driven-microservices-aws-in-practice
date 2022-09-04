@@ -13,8 +13,11 @@ For now, these are the identified high-level requirements:
 * Reserve a _single_ room in a _single_ facility (your office) and your time zone
 * Reserve the room in slots of 1 hour at the start of each hour
 * Allow for the cancellation of room reservations
-* Your team will focus on providing the back end, APIs and such, front end is out of scope for your team
 * Allow for rooms that are not checked-in within 10 minutes of their starting time to be cancelled automatically
+
+The provided non-functional requirements (quality attributes) are:
+
+* Your team will focus on providing the back end, APIs and such, front end is out of scope for your team
 * The solution needs to have at least some minimum hygiene level of resilience and security
 
 When it comes to integration work:
@@ -26,4 +29,3 @@ When it comes to integration work:
   * The start and end times of the slot
 
 **How would you address this challenge?**
-

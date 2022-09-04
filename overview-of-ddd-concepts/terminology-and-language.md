@@ -42,6 +42,17 @@ Some important features to understand:
 
 You can use whatever default means you have of documenting, as long as it's common knowledge that this information is authoritative and co-owned and accessible to all who need to be able to see/edit it.
 
+\--
+
+Let's go back to our requirements and start sniffing out a language:
+
+* **Reserve** a single room in a single facility (your office) and your time zone
+* **Reserve** the room in **slots** of 1 hour at the start of each hour
+* Allow for the **cancellation** of **room reservations**
+* Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be cancelled automatically
+
+\--
+
 In the reference implementation this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario this format is probably quickly exhausted as definitions may need to be richer and examplified. Note also how we ascribe term to specific domains.\
 
 

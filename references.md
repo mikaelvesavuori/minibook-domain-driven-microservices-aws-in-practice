@@ -1,4 +1,12 @@
+---
+description: >-
+  A non-exhaustive dump of good stuff you might want to read about if you made
+  it all the way here.
+---
+
 # References and resources
+
+## Something
 
 * [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * [Comparison of Domain-Driven Design and Clean Architecture Concepts](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)

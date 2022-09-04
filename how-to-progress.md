@@ -22,7 +22,7 @@ But do take the time to actually run the code locally and muck about with it to 
 
 Using the reference project, you could start adapting for new requirements, like being able to have multiple rooms and/or sites and/or time zones. Or anything else for that matter.
 
-Identify what changes would be needed, if you need new aggregates (or an aggregate root) or entities etc. It should be possible to evolve such functionality without significant rework.
+Identify what changes would be needed, if you need new aggregates (or an aggregate root) or entities etc. **It should be possible to evolve such functionality without significant rework.**
 
 ### Build the application from scratch
 
@@ -35,7 +35,7 @@ Why not just go all the way and do what I did (minus writing a book) and build a
 Make sure that you keep level-headed and objective and that you try to keep the phases clean — first the high level scenario to guide the project, then conducting the strategic DDD, and only after that proceeding to the tactical implementation work. You may of course iterate the cycles, but you'll have to role play a "business owner" type character while starting, unless you want it to possibly derail into being any old pet project.
 
 {% hint style="success" %}
-A spin on this is to actually do a real (low-key) project, maybe for some friends or family, or some affiliation you are part of.
+A spin on this is to actually do a real (low-key) project, maybe for some friends or family, or some affiliation or group you are part of. Looking forward to reading about the _Domain-Driven Bowling Club_ or _Domain-Driven Church of Satan (Local Chapter)_ in the future! :star:
 {% endhint %}
 
 ## Learn to communicate better
@@ -123,7 +123,7 @@ Either ask someone who has done this before, or accept that we all learn by doin
 
 As stated in the beginning of this book, I really see no other way to be good at designing software than, well, by designing software.
 
-While it's easy to get lost in all the specific services popping up in the vast arsenals of AWS and their ilk, you should abstract from services to capabilities. One book that I find has been very good at tying together the last 10-15 years of development practices and modern technologies into one concise overview is [_Continuous Architecture in Practice: Software Architecture in the Age of Agility and Devops_](https://www.goodreads.com/en/book/show/55893833-continuous-architecture-in-practice) (2021; Erder, Woods, Pureur). Don't expect to go deepdiving here, but as inspiration to see the big picture that book might do the trick.
+While it's easy to get lost in all the specific services popping up in the vast arsenals of AWS and their ilk, you should abstract from individual services to broader _capabilities_. To be better prepared doing so—don't get surprised now—I have a book recommendation. One book that I find has been very good at tying together the last 10-15 years of development practices and modern technologies into one concise overview is [_Continuous Architecture in Practice: Software Architecture in the Age of Agility and Devops_](https://www.goodreads.com/en/book/show/55893833-continuous-architecture-in-practice) (2021; Erder, Woods, Pureur). Don't expect to go deepdiving here, but as inspiration to see the big picture that book might do the trick.
 
 Designing is more about process and thought than about a given artifact to represent it. If you want to design as part of "exercise" then consider learning or using tools listed in the `Learn diagramming` advice.
 
