@@ -6,7 +6,7 @@ description: >-
 
 # Introduction
 
-This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services.
+This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking service using a microservices pattern that we will build on Amazon Web Services (AWS).
 
 {% hint style="info" %}
 The service is provided in a reference shape and throughout the book we will refer to this example.
@@ -16,17 +16,17 @@ The service is provided in a reference shape and throughout the book we will ref
 
 **Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions has accelerated the uptake of this style, as it may was hard and potentially expensive in older, non-cloud computing paradigms. Microservices are a good fit with our technology stack as well as helping us enforce clearer boundaries between system components as per DDD.
 
-There is nothing extravagantly special in terms of reasons for choosing **AWS**. While the services and their particulars are certainly unique to AWS, there is nothing with the overall architecture that cannot be transported to Azure, Google Cloud Platform, or other clouds. The specific path we are walking here will be around [serverless technologies](https://en.wikipedia.org/wiki/Serverless\_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). AWS provides excellent paths for us to build and run the application.
+There is, to be frank, nothing extravagantly special in terms of reasons for choosing **Amazon Web Services**. While the services and their particulars are certainly unique to AWS, there is nothing in the overall architecture that cannot be ported over to Azure, Google Cloud Platform, or other clouds. The specific path we will be taking is centered on [serverless technologies](https://en.wikipedia.org/wiki/Serverless\_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). The AWS platform provides excellent paths for us to build and run the application in this manner.
 
 Throughout the book several other concepts and methodologies will be introduced to further extend our approach and implementation details of our project.
 
 ## What you'll learn and do
 
-The project will demonstrate rich and powerful patterns—binding together serverless, microservices, DDD, Clean Architecture, TypeScript and more—presented in a digestible way. It will, as best as I can, hold back on some "mannerisms" and complexities in the DDD and tech world that may detract from the core learnings I have to impart.
+The project will demonstrate rich and powerful patterns—binding together serverless, microservices, DDD, Clean Architecture, TypeScript and more—with the aim of presenting these in a digestible, actionable way. I will attempt to hold back on some "mannerisms" and complexities in the DDD and tech world that may detract from the core lessons I have to impart.
 
-After having read this minibook—and coded alongside the provided project, if you want—you will have a **hands-on feeling for how a project can go from a scenario (an "ask") to something that represents a well-structured, domain-oriented application**.
+After having read this book—and coded alongside the provided project, if you want—you will have a **hands-on feeling for how a project can go from a scenario (an "ask") to something that represents a well-structured, domain-oriented application**.
 
-Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the OG, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the _OG_, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
 
 I will also of course share resources and references throughout in case you are interested to go deeper in any particular aspect we are touching on.
 

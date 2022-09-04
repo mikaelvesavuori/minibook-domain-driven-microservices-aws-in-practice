@@ -6,14 +6,24 @@ description: >-
 
 # On design
 
-As for me, who didn't graduate in Computer Science—but have in some way or another worked with computers since I was a kid—development is something that was learned on my own. While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams.
+It's probably reasonable to believe most of us building software today began doing so by some combination of trial-and-error and following guided steps. As for me, who didn't graduate in Computer Science—but have in some way or another worked with computers since I was a kid—development is something that was learned on my own.
 
-I've since come to the opinion, or perhaps understanding, that somewhat universally, developers/engineers spend a lot less time on design than they seemingly should. Instead a combination of attitudes seem to be pervasive.
+Like with any non-programming languages, also in programming there is of course a need to understand the _syntax_ ("grammar") and _semantics_ ("meaning") of the language. To some extent, it makes sense to start here. But relatively obscured, in my experience, is the need to understand the _design_ of programs.
+
+{% hint style="danger" %}
+I think the analogy of _design_ in non-programming languages might (...) work, but it's worth treading with caution: We build programs that are logical constructs in a way regular languages are not in a comparative way.
+{% endhint %}
+
+If you are anything like me, your first (perhaps young) years were a confusing mess of trying to understand why exactly programs were structured the way they were, particularly when you began transitioning from single-file coding to "real" programs.
+
+While many years ago I might have understood what an architect did, I personally gradually learned more and more on that side as I started building my own software, distributing open source, and leading technical teams as well as work on architecture proper.
+
+I've since come to the opinion, or perhaps understanding, that somewhat universally, developers/engineers spend a lot less time on design than they should. A combination of attitudes seem to be pervasive, trying to fend away this reality:
 
 * "Let the architect do it", or
 * "There's no time and/or budget for design", or
 * "It's Agile, man, f\*\*k design, it's part of the code", or
-* Any other derivative of the same attitude.
+* Any other derivative of the same general attitude.
 
 {% hint style="danger" %}
 No, all my experiences are not aligned with this, but there is some persistent truth to the above in my professional career. It's more of a question of quantity of how apparent the attitude becomes rather than if the problem surfaces at all.
@@ -22,6 +32,12 @@ No, all my experiences are not aligned with this, but there is some persistent t
 One side of the word "design" that I feel to be misunderstood is around how it relates to practices such as Agile and its various forms—which is something every company and context I've been at has talked about, but not really delivered on—as well as to how the architect role fits in within modern software development, the DevOps paradigm, and being generally allergic to upfront planning.
 
 It's nice then to see that this is less a real issue (i.e. not being supported in the orthodox Agile mindset) than it is a perceived issue, perpetuated by misguided business analysts, project/product managers, engineers, and others. We can see this in how Agile framework co-founder Robert C. Martin tries to set the record straight in his [Clean Agile: Back to Basics](https://www.oreilly.com/library/view/clean-agile-back/9780135782002/) as well as in the humble "[connect the penthouse with the engine room](https://architectelevator.com)" metaphor stated by Gregor Hohpe. **They both express that **_**design**_** is something that must be done**, Agile or not, and that modern circumstances do not have to pass on a golden key to some Ivory Tower dude to handle the design on their own.
+
+I'm conscious of the over-simplification that will shortly take place, but urge you to consider to point: **Without the basics you can't do the work, but without design it will never be good work**. So:
+
+* Knowledge of proper **syntax** is what, hopefully, makes you able to pocket a paycheck for your work in the first place.
+* Knowledge of proper **semantics** is what makes you write good, clean code (Uncle Bob etc.) on the _local_ level, file-by-file.
+* Knowledge of proper **design** is what allows you to build _complete_ solutions that are competent.
 
 This is a huge topic to unpack, what with its layers of psychology, leadership, organization, engineering, and other sub-areas coming into play. Henceforth what I am interested is stating that **design is important and it's your job as an engineer to handle it**. How you get there is another problem I will not necessarily address.
 
