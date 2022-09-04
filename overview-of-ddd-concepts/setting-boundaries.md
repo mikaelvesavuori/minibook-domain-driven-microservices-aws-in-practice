@@ -7,11 +7,7 @@ description: >-
 
 # Setting boundaries
 
-While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, I'd say that **the defining of bounded contexts remains the most powerful tool**. Language makes us define the concepts in play, as well as what (and how) they represent something. Setting boundaries on contexts, on the other hand, carves out the landscape, pointing out where responsibilities lay.
-
-First&#x20;
-
-
+While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, I'd say that **the defining of bounded contexts remains the most powerful tool**. Language makes us define the concepts in play, as well as what (and how) they represent something. Setting boundaries on contexts, on the other hand, carves out the landscape, pointing out where responsibilities lay.&#x20;
 
 ```
 Now we're ready to go from domain model to application design. Here's an approach that you can use to derive microservices from the domain model.
@@ -40,7 +36,7 @@ That said, consider whether you really need strong consistency. There are strate
 
 See: https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries
 
-<figure><img src="../.gitbook/assets/Get-A-Room Context Map.png" alt=""><figcaption><p>TODO: Diagram with only contexts</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/Get-A-Room Context Map 1.png" alt=""><figcaption><p>Diagram with only contexts</p></figcaption></figure>
 
 TODO
 
@@ -68,7 +64,7 @@ And in a previous article, we discovered that use cases were either commands or 
 
 See: https://www.infoq.com/news/2019/06/bounded-context-eric-evans/
 
-<figure><img src="../.gitbook/assets/Get-A-Room Context Map.png" alt=""><figcaption><p>TODO: Diagram with only contexts + (sub)domain etc</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/Get-A-Room Context Map 2.png" alt=""><figcaption><p>Diagram with only contexts + (sub)domain etc</p></figcaption></figure>
 
 TODO
 
@@ -76,6 +72,6 @@ TODO
 
 TODO
 
-![TODO: Complete with relations etc](<../.gitbook/assets/Get-A-Room Context Map.png>)
+![Complete with relations](<../.gitbook/assets/Get-A-Room Context Map.png>)
 
-##
+TODO
