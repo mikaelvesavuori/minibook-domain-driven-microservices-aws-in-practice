@@ -109,6 +109,12 @@ With the ubiquitous language defined, perhaps it's time to scale up and go for t
 
 Either ask someone who has done this before, or accept that we all learn by doing and **just do it**. The book is cheap, you can always [learn-by-video](https://www.youtube.com/watch?v=mLXQIYEwK24), and there are plenty of good articles describing how to run a workshop.
 
+## Design more
+
+### Design and build solutions
+
+TODO
+
 ## Know your sh\*t
 
 ### Read up on secondary-source literature
