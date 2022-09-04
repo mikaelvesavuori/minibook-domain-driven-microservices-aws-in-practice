@@ -6,7 +6,7 @@ description: >-
 
 # Groundwork
 
-This section zooms in on minor, but important, factors that concern our overall engineering but do not map directly to DDD.
+This section zooms in on the non-DDD factors that concern our overall engineering.
 
 * Cloud architecture
 * Handling technical boilerplate
