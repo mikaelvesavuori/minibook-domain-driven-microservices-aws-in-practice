@@ -84,19 +84,29 @@ For more reading, please consider checking out this [comparison article by State
 
 The de facto standard in the modern cloud is that you leverage the native API products to expose your applications, rather than building something on your own with the likes of Express, Fastify, or Kong.
 
-The API gateway will be the only public interface connected to our other infrastructure, most importantly our Lambda compute functions which will respond on paths that we have defined in the gateway.
+An API gateway acts as the only public interface connected to any other infrastructure, in our case this would most importantly be our Lambda compute functions which will respond on paths that we have defined in the gateway.
 
-In the case of AWS the service we are interested in is unsurprisingly called [API Gateway](https://aws.amazon.com/api-gateway/).
+In the case of AWS the service we are interested in is, unsurprisingly, called [API Gateway](https://aws.amazon.com/api-gateway/).
 
 ### Is there an option?
 
-It's a bit of a theoretical digression to wander down the path of asking oneself "But _could_ I set up another API gateway solution"? In short the answer is "yes", but then you would most likely (and most effectively) do it in a persistent virtual machine, which is itself hardly serverless, now is it? So, yes, you could do it. But no, we won't. While it does hurt me to write it, this is one of the integration parts that you should leverage maximally when committing to a cloud service provider. Only if you were absolutely sure that you want an open source or multi-cloud solution should you practically consider this option.
+It's a bit of a theoretical digression to wander down the path of asking oneself "But _could_ I set up another API gateway solution"? In short the answer is "yes", but then you would most likely (and most effectively) do it in a persistent virtual machine, which is itself hardly serverless, now is it? So, yes, you could do it. But no, we won't.
+
+The API gateway is one of the integration parts that you should leverage maximally when committing to a cloud service provider. Only if you were absolutely sure that you want an open source or multi-cloud solution should you practically consider this option of using a custom API gateway.
 
 ### Choosing the type of API Gateway
 
-One of the configuration questions we can look at has to do with which type of API Gateway we want. The traditional one is called "REST API" and the newer, lighter-weight one that came out in 2019 is named "HTTP API". All of this is probably somewhat confusing, and you would not be the first one to feel so. These are sometimes also called "v1" (REST API) and "v2" (HTTP API) API Gateways which at least for me makes a lot more sense. Do note that both of these work just fine with actual HTTP(S) and REST; in fact the naming is just plain bonkers.
+One of the configuration questions we can look at has to do with which type of (AWS) API Gateway we want. The traditional one is called _REST API_ and the newer, lighter-weight one that came out in 2019 is named _HTTP API_. All of this is probably somewhat confusing and you would not be the first one to feel so.
 
-Some of the additional features of v1 includes:
+{% hint style="info" %}
+These are sometimes also called **v1** for REST API and **v2** for HTTP API, which at least for me makes a lot more sense.
+
+Do note that both of these types work just fine with actual HTTP(S) and REST; in fact the naming is just plain bonkers!
+
+Read more at [https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html).
+{% endhint %}
+
+Some of the additional features of the REST API (v1) vs the HTTP API (v2) includes:
 
 * AWS X-Ray tracing
 * API keys support and per-client throttling
@@ -111,18 +121,24 @@ There are certainly benefits by going with the HTTP API as well, for example:
 * Includes exclusive support for JWT authorization directly on the Gateway (v1 has to use a Lambda authorizer to do the same)
 * Has exclusive support for certain integrations
 
-_Read more at_ [_https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html_](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)_._
-
 From a non-functional requirements perspective, the items listed in the REST API benefits are things we absolutely want to use, and since price effectively is not a real concern at this small scale, that argument becomes moot.
 
 ## Security
 
 As noted in the API section, there exists a few security aspects that we need to keep in mind.
 
-We don't want to double-down on security here, but we need to stay mindful of malicious usage.
-
-Ways we want to mitigate such is:
+We don't want to double-down on security here, but we need to stay mindful of malicious usage. Ways we want to mitigate such usage is:
 
 * Limit scaling and provide a maximum provisioned surface for APIs etc so we cannot get "denial-by-wallet" attacks
+* Set permissions to least-privilege
+* Secure coding practices
 * Use authorization mechanisms, even something simple like an API key
 * Use CORS to restrain domains that may call the services
+
+{% hint style="info" %}
+For a light start on serverless and cloud security, see the following:
+
+* [10 Serverless security best practices](https://snyk.io/blog/10-serverless-security-best-practices/)
+* [Architecting Secure Serverless Applications](https://aws.amazon.com/blogs/architecture/architecting-secure-serverless-applications/)
+* [AWS re:Invent 2021 - Serverless security best practices](https://www.youtube.com/watch?v=nEaAuX4O9TU)
+{% endhint %}
