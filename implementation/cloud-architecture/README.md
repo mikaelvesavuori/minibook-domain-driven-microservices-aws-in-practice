@@ -4,7 +4,7 @@ description: The battle plan for our technical infrastructure.
 
 # Deciding on a Cloud Architecture
 
-<figure><img src="../../.gitbook/assets/undraw_Cloud_docs_re_xjht.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/undraw_Cloud_docs_re_xjht.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
 
 ## Going serverless-first
 
@@ -39,17 +39,26 @@ Ergo, the quantity of cloud resources will indeed grow, but it can also (correct
 
 ## Databases
 
-Our use case does not have a strict need for extensive relational mappings, so we can be broader in our selection.
+Our use case does not have a strict need for extensive relational mappings, so we can be broader in our selection and it's practically fine going with a non-relational solution.
 
-The serverless database option on AWS is DynamoDB, a database that dates back to 2012 and which has gained additional features throughout the years.
+The ideal serverless database option on AWS is [DynamoDB](https://aws.amazon.com/dynamodb/), a database that dates back to 2012 and which has gained additional features throughout the years. It's extremely fast and scalable, has a stellar reputation and historical performance, but will require a somewhat different mindset when being used.
 
-It's the best choice we have available in AWS for serverless solutions using microservices and with out type of domain oriented services. Also, while there is AWS Aurora on the relational spectrum of things, there just does not exist really good relational solutions that are optimized for the cloud that checks all the needed boxes.
+While there is also [AWS Aurora](https://aws.amazon.com/rds/aurora/) on the relational spectrum of things, there just does not exist really good relational solutions that are optimized for the cloud that are turn-key the way we expect of serverless.
+
+{% hint style="info" %}
+Some excellent resources on DynamoDB include:
+
+* [The DynamoDB Guide](https://www.dynamodbguide.com/what-is-dynamo-db)
+* [Single-table vs. multi-table design in Amazon DynamoDB](https://aws.amazon.com/blogs/database/single-table-vs-multi-table-design-in-amazon-dynamodb/)
+* [The What, Why, and When of Single-Table Design with DynamoDB](https://www.alexdebrie.com/posts/dynamodb-single-table/)
+* [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8)
+{% endhint %}
 
 ## Compute
 
-Once again, looking at the high level requirements we want something that can run in response to events, ideally in response to REST API calls, and TODO. We have no reason to believe it should need to handle long runs, massive amounts of memory, or complex calculations.
+Once again, looking at the high level requirements we want something that can run in response to events and in response to REST API calls. We have no reason to believe it should need to handle long runs, massive amounts of memory, or complex calculations.
 
-The king of serverless compute platforms has been AWS Lambda for quite some years now. This is the platform we will use. It satisfies all the conditions mentioned above, and is possible to use in a number of languages/runtimes, including TypeScript,
+The undisputed king of serverless compute platforms has been AWS [Lambda](https://aws.amazon.com/lambda/) for quite some years now—That's the same platform we will use here. It satisfies all the conditions mentioned above, and is possible to use in a number of languages/runtimes, including TypeScript.
 
 NOTE  “Workflow-oriented solutions (single purpose utility functions) vs conventional entity-oriented APIs/systems and everything in between”
 
