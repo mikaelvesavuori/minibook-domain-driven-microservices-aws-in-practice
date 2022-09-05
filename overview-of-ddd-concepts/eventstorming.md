@@ -4,6 +4,8 @@ description: Or the story of how an Italian guy made DDD concrete and friendly.
 
 # EventStorming
 
+<figure><img src="../.gitbook/assets/undraw_Career_development_re_sv91.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 [EventStorming](https://www.eventstorming.com) is a workshop model invented by Alberto Brandolini in 2012 to help facilitate explorative work in the spirit of Domain Driven Design. It's a fast-paced way of coming to a shared understanding among the attendees (who should span the maximum gamut of stakeholders), helping to shape requirements as well as understand the business process.
 
 The original format is very physical, using paper to cover a wall and making use of colored sticky notes and marker pens to, first, come to terms with the current notion of the project/work, and then to bit by bit consolidate that view into sequential orderings of the core concepts:

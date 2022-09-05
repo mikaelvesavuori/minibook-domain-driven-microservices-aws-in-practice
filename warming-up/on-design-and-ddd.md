@@ -6,6 +6,8 @@ description: >-
 
 # On design
 
+<figure><img src="../.gitbook/assets/undraw_teamwork_hpdk.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 **Design and architecture are effectively the same, at least in their intents. At some point you won't have technical problems, only design problems relating to poor models, poor decisions, and poor structure.**
 
 It's probably reasonable to believe most of us building software today began doing so by some combination of trial-and-error and following guided steps. As for me, who didn't graduate in Computer Science—but have in some way or another worked with computers since I was a kid—development is something that was learned on my own. In 1997, at the ripe age of 11, I would read any magazine that contained primitive HTML/web guides until the covers split. And oh boy did I spend time.

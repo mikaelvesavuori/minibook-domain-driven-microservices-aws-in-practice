@@ -6,6 +6,8 @@ description: >-
 
 # Putting DDD in the serverless context
 
+<figure><img src="../.gitbook/assets/undraw_void_3ggu.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 We live in a time of change when it comes to technology and cloud with ever higher degrees of abstraction being presented as commercial products.
 
 I will equate microservices roughly with serverless. Indeed they are not the same, but the scope of this chapter is also generally broader and more imprecise than what we will work on later.

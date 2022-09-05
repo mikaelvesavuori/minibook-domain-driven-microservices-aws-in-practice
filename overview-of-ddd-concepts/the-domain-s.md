@@ -4,6 +4,8 @@ description: Let's talk about the first big D in DDD.
 
 # The domain(s)
 
+<figure><img src="../.gitbook/assets/undraw_Shared_goals_re_jvqd.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 It's about time we make it clear what this "domain" thing is, right?
 
 [Vaadin](https://vaadin.com/) has a fine two-part introduction to DDD and their distillation of the various domain types is short and informative enough for me to want to quote it wholesale:

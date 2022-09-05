@@ -6,6 +6,8 @@ description: >-
 
 # Doodling, drawing, whiteboarding flows and concepts
 
+<figure><img src="../.gitbook/assets/undraw_Blank_canvas_re_2hwy.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="info" %}
 This section has nothing to do with DDD but has everything to do with encouraging creative processes to function and flow ideally.
 {% endhint %}

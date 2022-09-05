@@ -4,6 +4,8 @@ description: So what's the deal with Domain Driven Design and microservices?
 
 # Why DDD and microservices are a match
 
+<figure><img src="../.gitbook/assets/undraw_friendship_mni7.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 To understand microservices is to be aware of the "prior art", namely Service Oriented Architecture (SOA) that dates back to the 1990s. Without making this into a history class, the scope of SOA was wider than that of microservices and built on a technical foundation that for natural reasons is not necessarily the basis of modern organizations. It may be fair to call microservices a particular subset of evolved SOA.
 
 {% hint style="info" %}
