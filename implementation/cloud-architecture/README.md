@@ -46,7 +46,9 @@ The ideal serverless database option on AWS is [DynamoDB](https://aws.amazon.com
 While there is also [AWS Aurora](https://aws.amazon.com/rds/aurora/) on the relational spectrum of things, there just does not exist really good relational solutions that are optimized for the cloud that are turn-key the way we expect of serverless.
 
 {% hint style="info" %}
-Some excellent resources on DynamoDB include:
+DynamoDB is not your grandfather's database, and it will maybe be challenging to start with if you aren't already familiar with NoSQL-style databases.
+
+Some excellent resources to read up on DynamoDB include:
 
 * [The DynamoDB Guide](https://www.dynamodbguide.com/what-is-dynamo-db)
 * [Single-table vs. multi-table design in Amazon DynamoDB](https://aws.amazon.com/blogs/database/single-table-vs-multi-table-design-in-amazon-dynamodb/)
@@ -56,37 +58,39 @@ Some excellent resources on DynamoDB include:
 
 ## Compute
 
-Once again, looking at the high level requirements we want something that can run in response to events and in response to REST API calls. We have no reason to believe it should need to handle long runs, massive amounts of memory, or complex calculations.
+Once again, looking at the high level requirements we want something that can run in response to asynchronous events and synchronous API calls. We have no reason to believe it should need to handle long runs, massive amounts of memory, or complex calculations.
 
 The undisputed king of serverless compute platforms has been AWS [Lambda](https://aws.amazon.com/lambda/) for quite some years now—That's the same platform we will use here. It satisfies all the conditions mentioned above, and is possible to use in a number of languages/runtimes, including TypeScript.
 
-NOTE  “Workflow-oriented solutions (single purpose utility functions) vs conventional entity-oriented APIs/systems and everything in between”
+Other viable options could include some of the better-known container services, such as [ECS](https://aws.amazon.com/ecs/) or [Fargate](https://www.google.com/search?client=safari\&rls=en\&q=aws+fargate\&ie=UTF-8\&oe=UTF-8). These however require significantly more plumbing and configuration, plus requires some type of containerization actually happening. With Lambda, such work is kept at a minimal level, and using [Serverless Framework](https://www.serverless.com) we'll continue pushing down the work involved in for example packaging the application.
 
 ## Eventing
 
-We need to be able to send (publish) and respond to (subscribe) events.
+We need to be able to send (_publish_) and respond (_subscribe_) to events.
 
-The classical choice here would have been AWS Simple Notification Service (SNS). It's a push-based service meaning getting something to react to an event is taken care of automatically and (more or less) directly.
+The classic choice here would have been [Simple Notification Service (SNS)](https://aws.amazon.com/sns/). It's a push-based service, meaning it automatically handles propagating the event to recipients. SNS uses a pay-per-use model and is essentially serverless as the only infrastructure you need is the SNS _topic_.
 
-An optional way of doing this could have been using AWS Managed Streaming for Apache Kafka (MSK). It's poll-based so you have to "ask for" data at intervals to see if something has happened.
+An optional way of doing this could have been using [Managed Streaming for Apache Kafka (MSK)](https://aws.amazon.com/msk/). MSK is poll-based, so instead you have to "ask for" data at intervals to see if something has happened. It hasn't always been serverless, but nowadays an option has been provided. Nevertheless, MSK makes most sense if you are already invested in the Kafka space.
 
-In our case, we will instead opt for AWS EventBridge. It offers a similar type of product as SNS, but offers a more convenient developer experience, better event support (such as event catalogs, event archives and retries, and event discovery) and possibility to use more types of subscribers (such as Lambda, SNS, SQS, and API Gateway). Overall it's a more evolved fit from the more "basic" but still powerful SNS.
+In our case, we will opt for still another option: [EventBridge](https://aws.amazon.com/eventbridge/). It is superficially a similar type of product as SNS, but offers a more convenient developer experience, better event support (such as event catalogs, event archives, and event discovery), better filtering, and the possibility to use more types of subscribers (such as Lambda, SNS, SQS, and API Gateway). Overall it's a more evolved fit from the more "basic" but still powerful SNS for our application-centric needs. The EventBridge construct is not a topic, but rather an _event bus_.
 
 From a capability perspective we might have considered SNS closer if we had very stringent needs around event ordering, exactly-once delivery, or very high topic count.
 
-For more reading, please consider checking out this [comparison article by StateFarm](https://engineering.statefarm.com/blog/comparison-of-aws-services-for-event-driven-architecture/).
+{% hint style="info" %}
+For more reading, please consider checking out this [comparison article by StateFarm](https://engineering.statefarm.com/blog/comparison-of-aws-services-for-event-driven-architecture/) or [this article by Ashish Patel](https://medium.com/awesome-cloud/aws-difference-between-amazon-eventbridge-and-amazon-sns-comparison-aws-eventbridge-vs-aws-sns-46708bf5313).
+{% endhint %}
 
 ## API
 
-The de facto standard in the modern cloud is that you leverage the native API products to front your applications rather than building something on your own with the likes of Express, Fastify, or Kong.
+The de facto standard in the modern cloud is that you leverage the native API products to expose your applications, rather than building something on your own with the likes of Express, Fastify, or Kong.
 
-The API gateway will be the public interface connected to our other infrastructure, most importantly our Lambda compute functions which will respond on paths that we have defined.
+The API gateway will be the only public interface connected to our other infrastructure, most importantly our Lambda compute functions which will respond on paths that we have defined in the gateway.
 
-In the case of AWS the service we are interested in is unsurprisingly called "API Gateway".
+In the case of AWS the service we are interested in is unsurprisingly called [API Gateway](https://aws.amazon.com/api-gateway/).
 
 ### Is there an option?
 
-It's a bit of a theoretical digressing to wander down the path of asking oneself "but COULD I set up another API gateway solution"? In short the answer is yes, but then you would most likely (and most effectively) do it in a persistent virtual machine, which is not very serverless. So, yes, you could do it. But no, we won't. While it does hurt me to write it, this is one of the integration parts that you should leverage maximally when committing to a cloud service provider. Only if you were absolutely sure that you want an open source or multi-cloud solution should you practically consider this option.
+It's a bit of a theoretical digression to wander down the path of asking oneself "But _could_ I set up another API gateway solution"? In short the answer is "yes", but then you would most likely (and most effectively) do it in a persistent virtual machine, which is itself hardly serverless, now is it? So, yes, you could do it. But no, we won't. While it does hurt me to write it, this is one of the integration parts that you should leverage maximally when committing to a cloud service provider. Only if you were absolutely sure that you want an open source or multi-cloud solution should you practically consider this option.
 
 ### Choosing the type of API Gateway
 

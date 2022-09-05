@@ -6,6 +6,12 @@ description: >-
 
 # Domain driven Lambdas with a use case approach
 
+How to effectively decompose applications into microservices and bounded contexts is a design exercise that may be challenging and sometimes counter-intuitive, if one has been beaten on the head with "FaaS is for single-purpose functions". We
+
+when one has maybe encountered use of FaaS such as Lambda
+
+NOTE  “Workflow-oriented solutions (single purpose utility functions) vs conventional entity-oriented APIs/systems and everything in between”
+
 We are going to use an approach I've found to be well suited to writing testable and good implementations.
 
 Some features of my approach include:
