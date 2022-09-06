@@ -21,6 +21,7 @@
   * [Deciding on a Cloud Architecture](implementation/cloud-architecture/README.md)
   * [Technical boilerplating](implementation/technical-boilerplating.md)
   * [Domain driven Lambdas with a use case approach](implementation/domain-driven-lambdas-with-a-use-case-approach.md)
+    * [Create booking slots](implementation/domain-driven-lambdas-with-a-use-case-approach/create-booking-slots.md)
     * [List slots](implementation/cloud-architecture/list-slots.md)
     * [Book a slot](implementation/cloud-architecture/book-a-slot.md)
     * [Check in](implementation/cloud-architecture/check-in.md)
