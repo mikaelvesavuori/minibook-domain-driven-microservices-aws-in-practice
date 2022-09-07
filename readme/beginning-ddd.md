@@ -58,9 +58,7 @@ There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge\_Luis\_Borges)
 
 Besides being the nightmare of enterprise architects and surveyors, **grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail**. That's where the very human ability to abstract complex knowledge into models comes in. DDD taps into this quality while being completely open to the ways in which a group might do it.
 
-I am seeing in most traditional organizations that a divide is created, problematically, between domain experts and the developers. I find it reprehensible that it's so common to believe developers (and sometimes architects) somehow cannot understand the details of the domain.
-
-The better option is, thus, to do whatever it takes to create an amenable, low-threshold environment where all relevant parties (from business to implementation) can work together. Before this, none of the _ubiquitous languages_ or _domain models_ will emanate.
+TODO more
 
 ## The patterns of DDD
 

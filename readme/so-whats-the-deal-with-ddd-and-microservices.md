@@ -38,6 +38,21 @@ Microservices (with their above qualities) make it easier to _express, as techni
 
 With the advent of Kubernetes and serverless functions, the practical operations around deploying services also significantly improved. Architects could finally _actually_ get those fine-grained services, and developers could finally build them faster and more neatly. This meant that DDD could move out of the enthusiast/nerd/Java/enterprise context and start being applied in broader circumstances.
 
+## How do domains communicate?
+
+Using primarily messaging mechanisms—such as Kafka or AWS EventBridge—we can make the domains and their respective bounded contexts able to communicate with each other. Certainly, you can use traditional request/reply communication via REST APIs (and similar).
+
+{% hint style="info" %}
+I am writing another minibook for events that will go deeper on this subject.
+{% endhint %}
+
+What's worth keeping in mind is that there is little that is "new" with this way compared to traditional service-to-service communication. Ideally we would have:
+
+* Documentation for the API and events (using a modern schema format like [AsyncAPI](https://www.asyncapi.com))
+* Microservice discovery catalog (like [Catalogist](https://github.com/mikaelvesavuori/catalogist) or [Port](https://www.getport.io))
+
+Using the strategic and tactical patterns of DDD we can do the intellectual, as well as technical, labor required to set our path.
+
 ## Is DDD still relevant?
 
 So if DDD is \~20 years old, isn't that ancient and archaic by today's standards?

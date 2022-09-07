@@ -14,7 +14,7 @@ An optional approach could be to do some (light-weight?) BPMN model, though I wo
 
 Already at the start, if possible, it's wise to have some visual and logical model to describe what's going on. This type of flowchart may in complex cases become unwieldy and cumbersome.
 
-Here we see a state chart that represents the key flow, color-coded into the various state it may take. In this case, we are significantly improving the understanding of what a technical implementation would represent.
+TODO&#x20;
 
 ![](<../.gitbook/assets/Get-A-Room Flows.png>)
 
