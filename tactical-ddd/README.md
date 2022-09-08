@@ -11,8 +11,6 @@ It's high time to put those "tactical" patterns in Domain Driven Design to work,
 
 This section describes key passages of the code and the overall implementation rather than rehashing the _complete_ and rather extensive code base.
 
-DDD has deep ties into object-oriented programming and its ways of thinking. We will see examples of how encapsulation, inheritance, abstractions and classes allow to write more well-structured code, so that we can uncover maximum benefits from DDD.
-
 We will inspect and analyze some of the usage of all (TODO most?) of the tactical patterns:
 
 * Modules

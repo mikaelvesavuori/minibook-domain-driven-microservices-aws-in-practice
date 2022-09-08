@@ -7,11 +7,7 @@ description: >-
 
 # Entities and aggregates
 
-Entities and aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
-
-Both of these concepts are very much related, and it probably makes sense to start with the more general of them: The entity.
-
-Entities are object that may mutate (change) over time, and who all have distinct identities. We can think of a `BookClubMember` as something that feels quite right being an entity. Whereas a `Meeting` may be a simple value object, as it has neither a strict identity (perhaps just a simple identifier) nor will it change after the fact, the `BookClubMember` will be a much less simple construct. It will certainly involve both data and behavior, and it will likely have clear business rules attached to these, such as for renewing membership, refreshing the member's read books and more.
+An _Entity_ is a potentially changeable object, which has a unique identifier. _Entities_ have a life of their own within their _Domain Model_, which enables you to obtain the entire transition history of this _Entity_.
 
 It is one of the most important and complex patterns of _Tactical Design_, _Aggregates_ are based on two other _Tactical Standards_, which are _Entities_ and _Value Objects_. An _Aggregate_ is a Cluster of one or more _Entities_, and may also contain _Value Objects_. The Parent _Entity_ of this Cluster receives the name of _Aggregate Root_.
 
