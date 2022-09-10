@@ -51,21 +51,34 @@ Expect a much longer read this time. No worries, we are going to look at select 
 
 {% code title="code/Reservation/SlotReservation/src/domain/aggregates/SlotAggregate.ts" lineNumbers="true" %}
 ```typescript
-import { randomUUID } from 'crypto';
-import fetch from 'node-fetch';
 import { MikroLog } from 'mikrolog';
 
+// Domain services
+import { sanitizeInputData } from '../services/sanitizeInputData';
+import { getGracePeriodEndTime } from '../services/getGracePeriodEndTime';
+import { makeSlot } from '../services/makeSlot';
+
+// Application services
+import { getVerificationCode } from '../../application/services/getVerificationCode';
+import { getCurrentTime } from '../../application/services/getCurrentTime';
+import { loadSlot } from '../../application/services/loadSlot';
+import { loadSlots } from '../../application/services/loadSlots';
+
+// Value objects
 import { TimeSlot } from '../valueObjects/TimeSlot';
 import {
   CancelledEvent,
   CheckedInEvent,
   CheckedOutEvent,
+  ClosedEvent,
   CreatedEvent,
+  OpenedEvent,
   ReservedEvent,
   UnattendedEvent
 } from '../valueObjects/Event';
 
-import { SlotDTO, SlotDependencies, SlotInput, SlotId, Status } from '../../interfaces/Slot';
+// Interfaces
+import { SlotDTO, SlotInput, SlotId, Status } from '../../interfaces/Slot';
 import { Repository } from '../../interfaces/Repository';
 import { EventEmitter } from '../../interfaces/EventEmitter';
 import { Dependencies } from '../../interfaces/Dependencies';
@@ -73,10 +86,8 @@ import { ReserveOutput } from '../../interfaces/ReserveOutput';
 import { MetadataConfigInput } from '../../interfaces/Metadata';
 import { Event } from '../../interfaces/Event';
 
-import { MissingInputDataFieldError } from '../../application/errors/MissingInputDataFieldError';
-import { MissingInputDataTimeError } from '../../application/errors/MissingInputDataTimeError';
+// Errors
 import { MissingDependenciesError } from '../../application/errors/MissingDependenciesError';
-import { MissingSlotError } from '../../application/errors/MissingSlotError';
 import { MissingSecurityApiEndpoint } from '../../application/errors/MissingSecurityApiEndpoint';
 import { CheckInConditionsNotMetError } from '../../application/errors/CheckInConditionsNotMetError';
 import { CheckOutConditionsNotMetError } from '../../application/errors/CheckOutConditionsNotMetError';
@@ -86,39 +97,41 @@ import { FailedGettingVerificationCodeError } from '../../application/errors/Fai
 import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
 
 /**
- * @description The Slot acts as the aggregate root for Slots (representing rooms
+ * @description Acts as the aggregate root for Slots (representing rooms
  * and their availability), enforcing all the respective invariants ("statuses")
  * of the Slot entity.
  */
 export class SlotAggregate {
-  repository: Repository;
-  eventEmitter: EventEmitter;
-  metadataConfig: MetadataConfigInput;
-  logger: MikroLog;
-  analyticsBusName: string;
-  domainBusName: string;
-  securityApiEndpoint: string;
+  private repository: Repository;
+  private eventEmitter: EventEmitter;
+  private metadataConfig: MetadataConfigInput;
+  private logger: MikroLog;
+  private analyticsBusName: string;
+  private domainBusName: string;
+  private securityApiEndpoint: string;
 
   constructor(dependencies: Dependencies) {
+    if (!dependencies.repository || !dependencies.eventEmitter)
+      throw new MissingDependenciesError();
     const { repository, eventEmitter, metadataConfig } = dependencies;
+
     this.repository = repository;
     this.eventEmitter = eventEmitter;
     this.metadataConfig = metadataConfig;
     this.logger = MikroLog.start();
 
-    if (!repository || !eventEmitter) throw new MissingDependenciesError();
-
     this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
     this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
     this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
 
-    if (!this.domainBusName || !this.analyticsBusName)
+    if (!this.analyticsBusName || !this.domainBusName)
       throw new MissingEnvVarsError(
         JSON.stringify([
           { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
           { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
         ])
       );
+    if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
   }
 
   /**
@@ -126,77 +139,20 @@ export class SlotAggregate {
    */
 
   /**
-   * @description Create a valid, starting-state ("open") invariant of the Slot.
+   * @description Utility to correctly update the common fields in an
+   * invariant state of a Slot and pass it to the repository.
+   *
+   * @note Any other fields need to be updated prior to calling this method!
    */
-  private makeSlot(slotRequest: SlotDependencies): SlotDTO {
-    const { currentTime, startTime, endTime } = slotRequest;
+  private async updateSlot(slot: SlotDTO, status: Status): Promise<void> {
+    slot['slotStatus'] = status;
+    slot['updatedAt'] = getCurrentTime();
 
-    return {
-      slotId: this.getNewUuid(),
-      hostName: '',
-      timeSlot: {
-        startTime,
-        endTime
-      },
-      slotStatus: 'OPEN',
-      createdAt: currentTime,
-      updatedAt: currentTime
-    };
-  }
+    sanitizeInputData(slot);
 
-  /**
-   * @description Returns the current time as an ISO string.
-   */
-  private getCurrentTime(): string {
-    return new Date().toISOString();
-  }
-
-  /**
-   * @description Returns the end of the grace period until a reserved
-   * slot is deemed unattended and returns to open state.
-   */
-  private getGracePeriodEndTime(startTime: string): string {
-    const minutes = 10;
-    const msPerMinute = 60 * 1000;
-    return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
-  }
-
-  /**
-   * @description Validates incoming input data.
-   * @param onlyCheckReservationDataInput Used for reservations in which case we only have limited ingoing data.
-   */
-  private validateInputData(
-    data: Record<string, any>,
-    onlyCheckReservationDataInput?: boolean
-  ): SlotDTO {
-    // Force data into a new object to get rid of anything dangerous that might have made it in
-    const stringifiedData = JSON.stringify(data);
-    const parsedData = JSON.parse(stringifiedData);
-
-    // Verify presence of required fields
-    const requiredFields = onlyCheckReservationDataInput
-      ? ['slotId', 'hostName']
-      : ['slotId', 'timeSlot', 'slotStatus', 'createdAt', 'updatedAt'];
-    requiredFields.forEach((key: string) => {
-      const value = parsedData[key];
-      if (!value) throw new MissingInputDataFieldError();
-      else if (key === 'timeSlot') {
-        if (!parsedData['timeSlot']['startTime'] || !parsedData['timeSlot']['endTime'])
-          throw new MissingInputDataTimeError();
-      }
-    });
-
-    // Construct new Slot without any additional, non-required fields that might have been injected
-    const reconstitutedSlot: Record<string, any> = {};
-    Object.entries(data).forEach((entry: any) => {
-      const [key, value] = entry;
-      if (requiredFields.includes(key)) reconstitutedSlot[key] = value;
-    });
-
-    // Add `hostName` if one existed
-    if (parsedData['hostName']) reconstitutedSlot['hostName'] = parsedData['hostName'];
-
-    return reconstitutedSlot as SlotDTO;
+    await this.repository
+      .updateSlot(slot)
+      .then(() => this.logger.log(`Updated status of '${slot.slotId}' to '${status}'`));
   }
 
   /**
@@ -214,59 +170,13 @@ export class SlotAggregate {
   }
 
   /**
-   * @description Utility to load and validate data single item from repository.
+   * @description Utility to encapsulate the transactional boilerplate
+   * such as calling the repository and event emitter.
    */
-  private async loadSlot(slotId: SlotId): Promise<SlotDTO> {
-    const data = await this.repository.loadSlot(slotId);
-    if (data) return this.validateInputData(data);
-
-    throw new MissingSlotError();
-  }
-
-  /**
-   * @description Utility to load and validate multiple items from repository.
-   */
-  private async loadSlots(): Promise<SlotDTO[]> {
-    const items = await this.repository.loadSlots();
-    return items.map((item: Record<string, any>) => this.validateInputData(item));
-  }
-
-  /**
-   * @description Utility to correctly update the common fields in an
-   * invariant state of a Slot and pass it to the repository.
-   *
-   * Any other fields need to be updated prior to calling this method!
-   */
-  private async updateSlot(slot: SlotDTO, status: Status): Promise<void> {
-    slot['slotStatus'] = status;
-    slot['updatedAt'] = this.getCurrentTime();
-    this.validateInputData(slot);
-    await this.repository
-      .updateSlot(slot)
-      .then(() => this.logger.log(`Updated status of '${slot.slotId}' to '${status}'`));
-  }
-
-  /**
-   * @description Get new stringified UUID version 4 value.
-   */
-  private getNewUuid(): string {
-    return randomUUID().toString();
-  }
-
-  /**
-   * @description Connect to Security API to generate code.
-   */
-  private async getVerificationCode(slotId: string): Promise<string> {
-    if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
-
-    return await fetch(this.securityApiEndpoint, {
-      body: JSON.stringify({
-        slotId: slotId
-      }),
-      method: 'POST'
-    }).then((res: any) => {
-      if (res?.status >= 200 && res?.status < 300) return res.json();
-    });
+  private async transact(slot: SlotDTO, event: Event, newStatus: Status) {
+    await this.updateSlot(slot, newStatus);
+    await this.repository.addEvent(event);
+    await this.emitEvents(event);
   }
 
   /**
@@ -280,26 +190,25 @@ export class SlotAggregate {
    *
    * @see https://time.is/Z
    */
-  public async makeDailySlots(): Promise<void> {
+  public async makeDailySlots(): Promise<string[]> {
     const slots: SlotDTO[] = [];
 
-    const timeSlot = new TimeSlot();
-    const currentTime = this.getCurrentTime();
+    const startHour = 6; // Zulu time (GMT) -> 08:00 in CEST
     const numberHours = 10;
-    const startHour = 8;
+
+    const timeSlot = new TimeSlot();
+    const currentTime = getCurrentTime();
 
     for (let slotCount = 0; slotCount < numberHours; slotCount++) {
       const hour = startHour + slotCount;
-      const { startTime, endTime } = timeSlot.startingAt(hour);
-      const newSlot = this.makeSlot({ currentTime, startTime, endTime });
+      timeSlot.startingAt(hour);
+      const { startTime, endTime } = timeSlot.get();
+      const newSlot = makeSlot({ currentTime, startTime, endTime });
       slots.push(newSlot);
     }
 
     const addSlots = slots.map(async (slot: SlotDTO) => {
-      await this.repository.updateSlot(slot);
-
       const { slotId, hostName, slotStatus, timeSlot } = slot;
-
       const event = new CreatedEvent({
         event: {
           eventName: 'CREATED', // Transient state
@@ -312,10 +221,17 @@ export class SlotAggregate {
         metadataConfig: this.metadataConfig
       });
 
+      // This does not use the local `transact()` method since
+      // we want to use `repository.updateSlot()` directly here
+      await this.repository.updateSlot(slot);
+      await this.repository.addEvent(event);
       await this.emitEvents(event);
     });
 
     await Promise.all(addSlots);
+
+    const slotIds = slots.map((slot: SlotDTO) => slot.slotId);
+    return slotIds;
   }
 
   /**
@@ -326,13 +242,15 @@ export class SlotAggregate {
    * @emits `CANCELLED`
    */
   public async cancel(slotId: SlotId): Promise<void> {
-    const slot = await this.loadSlot(slotId);
+    const slot = await loadSlot(this.repository, slotId);
     const { slotStatus, hostName, timeSlot } = slot;
     const { startTime } = timeSlot;
     if (slotStatus !== 'RESERVED') throw new CancellationConditionsNotMetError(slotStatus);
 
     const newStatus = 'OPEN';
-    await this.updateSlot(slot, newStatus);
+
+    const updatedSlot = slot;
+    updatedSlot['hostName'] = '';
 
     const event = new CancelledEvent({
       event: {
@@ -346,7 +264,7 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.emitEvents(event);
+    await this.transact(slot, event, newStatus);
   }
 
   /**
@@ -357,27 +275,19 @@ export class SlotAggregate {
    * @emits `RESERVED`
    */
   public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
-    this.validateInputData(slotInput, true);
+    sanitizeInputData(slotInput, true);
     const { slotId, hostName } = slotInput;
 
-    const slot = await this.loadSlot(slotId);
+    const slot = await loadSlot(this.repository, slotId);
     const { slotStatus, timeSlot } = slot;
     const { startTime } = timeSlot;
     if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
 
     // We do the verification code stuff before committing to the transaction
-    const verificationCode = await this.getVerificationCode(slotId);
+    const verificationCode = await getVerificationCode(this.securityApiEndpoint, slotId);
     if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
 
     const newStatus = 'RESERVED';
-
-    await this.updateSlot(
-      {
-        ...slot,
-        hostName: hostName || ''
-      },
-      newStatus
-    );
 
     const event = new ReservedEvent({
       event: {
@@ -391,7 +301,12 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.emitEvents(event);
+    const updatedSlot = {
+      ...slot,
+      hostName: hostName || ''
+    };
+
+    await this.transact(updatedSlot, event, newStatus);
 
     return {
       code: verificationCode
@@ -406,13 +321,12 @@ export class SlotAggregate {
    * @emits `CHECKED_IN`
    */
   public async checkIn(slotId: SlotId): Promise<void> {
-    const slot = await this.loadSlot(slotId);
+    const slot = await loadSlot(this.repository, slotId);
     const { slotStatus, hostName, timeSlot } = slot;
     const { startTime } = timeSlot;
     if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
 
     const newStatus = 'CHECKED_IN';
-    await this.updateSlot(slot, newStatus);
 
     const event = new CheckedInEvent({
       event: {
@@ -426,7 +340,7 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.emitEvents(event);
+    await this.transact(slot, event, newStatus);
   }
 
   /**
@@ -437,13 +351,15 @@ export class SlotAggregate {
    * @emits `CHECKED_OUT`
    */
   public async checkOut(slotId: SlotId): Promise<void> {
-    const slot = await this.loadSlot(slotId);
+    const slot = await loadSlot(this.repository, slotId);
     const { slotStatus, hostName, timeSlot } = slot;
     const { startTime } = timeSlot;
     if (slotStatus !== 'CHECKED_IN') throw new CheckOutConditionsNotMetError(slotStatus);
 
     const newStatus = 'OPEN';
-    await this.updateSlot(slot, newStatus);
+
+    const updatedSlot = slot;
+    updatedSlot['hostName'] = '';
 
     const event = new CheckedOutEvent({
       event: {
@@ -457,16 +373,59 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.emitEvents(event);
+    await this.transact(updatedSlot, event, newStatus);
   }
 
   /**
    * @description Updates a Slot to be in "open" invariant state.
+   *
+   * @emits `OPENED`
    */
-  public async setOpen(slotId: SlotId): Promise<void> {
-    const slot = await this.loadSlot(slotId);
-    slot['hostName'] = '';
-    await this.updateSlot(slot, 'OPEN');
+  public async openSlot(slotId: SlotId): Promise<void> {
+    const slot = await loadSlot(this.repository, slotId);
+    const { timeSlot } = slot;
+    const { startTime } = timeSlot;
+
+    const newStatus = 'OPEN';
+
+    const event = new OpenedEvent({
+      event: {
+        eventName: 'OPENED',
+        slotId,
+        slotStatus: newStatus,
+        hostName: '',
+        startTime
+      },
+      eventBusName: this.domainBusName,
+      metadataConfig: this.metadataConfig
+    });
+
+    await this.transact(slot, event, newStatus);
+  }
+
+  /**
+   * @description Updates a Slot to be in "closed" invariant state.
+   *
+   * @emits `CLOSED`
+   */
+  private async closeSlot(slot: SlotDTO): Promise<void> {
+    const { slotId, hostName, timeSlot } = slot;
+    const { startTime } = timeSlot;
+    const newStatus = 'CLOSED';
+
+    const event = new ClosedEvent({
+      event: {
+        eventName: newStatus,
+        slotId,
+        slotStatus: newStatus,
+        hostName,
+        startTime
+      },
+      eventBusName: this.domainBusName,
+      metadataConfig: this.metadataConfig
+    });
+
+    await this.transact(slot, event, newStatus);
   }
 
   /**
@@ -475,10 +434,10 @@ export class SlotAggregate {
    * This is only triggered by scheduled events.
    */
   public async checkForClosed(): Promise<void> {
-    const slots = await this.loadSlots();
-    const currentTime = this.getCurrentTime();
+    const slots = await loadSlots(this.repository);
+    const currentTime = getCurrentTime();
     const updateSlots = slots.map(async (slot: SlotDTO) => {
-      if (currentTime > slot?.timeSlot?.endTime) return await this.updateSlot(slot, 'CLOSED');
+      if (currentTime > slot?.timeSlot?.endTime) return await this.closeSlot(slot);
     });
     await Promise.all(updateSlots);
   }
@@ -487,16 +446,24 @@ export class SlotAggregate {
    * @description Check for unattended slots.
    */
   public async checkForUnattended(): Promise<void> {
-    const slots = await this.loadSlots();
-    const updateSlots = slots.map(async (slot: SlotDTO) => await this.setSlotAsUnattended(slot));
-    await Promise.all(updateSlots);
+    const slots = await loadSlots(this.repository);
+
+    const slotsToUpdate = slots.filter(async (slot: SlotDTO) => {
+      const currentTime = getCurrentTime();
+      const gracePeriodEnd = getGracePeriodEndTime(slot?.timeSlot?.startTime);
+
+      /**
+       * Check if our 10 minute grace period has ended,
+       * in which case we want to open the slot again.
+       */
+      if (currentTime > gracePeriodEnd) return await this.unattendSlot(slot);
+    });
+
+    await Promise.all(slotsToUpdate);
   }
 
   /**
    * @description Set a slot as being in `OPEN` invariant state if it is unattended.
-   *
-   * First, checks to see if a reserved slot has not been checked into
-   * within 10 minutes (the "grace period").
    *
    * State change can only be performed in `RESERVED` state.
    *
@@ -504,22 +471,16 @@ export class SlotAggregate {
    *
    * @emits `UNATTENDED`
    */
-  public async setSlotAsUnattended(slot: SlotDTO): Promise<void> {
-    const currentTime = this.getCurrentTime();
-    const gracePeriodEnd = this.getGracePeriodEndTime(slot?.timeSlot?.startTime);
-    /**
-     * Check if our 10 minute grace period has ended,
-     * in which case we want to open the slot again.
-     */
-    if (currentTime < gracePeriodEnd) return;
-
+  public async unattendSlot(slot: SlotDTO): Promise<void> {
     const { slotId, slotStatus, hostName, timeSlot } = slot;
     const { startTime } = timeSlot;
 
     if (slotStatus !== 'RESERVED') return;
 
     const newStatus = 'OPEN';
-    await this.updateSlot(slot, newStatus);
+
+    const updatedSlot = slot;
+    updatedSlot['hostName'] = '';
 
     const event = new UnattendedEvent({
       event: {
@@ -533,7 +494,7 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.emitEvents(event);
+    await this.transact(updatedSlot, event, newStatus);
   }
 }
 ```
@@ -547,41 +508,60 @@ The code in the class is in two major chunks: Private methods and the public ("A
 
 The examples will be presented in "roughly" sequential order, though logically reservation comes before the check-in. Those are switched in order because I want to gradually progress on their relative complexity (what little there is).
 
+### Importing services
+
+At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
+
+When it comes to services, this importing may be pretty contentious to purists.
+
+In DDD (and Googling or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
+
+Our particular case, however, is sensible. Let me present some of my arguments:
+
+* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
+* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
+* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
+* OK, so with them refactored to services, why don't we inject them instead? This too is sensible. **However, I decided against injecting them becomes this would create significant up-front bloat** across the use cases, or worse (but more pure), in the web adapters. This will carry down to affecting many of the tests as well. At this stage it is simply more pragmatic to accept the direct importing of services. The tests already cover enough to guarantee that any mischievous work in the services would be caught.
+
+And with no more than that, to each his own, but it's a realistic as well as solid approach, without compromising too much on the integrity of the Clean Architecture and DDD principles.
+
 ### Constructor
 
-The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the Slot aggregate less coupled to any infrastructural concerns.
+The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `SlotAggregate` less coupled to any infrastructural concerns.
 
-TODO: Check order of imports and throwing MissingDependenciesError
+We also have several custom errors that may be thrown if conditions are not valid.&#x20;
 
 ```typescript
-repository: Repository;
-eventEmitter: EventEmitter;
-metadataConfig: MetadataConfigInput;
-logger: MikroLog;
-analyticsBusName: string;
-domainBusName: string;
-securityApiEndpoint: string;
+private repository: Repository;
+private eventEmitter: EventEmitter;
+private metadataConfig: MetadataConfigInput;
+private logger: MikroLog;
+private analyticsBusName: string;
+private domainBusName: string;
+private securityApiEndpoint: string;
 
 constructor(dependencies: Dependencies) {
+  if (!dependencies.repository || !dependencies.eventEmitter)
+    throw new MissingDependenciesError();
   const { repository, eventEmitter, metadataConfig } = dependencies;
+
   this.repository = repository;
   this.eventEmitter = eventEmitter;
   this.metadataConfig = metadataConfig;
   this.logger = MikroLog.start();
 
-  if (!repository || !eventEmitter) throw new MissingDependenciesError();
-
   this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
   this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
   this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
 
-  if (!this.domainBusName || !this.analyticsBusName)
+  if (!this.analyticsBusName || !this.domainBusName)
     throw new MissingEnvVarsError(
       JSON.stringify([
         { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
         { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
       ])
     );
+  if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
 }
 ```
 
