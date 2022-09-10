@@ -11,6 +11,10 @@ They perform domain-specific operations, which can involve multiple domain objec
 
 TODO
 
+> When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
+>
+> —Source: Eric Evans _Domain-Driven Design_
+
 ### Application Services (or use-case interactors)
 
 TODO
