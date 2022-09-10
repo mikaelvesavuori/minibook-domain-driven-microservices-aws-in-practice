@@ -25,9 +25,23 @@ asdf
 
 ## The "anemic domain model"
 
-TODO
+The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be CRUDdy and allow for direct mutations through public getters and setters.
 
-A rich domain model using entities (etc.) will be easier to understand, will be more resilient to change and disruptions, and is much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this.&#x20;
+Some find the criticism around "anemic domain models" academic and roundly wrong. They might argue that their experiences are that it's just as easy to get things to work, but with less hassle than going full-on with OOP. This becomes impossible to verify or prove without access to the code.
+
+{% hint style="warning" %}
+For my part, code quality and structure are paramount when building something myself, or when I work with, or coach, other engineers.
+
+All this _is_ measurable, once you have access to the code and not just raving to some rando on an internet forum. Using competent tooling you will likely get recommendations to fix issues like this, too. OOP and refactoring practices are practically institutionalized so this not a "DDD thing".
+
+The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly
+{% endhint %}
+
+The opposite of all of this, no surprises, is the "rich domain model"—as someone on Stack Overflow remarked, really no more than your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
+
+Compared to their anemic brethren, rich domain models (typically entities and aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain models**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
+
+**A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()`. As we've seen many times in this book, we want this to explain 1:1 in our common/ubiquitous language what we are doing.
 
 ## Invariants
 
@@ -510,9 +524,13 @@ The examples will be presented in "roughly" sequential order, though logically r
 
 ### Importing services
 
+{% hint style="danger" %}
+Hold on to your feelings, if I've converted you to a Mini-Me version of Uncle Bob or Eric Evans!
+{% endhint %}
+
 At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
 
-When it comes to services, this importing may be pretty contentious to purists.
+**When it comes to services, this importing may be pretty contentious to purists.**
 
 In DDD (and Googling or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
 
