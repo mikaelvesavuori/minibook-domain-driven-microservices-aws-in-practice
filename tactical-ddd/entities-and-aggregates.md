@@ -493,6 +493,22 @@ Our particular case, however, is sensible. Let me present some of my arguments:
 
 And with no more than that, to each his own, but it's a realistic as well as solid approach, without compromising too much on the integrity of the Clean Architecture and DDD principles.
 
+\++++
+
+### Why is this not a service or something else?
+
+You might have noticed that our `SlotReservation` aggregate was indeed called an _aggregate_, yet it has no ID or similar (as per expectations on aggregates), nor did it carry state on itself. Well spotted.
+
+My reasons for doing it this way include:
+
+* Services are something we try to avoid in DDD, and the uses I understand them to be best for include typical "heavy lifting", not necessarily being important orchestrators. The `SlotReservation` aggregate has quite a bit of such orchestration happening on the `Slot` entity and more.
+* It's not an entity because it does not handle something, on its own, concrete.
+* It's not reduced to orchestration bits-and-bobs in the use case either. This for me seems right, coming from the Clean Architecture angle, though there is too much domain logic and entity operations for me to feel that would be right.
+
+And that's how we ended up in this compromise.
+
+\++++
+
 ### Constructor
 
 The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `SlotAggregate` less coupled to any infrastructural concerns.

@@ -24,7 +24,7 @@ For my part, code quality and structure are paramount when building something my
 
 All this _is_ measurable, once you have access to the code and not just raving to some rando on an internet forum. Using competent tooling you will likely get recommendations to fix issues like this, too. OOP and refactoring practices are practically institutionalized so this not a "DDD thing".
 
-The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly
+The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly.
 {% endhint %}
 
 The opposite of all of this, no surprises, is the "rich domain model"—as someone on Stack Overflow remarked, really no more than your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
