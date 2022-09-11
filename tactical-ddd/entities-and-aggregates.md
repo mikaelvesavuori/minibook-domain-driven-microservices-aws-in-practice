@@ -504,8 +504,9 @@ My reasons for doing it this way include:
 * Services are something we try to avoid in DDD, and the uses I understand them to be best for include typical "heavy lifting", not necessarily being important orchestrators. The `SlotReservation` aggregate has quite a bit of such orchestration happening on the `Slot` entity and more.
 * It's not an entity because it does not handle something, on its own, concrete.
 * It's not reduced to orchestration bits-and-bobs in the use case either. This for me seems right, coming from the Clean Architecture angle, though there is too much domain logic and entity operations for me to feel that would be right.
+* Finally: It _does_ act like an aggregate as it functions as the "entry point" to the value object (generation) and the `Slot` entity that we actually operate on and persist. We also send the domain events from here: It is the transaction boundary.
 
-And that's how we ended up in this compromise.
+And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with considered and deliberate design which after all is the real goal.
 
 \++++
 
