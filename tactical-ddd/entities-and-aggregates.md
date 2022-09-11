@@ -1,17 +1,16 @@
 ---
-description: >-
-  The veritable gilded halls of DDD which, like the best songs in a concert,
-  come in after quite a bit of build-up: This is the "Master of Puppets" of DDD
-  patterns... "Master of Patterns"?
+description: TODO
 ---
 
-# Entities and aggregates
+# Aggregates
 
-Entities and aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
+Revisiting our relations between aggregates and entities we see that:
 
-Both of these concepts are very much related, and it probably makes sense to start with the more general of them: The entity.
+* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
+* Aggregates are objects that access and operate on entities. To be clear, an aggregate is always itself an entity, but the opposite is not necessarily true.
+* An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
 
-Entities are object that may mutate (change) over time, and who all have distinct identities. We can think of a `BookClubMember` as something that feels quite right being an entity. Whereas a `Meeting` may be a simple value object, as it has neither a strict identity (perhaps just a simple identifier) nor will it change after the fact, the `BookClubMember` will be a much less simple construct. It will certainly involve both data and behavior, and it will likely have clear business rules attached to these, such as for renewing membership, refreshing the member's read books and more.
+TODO
 
 It is one of the most important and complex patterns of _Tactical Design_, _Aggregates_ are based on two other _Tactical Standards_, which are _Entities_ and _Value Objects_. An _Aggregate_ is a Cluster of one or more _Entities_, and may also contain _Value Objects_. The Parent _Entity_ of this Cluster receives the name of _Aggregate Root_.
 
@@ -21,43 +20,9 @@ aggregate root is a consistency boundary
 >
 > — Source: Eric Evans
 
-asdf
-
-## The "anemic domain model"
-
-The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be CRUDdy and allow for direct mutations through public getters and setters.
-
-Some find the criticism around "anemic domain models" academic and roundly wrong. They might argue that their experiences are that it's just as easy to get things to work, but with less hassle than going full-on with OOP. This becomes impossible to verify or prove without access to the code.
-
-{% hint style="warning" %}
-For my part, code quality and structure are paramount when building something myself, or when I work with, or coach, other engineers.
-
-All this _is_ measurable, once you have access to the code and not just raving to some rando on an internet forum. Using competent tooling you will likely get recommendations to fix issues like this, too. OOP and refactoring practices are practically institutionalized so this not a "DDD thing".
-
-The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly
-{% endhint %}
-
-The opposite of all of this, no surprises, is the "rich domain model"—as someone on Stack Overflow remarked, really no more than your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
-
-Compared to their anemic brethren, rich domain models (typically entities and aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain models**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
-
-**A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()`. As we've seen many times in this book, we want this to explain 1:1 in our common/ubiquitous language what we are doing.
-
-## Invariants
-
 TODO
 
-The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)
-
-## Practice
-
-Revisiting our relations between aggregates and entities we see that:
-
-* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
-* Aggregates are objects that access and operate on entities. To be clear, an aggregate is always itself an entity, but the opposite is not necessarily true.
-* An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
-
-## The Slot aggregate
+## The SlotReservation aggregate
 
 I wouldn't be surprised if you already are aware that we'll be looking at the meatiest and most significant part of our codebase. This is good! If we have it this far, using the other tactical concepts, we are truly now at the core of the business logic.
 
@@ -67,19 +32,15 @@ Expect a much longer read this time. No worries, we are going to look at select 
 ```typescript
 import { MikroLog } from 'mikrolog';
 
-// Domain services
-import { sanitizeInputData } from '../services/sanitizeInputData';
-import { getGracePeriodEndTime } from '../services/getGracePeriodEndTime';
-import { makeSlot } from '../services/makeSlot';
+// Entities
+import { Slot } from '../entities/Slot';
 
 // Application services
 import { getVerificationCode } from '../../application/services/getVerificationCode';
-import { getCurrentTime } from '../../application/services/getCurrentTime';
 import { loadSlot } from '../../application/services/loadSlot';
 import { loadSlots } from '../../application/services/loadSlots';
 
-// Value objects
-import { TimeSlot } from '../valueObjects/TimeSlot';
+// Events
 import {
   CancelledEvent,
   CheckedInEvent,
@@ -89,7 +50,10 @@ import {
   OpenedEvent,
   ReservedEvent,
   UnattendedEvent
-} from '../valueObjects/Event';
+} from '../events/Event';
+
+// Value objects
+import { TimeSlot } from '../valueObjects/TimeSlot';
 
 // Interfaces
 import { SlotDTO, SlotInput, SlotId, Status } from '../../interfaces/Slot';
@@ -111,18 +75,18 @@ import { FailedGettingVerificationCodeError } from '../../application/errors/Fai
 import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
 
 /**
- * @description Acts as the aggregate root for Slots (representing rooms
- * and their availability), enforcing all the respective invariants ("statuses")
+ * @description Acts as the aggregate for Slot reservations (representing rooms and
+ * their availability), enforcing all the respective invariants ("statuses")
  * of the Slot entity.
  */
-export class SlotAggregate {
-  private repository: Repository;
-  private eventEmitter: EventEmitter;
-  private metadataConfig: MetadataConfigInput;
-  private logger: MikroLog;
-  private analyticsBusName: string;
-  private domainBusName: string;
-  private securityApiEndpoint: string;
+export class SlotReservation {
+  private readonly repository: Repository;
+  private readonly eventEmitter: EventEmitter;
+  private readonly metadataConfig: MetadataConfigInput;
+  private readonly logger: MikroLog;
+  private readonly analyticsBusName: string;
+  private readonly domainBusName: string;
+  private readonly securityApiEndpoint: string;
 
   constructor(dependencies: Dependencies) {
     if (!dependencies.repository || !dependencies.eventEmitter)
@@ -145,29 +109,11 @@ export class SlotAggregate {
           { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
         ])
       );
-    if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
   }
 
   /**
    * PRIVATE METHODS
    */
-
-  /**
-   * @description Utility to correctly update the common fields in an
-   * invariant state of a Slot and pass it to the repository.
-   *
-   * @note Any other fields need to be updated prior to calling this method!
-   */
-  private async updateSlot(slot: SlotDTO, status: Status): Promise<void> {
-    slot['slotStatus'] = status;
-    slot['updatedAt'] = getCurrentTime();
-
-    sanitizeInputData(slot);
-
-    await this.repository
-      .updateSlot(slot)
-      .then(() => this.logger.log(`Updated status of '${slot.slotId}' to '${status}'`));
-  }
 
   /**
    * @description Convenience method to emit an event to the domain bus
@@ -187,8 +133,14 @@ export class SlotAggregate {
    * @description Utility to encapsulate the transactional boilerplate
    * such as calling the repository and event emitter.
    */
-  private async transact(slot: SlotDTO, event: Event, newStatus: Status) {
-    await this.updateSlot(slot, newStatus);
+  private async transact(slot: Slot, event: Event, newStatus: Status) {
+    slot.updateStatus(newStatus);
+    const dto = slot.get();
+
+    await this.repository
+      .updateSlot(dto)
+      .then(() => this.logger.log(`Updated status of '${dto.slotId}' to '${newStatus}'`));
+
     await this.repository.addEvent(event);
     await this.emitEvents(event);
   }
@@ -210,18 +162,14 @@ export class SlotAggregate {
     const startHour = 6; // Zulu time (GMT) -> 08:00 in CEST
     const numberHours = 10;
 
-    const timeSlot = new TimeSlot();
-    const currentTime = getCurrentTime();
-
     for (let slotCount = 0; slotCount < numberHours; slotCount++) {
       const hour = startHour + slotCount;
-      timeSlot.startingAt(hour);
-      const { startTime, endTime } = timeSlot.get();
-      const newSlot = makeSlot({ currentTime, startTime, endTime });
-      slots.push(newSlot);
+      const timeSlot = new TimeSlot().startingAt(hour);
+      const slot = new Slot(timeSlot.get());
+      slots.push(slot.get());
     }
 
-    const addSlots = slots.map(async (slot: SlotDTO) => {
+    const dailySlots = slots.map(async (slot: SlotDTO) => {
       const { slotId, hostName, slotStatus, timeSlot } = slot;
       const event = new CreatedEvent({
         event: {
@@ -242,7 +190,7 @@ export class SlotAggregate {
       await this.emitEvents(event);
     });
 
-    await Promise.all(addSlots);
+    await Promise.all(dailySlots);
 
     const slotIds = slots.map((slot: SlotDTO) => slot.slotId);
     return slotIds;
@@ -256,15 +204,16 @@ export class SlotAggregate {
    * @emits `CANCELLED`
    */
   public async cancel(slotId: SlotId): Promise<void> {
-    const slot = await loadSlot(this.repository, slotId);
-    const { slotStatus, hostName, timeSlot } = slot;
+    const slotDto = await loadSlot(this.repository, slotId);
+    const slot = new Slot().from(slotDto);
+
+    const { slotStatus, hostName, timeSlot } = slot.get();
     const { startTime } = timeSlot;
     if (slotStatus !== 'RESERVED') throw new CancellationConditionsNotMetError(slotStatus);
 
     const newStatus = 'OPEN';
 
-    const updatedSlot = slot;
-    updatedSlot['hostName'] = '';
+    slot.removeHostName();
 
     const event = new CancelledEvent({
       event: {
@@ -289,15 +238,18 @@ export class SlotAggregate {
    * @emits `RESERVED`
    */
   public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
-    sanitizeInputData(slotInput, true);
+    // TODO: Create special sanitizer for slotInput
     const { slotId, hostName } = slotInput;
 
-    const slot = await loadSlot(this.repository, slotId);
-    const { slotStatus, timeSlot } = slot;
+    const slotDto = await loadSlot(this.repository, slotId);
+    const slot = new Slot().from(slotDto);
+
+    const { slotStatus, timeSlot } = slot.get();
     const { startTime } = timeSlot;
     if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
 
     // We do the verification code stuff before committing to the transaction
+    if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
     const verificationCode = await getVerificationCode(this.securityApiEndpoint, slotId);
     if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
 
@@ -315,12 +267,9 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    const updatedSlot = {
-      ...slot,
-      hostName: hostName || ''
-    };
+    slot.updateHostName(hostName || '');
 
-    await this.transact(updatedSlot, event, newStatus);
+    await this.transact(slot, event, newStatus);
 
     return {
       code: verificationCode
@@ -335,8 +284,10 @@ export class SlotAggregate {
    * @emits `CHECKED_IN`
    */
   public async checkIn(slotId: SlotId): Promise<void> {
-    const slot = await loadSlot(this.repository, slotId);
-    const { slotStatus, hostName, timeSlot } = slot;
+    const slotDto = await loadSlot(this.repository, slotId);
+    const slot = new Slot().from(slotDto);
+
+    const { slotStatus, hostName, timeSlot } = slot.get();
     const { startTime } = timeSlot;
     if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
 
@@ -365,15 +316,16 @@ export class SlotAggregate {
    * @emits `CHECKED_OUT`
    */
   public async checkOut(slotId: SlotId): Promise<void> {
-    const slot = await loadSlot(this.repository, slotId);
-    const { slotStatus, hostName, timeSlot } = slot;
+    const slotDto = await loadSlot(this.repository, slotId);
+    const slot = new Slot().from(slotDto);
+
+    const { slotStatus, hostName, timeSlot } = slot.get();
     const { startTime } = timeSlot;
     if (slotStatus !== 'CHECKED_IN') throw new CheckOutConditionsNotMetError(slotStatus);
 
     const newStatus = 'OPEN';
 
-    const updatedSlot = slot;
-    updatedSlot['hostName'] = '';
+    slot.removeHostName();
 
     const event = new CheckedOutEvent({
       event: {
@@ -387,7 +339,7 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.transact(updatedSlot, event, newStatus);
+    await this.transact(slot, event, newStatus);
   }
 
   /**
@@ -395,9 +347,11 @@ export class SlotAggregate {
    *
    * @emits `OPENED`
    */
-  public async openSlot(slotId: SlotId): Promise<void> {
-    const slot = await loadSlot(this.repository, slotId);
-    const { timeSlot } = slot;
+  public async open(slotId: SlotId): Promise<void> {
+    const slotDto = await loadSlot(this.repository, slotId);
+    const slot = new Slot().from(slotDto);
+
+    const { timeSlot } = slot.get();
     const { startTime } = timeSlot;
 
     const newStatus = 'OPEN';
@@ -418,12 +372,28 @@ export class SlotAggregate {
   }
 
   /**
+   * @description Check for closed slots and set them as being in "closed" invariant state.
+   *
+   * This is only triggered by scheduled events.
+   */
+  public async checkForClosed(): Promise<void> {
+    const slots = await loadSlots(this.repository);
+
+    const updateSlots = slots.map(async (slotDto: SlotDTO) => {
+      const slot = new Slot().from(slotDto);
+      if (slot.isEnded()) return await this.close(slot);
+    });
+
+    await Promise.all(updateSlots);
+  }
+
+  /**
    * @description Updates a Slot to be in "closed" invariant state.
    *
    * @emits `CLOSED`
    */
-  private async closeSlot(slot: SlotDTO): Promise<void> {
-    const { slotId, hostName, timeSlot } = slot;
+  private async close(slot: Slot): Promise<void> {
+    const { slotId, hostName, timeSlot } = slot.get();
     const { startTime } = timeSlot;
     const newStatus = 'CLOSED';
 
@@ -443,34 +413,14 @@ export class SlotAggregate {
   }
 
   /**
-   * @description Check for closed slots and set them as being in "closed" invariant state.
-   *
-   * This is only triggered by scheduled events.
-   */
-  public async checkForClosed(): Promise<void> {
-    const slots = await loadSlots(this.repository);
-    const currentTime = getCurrentTime();
-    const updateSlots = slots.map(async (slot: SlotDTO) => {
-      if (currentTime > slot?.timeSlot?.endTime) return await this.closeSlot(slot);
-    });
-    await Promise.all(updateSlots);
-  }
-
-  /**
    * @description Check for unattended slots.
    */
   public async checkForUnattended(): Promise<void> {
     const slots = await loadSlots(this.repository);
 
-    const slotsToUpdate = slots.filter(async (slot: SlotDTO) => {
-      const currentTime = getCurrentTime();
-      const gracePeriodEnd = getGracePeriodEndTime(slot?.timeSlot?.startTime);
-
-      /**
-       * Check if our 10 minute grace period has ended,
-       * in which case we want to open the slot again.
-       */
-      if (currentTime > gracePeriodEnd) return await this.unattendSlot(slot);
+    const slotsToUpdate = slots.filter(async (slotDto: SlotDTO) => {
+      const slot = new Slot().from(slotDto);
+      if (slot.isGracePeriodOver()) return await this.unattend(slot);
     });
 
     await Promise.all(slotsToUpdate);
@@ -485,16 +435,15 @@ export class SlotAggregate {
    *
    * @emits `UNATTENDED`
    */
-  public async unattendSlot(slot: SlotDTO): Promise<void> {
-    const { slotId, slotStatus, hostName, timeSlot } = slot;
+  private async unattend(slot: Slot): Promise<void> {
+    const { slotId, slotStatus, hostName, timeSlot } = slot.get();
     const { startTime } = timeSlot;
 
     if (slotStatus !== 'RESERVED') return;
 
     const newStatus = 'OPEN';
 
-    const updatedSlot = slot;
-    updatedSlot['hostName'] = '';
+    slot.removeHostName();
 
     const event = new UnattendedEvent({
       event: {
@@ -508,9 +457,10 @@ export class SlotAggregate {
       metadataConfig: this.metadataConfig
     });
 
-    await this.transact(updatedSlot, event, newStatus);
+    await this.transact(slot, event, newStatus);
   }
 }
+
 ```
 {% endcode %}
 

@@ -40,6 +40,25 @@ TODO
 
 The above should all be familiar, so the main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
 
+{% code title="code/Reservation/SlotReservation/src/application/services/loadSlots.ts" lineNumbers="true" %}
+```typescript
+import { sanitizeInputData } from '../../domain/services/sanitizeInputData';
+
+import { Repository } from '../../interfaces/Repository';
+import { SlotDTO } from '../../interfaces/Slot';
+
+/**
+ * @description Utility to load and validate multiple items from repository.
+ */
+export async function loadSlots(repository: Repository): Promise<SlotDTO[]> {
+  const items = await repository.loadSlots();
+  return items.map((item: Record<string, any>) => sanitizeInputData(item));
+}
+```
+{% endcode %}
+
+TODO
+
 ### Domain Services
 
 TODO
@@ -56,4 +75,58 @@ TODO
 >
 > — Source: [https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service](https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service)
 
-There are no Domain Services in Get-A-Room, and I've not had to write any of these either.
+TODO
+
+Domain Services would be recommended in case you have to interact with multiple aggregates for example.
+
+TODO
+
+{% code title="code/Reservation/SlotReservation/src/domain/services/sanitizeInputData.ts" lineNumbers="true" %}
+```typescript
+import { SlotDTO } from '../../interfaces/Slot';
+
+import { MissingInputDataFieldError } from '../../application/errors/MissingInputDataFieldError';
+import { MissingInputDataTimeError } from '../../application/errors/MissingInputDataTimeError';
+
+/**
+ * @description Validate and sanitize incoming input data.
+ * @param onlyCheckReservationDataInput Used for reservations in which case we only have limited ingoing data.
+ * @returns Validated and sanitized `SlotDTO`
+ */
+export function sanitizeInputData(
+  data: Record<string, any>,
+  onlyCheckReservationDataInput?: boolean
+): SlotDTO {
+  // Force data into a new object to get rid of anything dangerous that might have made it in
+  const stringifiedData = JSON.stringify(data);
+  const parsedData = JSON.parse(stringifiedData);
+
+  // Verify presence of required fields
+  const requiredFields = onlyCheckReservationDataInput
+    ? ['slotId', 'hostName']
+    : ['slotId', 'timeSlot', 'slotStatus', 'createdAt', 'updatedAt'];
+  requiredFields.forEach((key: string) => {
+    const value = parsedData[key];
+    if (!value) throw new MissingInputDataFieldError();
+    else if (key === 'timeSlot') {
+      if (!parsedData['timeSlot']['startTime'] || !parsedData['timeSlot']['endTime'])
+        throw new MissingInputDataTimeError();
+    }
+  });
+
+  // Construct new Slot without any additional, non-required fields that might have been injected
+  const reconstitutedSlot: Record<string, any> = {};
+  Object.entries(data).forEach((entry: any) => {
+    const [key, value] = entry;
+    if (requiredFields.includes(key)) reconstitutedSlot[key] = value;
+  });
+
+  // Add `hostName` if one existed
+  if (parsedData['hostName']) reconstitutedSlot['hostName'] = parsedData['hostName'];
+
+  return reconstitutedSlot as SlotDTO;
+}
+```
+{% endcode %}
+
+TODO
