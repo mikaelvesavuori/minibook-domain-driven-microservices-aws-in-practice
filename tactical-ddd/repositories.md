@@ -87,3 +87,7 @@ class DynamoDbRepository implements Repository {
 {% endcode %}
 
 TODO
+
+{% hint style="info" %}
+Microsoft has a lot of good articles on microservices and DDD, for example [this article about repositories](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design).
+{% endhint %}
