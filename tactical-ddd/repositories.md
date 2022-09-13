@@ -86,22 +86,4 @@ class DynamoDbRepository implements Repository {
 ```
 {% endcode %}
 
-Let's start with our undercooked factory pattern.
-
-### Factories
-
-A _Factory_ is a function or method that vends an instance of a class without having to specify the concrete class itself.
-
-{% hint style="info" %}
-Read more at [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example)
-{% endhint %}
-
-TODO
-
-```typescript
-export function createNewDynamoDbRepository(): DynamoDbRepository {
-  return new DynamoDbRepository();
-}
-```
-
 TODO

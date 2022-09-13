@@ -6,11 +6,24 @@ description: >-
 
 # Factories
 
-_Factories_ are used to provide an abstraction in the construction of an Object, and can return an _Aggregate_ root, an _Entity_, or an _Value Object_. _Factories_ are an alternative for building objects that have complexity in building via the constructor method.
+Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD. In the context of DDD we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an entity or aggregate.
 
-## In practice
+## An example
 
-Example:
+To be fair, there are no good uses of factories in Get-A-Room. Instead factories have been used to remove the ugly `new SomeClass()` calls. I'll happily use it whenever I want to avoid letting a user directly access a class, like this:
+
+{% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
+```typescript
+/**
+ * @description Factory function to create a DynamoDB repository.
+ */
+export function createNewDynamoDbRepository(): DynamoDbRepository {
+  return new DynamoDbRepository();
+}
+```
+{% endcode %}
+
+We can also use it to package some important checks or validations we may have, like with the EventBridge emitter:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
 ```typescript
@@ -25,15 +38,6 @@ export const makeNewEventBridgeEmitter = (region: string) => {
 ```
 {% endcode %}
 
-The factory pattern may be used to simplify the creation of complex objects, but I'll happily use it whenever I want to avoid letting a user directly access a class, like this:
-
-{% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
-```typescript
-/**
- * @description Factory function to create a DynamoDB repository.
- */
-export function createNewDynamoDbRepository(): DynamoDbRepository {
-  return new DynamoDbRepository();
-}
-```
-{% endcode %}
+{% hint style="info" %}
+For an excellent and more in-depth article on factories, see [https://www.culttt.com/2014/12/24/factories-domain-driven-design](https://www.culttt.com/2014/12/24/factories-domain-driven-design) or [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example).
+{% endhint %}
