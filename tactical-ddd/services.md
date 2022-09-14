@@ -6,16 +6,24 @@ description: >-
 
 # Services
 
-_Services_ are stateless objects that perform some logic that do not fit with an operation on an _Entity_ or _Value Object_.\
-They perform domain-specific operations, which can involve multiple domain objects.
-
-TODO
-
 > When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
 >
-> —Source: Eric Evans _Domain-Driven Design_
+> —Source: Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_
 
-TODO
+While we haven't gotten to entities and aggregates yet, it's safe to say that **services** play in the next-highest league, metaphorically speaking.
+
+In many projects you might see services being used very broadly and liberally. This is similar to how in many Node/JS/TS projects you will have tons of helpers, utilities or other functionally-oriented code. A problem with this way of structuring code is that you'll start witnessing a flattening of hierarchy: Everything is on the same plane, meaning it's hard to understand how pieces fit together and what operates in which way on what.
+
+Using a more object-oriented approach we can start setting up a hierarchy like this:
+
+* Aggregate Root (if needed)
+* Aggregate
+* Entity
+* Domain Service
+* Application Service
+* Value Object
+
+Let's read what Evans writes about our services.
 
 > **Application Layer**: Defines the jobs the software is supposed to do and directs the expressive domain objects to work out problems. The tasks this layer is responsible for are meaningful to the business or necessary for interaction with the application layers of other systems. This layer is kept thin. It does not contain business rules or knowledge, but only coordinates tasks and delegates work to collaborations of domain objects in the next layer down. It does not have state reflecting the business situation, but it can have state that reflects the progress of a task for the user or the program.
 >
@@ -23,9 +31,9 @@ TODO
 >
 > — Source: Eric Evans (via [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html))
 
-### Application Services (or use-case interactors)
-
 TODO
+
+### Application Services (or use-cases)
 
 > Use Cases (a Clean Architecture term) are similar to **Application Services** in DDD. At least their _relative positioning_ is.
 >
@@ -33,7 +41,7 @@ TODO
 >
 > * Contain no domain-specific business logic.
 > * Are used in order to fetch domain entities (and anything else) from persistence and the outside world.
-> * Either passes of control to an Aggregate to execute domain logic by using a method of the Aggregate, or passes off several entities to a Domain Service to facilitate their interaction.
+> * Either passes off control to an Aggregate to execute domain logic by using a method of the Aggregate, or passes off several entities to a Domain Service to facilitate their interaction.
 > * Have low-levels of [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity).
 >
 > — Source: [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
@@ -61,23 +69,7 @@ TODO
 
 ### Domain Services
 
-TODO
-
-> Domain Services should encapsulate domain concepts/logic - as such, the domain service method:
->
-> ```
-> domainService.persist(data)
-> ```
->
-> does not belong on a domain service, as `persist` is not a part of the _ubiquitious language_ and the operation of persistence is not part of the domain business logic.
->
-> Generally, domain services are useful when you have business rules/logic that require coordinating or working with more than one aggregate. If the logic is only involving one aggregate, it should be in a method on that aggregate's entities.
->
-> — Source: [https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service](https://softwareengineering.stackexchange.com/questions/330428/ddd-repositories-in-application-or-domain-service)
-
-TODO
-
-Domain Services would be recommended in case you have to interact with multiple aggregates for example.
+Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple aggregates for example, otherwise keep it simple and let it be part of the aggregate itself.
 
 TODO
 
