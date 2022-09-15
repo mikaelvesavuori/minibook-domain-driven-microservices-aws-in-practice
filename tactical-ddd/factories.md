@@ -8,9 +8,21 @@ description: >-
 
 Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD. In the context of DDD we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an entity or aggregate.
 
-## An example
+You can probably imagine a case where the setup of an aggregate will require pulling lots of parameters, checking validity, and other such stuff—this is a perfect case of hiding that with a factory.
 
-To be fair, there are no good uses of factories in Get-A-Room. Instead factories have been used to remove the ugly `new SomeClass()` calls. I'll happily use it whenever I want to avoid letting a user directly access a class, like this:
+{% hint style="success" %}
+I've used factories several times when I need to create an object that requires complicated asynchronous setups. By using the factories we can avoid leaking out that complexity onto the user.
+{% endhint %}
+
+## Examples of the pattern
+
+To be fair, there are no good uses of "proper" factories in Get-A-Room. Instead factories have been used to remove some of the ugly `new SomeClass()` calls.
+
+{% hint style="success" %}
+Often you will find factories in an object-oriented class shape, but here we will use a more TypeScript-idiomatic way using functions.
+{% endhint %}
+
+I'll happily use it whenever I want to avoid letting a user directly access a class, like this:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
 ```typescript
@@ -37,6 +49,8 @@ export const makeNewEventBridgeEmitter = (region: string) => {
 };
 ```
 {% endcode %}
+
+While very basic, both of these (especially the second one) get the point across: A factory can hide some of the ugly details involved in creating important objects.
 
 {% hint style="info" %}
 For an excellent and more in-depth article on factories, see [https://www.culttt.com/2014/12/24/factories-domain-driven-design](https://www.culttt.com/2014/12/24/factories-domain-driven-design) or [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example).
