@@ -47,6 +47,14 @@ You may also find various Node + DDD projects out in the wild. Without mentionin
 
 TODO
 
+> From a system complexity standpoint, a deep module reduces the system's global complexity, while a shallow module increases it by introducing a component that doesn't encapsulate its local complexity.
+>
+> Shallow services are also the reason why so many microservices-oriented projects fail. The mistaken definition of a microservice as a service having no more than X lines of code, or as a service that should be easier to rewrite than to modify, concentrate on the individual service while missing the most important aspect of the architecture: the system.
+>
+> The threshold upon twhich a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.
+>
+> — Source: Learning Domain Driven Design p.224, Khononov
+
 ## How do we size and relate microservices in serverless DDD?
 
 There are some number of different takes on how one would relate and size Lambdas, deployments, and how they map to DDD concepts.
