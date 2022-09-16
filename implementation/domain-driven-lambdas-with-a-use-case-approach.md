@@ -75,16 +75,37 @@ The below is what I've come to find is the most lucid and rational way to do thi
 For a deeper dive by Eric Evans on different types of bounded contexts and some critique on how one microservice _is not necessarily_ one bounded context (which I think it should be), see [Language in Context - Eric Evans - DDD Europe 2019](https://www.youtube.com/watch?v=xyuKx5HsGK8).
 {% endhint %}
 
+### Typical sizing table
 
+{% hint style="warning" %}
+I will use the broad word **service** to denote the actual code and extent of the "thing" that we are discussing so that we don't get conflicting terminology.
+{% endhint %}
 
-| One...                                               | ...represents                                                                                                                                 |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Git repository (classic, single-repo)                | A single microservice                                                                                                                         |
-| Git repository (mono-repo)                           | One or more microservices                                                                                                                     |
-| Serverless Framework configuration (.yml) or similar | Definition for a single microservice                                                                                                          |
-| Microservice                                         | <p>A single <em>bounded context</em><br><em></em><br><em></em><strong>Note</strong>: <em>"</em>Microservice" is used as a logical concept</p> |
-| Lambda function                                      | <p>A single <em>use case</em><br><em></em></p><p><strong>Note</strong>: <em>"</em>Function" is used as an infrastructual concept</p>          |
-| API gateway                                          | The exposure point for the _functions_                                                                                                        |
+The way I've found to best encapsulate microservices and bounded contexts is that a single Git repository handles a single bounded context which is defined in one configuration file. It may use any number of microservices (i.e. Lambda functions).
+
+| One...                                                                           | ...represents                                                                                                                                             |
+| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p>Git repository (classic, single-repo)<br>OR<br>Git repository (mono-repo)</p> | <p>All the code for a single <strong>service</strong><br><strong></strong><br><strong></strong>All the code for one or more <strong>services</strong></p> |
+| Configuration (such as `serverless.yml)`                                         | Definition for a single **service**                                                                                                                       |
+| Service                                                                          | <p>A single <strong>bounded context</strong> (typically)<br>OR<br>A single <strong>component</strong> of the bounded context</p>                          |
+| Microservice (such as a Lambda function)                                         | A single **use case**                                                                                                                                     |
+| API gateway                                                                      | The exposure point for the **microservices**                                                                                                              |
+
+{% hint style="info" %}
+This approach is valid as far as the bounded context truly is well-defined and self-contained without any excessive territorial encroachment on other contexts.
+{% endhint %}
+
+If the bounded context is wide or simply more coarsely defined, there is absolutely the possibility to relate your service to act as a **component** of the bounded context.
+
+{% hint style="warning" %}
+The word "component" isn't the best, I'm well aware of this, but there is a lack of more descriptive or self-explanatory words.
+{% endhint %}
+
+Under no circumstances should bounded context compete about the same logical objects, aggregates or constructs, nor any attached responsibilities. The bounded context is never bigger than the logical entirety of the context.
+
+Remember that DDD and this terminology is a semantic and logical construct, whereas the code is a technical construct. Therefore any correlation must be handled logically and manually. Nothing forces you to make a single bounded context into a single deployable artifact.
+
+\---
 
 This table, in plain text, could be summarized as:
 
