@@ -55,6 +55,16 @@ TODO
 >
 > — Source: Learning Domain Driven Design p.224, Khononov
 
+TODO
+
+> Both microservices and bounded contexts are physical boundaries. Microservices, as bounded contexts, are owned by a single team. As in bounded contexts, conflicting models cannot be implemented in a microservice, resulting in complex interfaces. Microservices are indeed bounded contexts. \[...]
+>
+> \[T]he relationship between microservices and bounded contexts is not symmetric. Although microservices are bounded contexts, not every bounded context is a microservices. Bounded contexts, on the other hand, denote the boundaries of the largest valid monolith. \[...]
+>
+> \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.&#x20;
+>
+> — Source: Learning Domain Driven Design p.226-227, Khononov
+
 ## How do we size and relate microservices in serverless DDD?
 
 There are some number of different takes on how one would relate and size Lambdas, deployments, and how they map to DDD concepts.
