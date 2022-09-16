@@ -47,6 +47,14 @@ You may also find various Node + DDD projects out in the wild. Without mentionin
 
 TODO
 
+You will continuously want to question if decisions make
+
+* **local complexity** (i.e. the bounded context or solution itself),
+* **global complexity** (i.e. the total landscape),
+* **integration complexit**y (i.e. how hard it is to make relevant solutions communicate with each other
+
+better or worse.
+
 > From a system complexity standpoint, a deep module reduces the system's global complexity, while a shallow module increases it by introducing a component that doesn't encapsulate its local complexity.
 >
 > Shallow services are also the reason why so many microservices-oriented projects fail. The mistaken definition of a microservice as a service having no more than X lines of code, or as a service that should be easier to rewrite than to modify, concentrate on the individual service while missing the most important aspect of the architecture: the system.
@@ -100,6 +108,14 @@ If the bounded context is wide or simply more coarsely defined, there is absolut
 {% hint style="warning" %}
 The word "component" isn't the best, I'm well aware of this, but there is a lack of more descriptive or self-explanatory words.
 {% endhint %}
+
+TODO
+
+> A more balanced heuristic for designing microservices is to align the services with the boundaries of business subdomain. \[S]ubdomains are correlated with fine-grained business capabilities. These are the business building blocks required for the company to compete in its business domain(s). \[...]
+>
+> Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
+>
+> — Source: Learning Domain Driven Design p.228-229, Khononov
 
 Under no circumstances should bounded context compete about the same logical objects, aggregates or constructs, nor any attached responsibilities. The bounded context is never bigger than the logical entirety of the context.
 
