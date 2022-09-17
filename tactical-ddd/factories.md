@@ -46,6 +46,8 @@ export function createVerificationCodeService(securityApiEndpoint: string) {
 ```
 {% endcode %}
 
+More on the `VerificationCodeService` later.
+
 We can also use it to package some important checks or validations we may have, like with the EventBridge emitter:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
