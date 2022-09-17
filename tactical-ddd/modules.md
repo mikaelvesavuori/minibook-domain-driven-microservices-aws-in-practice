@@ -6,7 +6,23 @@ description: >-
 
 # Modules
 
-Much of DDD wisdom and attempts at concretely structuring files in a DDD-oriented sense will address whether to go with an approach based on "package by layer" or "package by feature".
+Much of DDD wisdom and attempts at concretely structuring files in a DDD-oriented sense will address whether to go with an approach based on "package by layer" or "package by feature". Many trivial or common projects will use a layered or format-based approach, segmenting folders into their respective types (especially common in front-end projects) or use vague, non-descriptive categories such as `helpers`.
+
+The Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application.
+
+In terms of ontology, a Module can be a namespace or a package, depending on the language that you are using. For our example code, using TypeScript, there does not exist a mechanism to handle this. Instead we will have to do this at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules.
+
+{% hint style="info" %}
+See for example [this article](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) for more on how the Module pattern works in JavaScript/TypeScript.
+{% endhint %}
+
+Vernon writes asdf
+
+In the DDD context, we can use Modules as a logical construct to segregate between concerns. It should precede the Bounded Contexts, and ultimately needs to help us reflect the logical model of our domain. One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
+
+> \[E]ffective modules are deep: a simple public interface encapsulates complex logic. Ineffective modules are shallow: a shallow module's public interface encapsulates much less complexity than a deep module.
+>
+> — Khononov, p.223
 
 There are several examples out in the wild that aim to present individual's takes on DDD, in particular, and some Clean Architecture, generally. Sometimes you may find these combined, like I have done, but that's typically not quite as common.
 
