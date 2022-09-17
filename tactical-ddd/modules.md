@@ -6,19 +6,25 @@ description: >-
 
 # Modules
 
-Much of DDD wisdom and attempts at concretely structuring files in a DDD-oriented sense will address whether to go with an approach based on "package by layer" or "package by feature". Many trivial or common projects will use a layered or format-based approach, segmenting folders into their respective types (especially common in front-end projects) or use vague, non-descriptive categories such as `helpers`.
+In the DDD context, we can use Modules as a logical construct to segregate between concerns. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the logical model of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
 
-The Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application.
+With all this said, though, the Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application. This can be done by language-specific mechanisms and/or by structuring our code in files and folders.
 
-In terms of ontology, a Module can be a namespace or a package, depending on the language that you are using. For our example code, using TypeScript, there does not exist a mechanism to handle this. Instead we will have to do this at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules.
+## Demystifying Modules
+
+In terms of ontology, **a Module can be a namespace or a package, depending on the language** that you are using. For our example code, using TypeScript, there does not exist a mechanism to handle this. Instead we will have to do this at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules. Therefore Modules are not simply only a technical matter, but a logical matter.
 
 {% hint style="info" %}
-See for example [this article](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) for more on how the Module pattern works in JavaScript/TypeScript.
+See for example [this article by DigitalOcean for more on how the Module pattern works](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) in JavaScript/TypeScript.
 {% endhint %}
 
-Vernon writes asdf
+Much of DDD wisdom and attempts at concretely structuring files in a DDD-leaning sense will address why one of the most basic tactical things we can work on is deciding to use Modules (or features) rather than layers. You'll maybe have experience seeing how many trivial or common projects will use the layered, format-based approach, segmenting folders into their respective types (especially common in front-end projects) or use vague, non-descriptive categories such as `helpers`.
 
-In the DDD context, we can use Modules as a logical construct to segregate between concerns. It should precede the Bounded Contexts, and ultimately needs to help us reflect the logical model of our domain. One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
+{% hint style="info" %}
+For more, from a non-DDD angle, read [this article about why packaging by feature is better than packaging by layers](https://phauer.com/2020/package-by-feature/).
+{% endhint %}
+
+
 
 > \[E]ffective modules are deep: a simple public interface encapsulates complex logic. Ineffective modules are shallow: a shallow module's public interface encapsulates much less complexity than a deep module.
 >
