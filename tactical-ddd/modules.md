@@ -34,25 +34,30 @@ For more, from a non-DDD angle, read [this article about why packaging by featur
 
 ## Structuring for a Module pattern
 
-There are several examples out in the wild that aim to present individual's takes on DDD, in particular, and some Clean Architecture, generally. Sometimes you may find these combined, like I have done, but that's typically not quite as common.
+It's worth noting that DDD is not prescriptive at all regarding how to set your file structure. Quite obviously it makes sense to somehow reflect the "methodology" in how the actual code is organized, but DDD won't save you here, I'm sad to say. Clean Architecture, though, _will_ paint a much more exact idea, itself borrowing from the [Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/) (or _hexagonal architecture_) notion.
+
+There are several examples out in the wild that aim to present various individual's takes on DDD, in particular, and some Clean Architecture, generally. Sometimes you may find these combined, like I have done, but that's typically not quite as common.
 
 Reasons I don't necessarily like some of the other examples out there, include:
 
-* Overbearing amount of folders.
+* Overbearing amount of boilerplate and folders.
+* Typically oriented toward monolithic use cases or indistinct deployment models.
 * Related to the above: Over-modularization, where I believe microservices themselves should be the first module boundary.
-* Use of decorators; something that is not (and will not be) supported in TypeScript. (TODO check)
-* Use of inversion of control (IoC) libraries and dependency injection (DI) containers/libraries rather than using the language features provided plus using regular object-oriented programming. This can be handled without external library dependencies by using higher-order functions or passing in dependencies in a functional way.
-* TODO
+* Use of decorators; something that is not standardized in TypeScript (Vandenkam 2021, p. 197-198).
+* Use of inversion of control (IoC) libraries and dependency injection (DI) containers/libraries rather than using the language features provided, or simply using regular object-oriented programming. These needs can be handled without external library dependencies by using higher-order functions or passing in dependencies in a functional way.
+* Intricate uses of more complex ideas like monads (such as `Either` and `Left`/`Right`) which adds a higher threshold than necessary for people to start getting value from tactical DDD.
 
-It's worth noting that DDD is not prescriptive at all regarding how to set your file structure. Quite obviously it makes sense to somehow reflect the "methodology" in how the actual code is organized, but DDD won't save you here, I'm sad to say. Clean Architecture, though, _will_ paint a much more exact idea, itself borrowing from the [Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/) (or _hexagonal architecture_) notion.
+{% hint style="info" %}
+All of these are "taken care of" in the example code that goes with this book.
+{% endhint %}
 
-Taken together, we get a pretty powerful toolbox. Three things to note here:
+Taking DDD and CA together, we get a pretty powerful toolbox. Three things to note here:
 
 1. Many examples are based on monolithic applications, something I personally very rarely work on. The example here addresses a microservice perspective. The bounded context itself is the main feature, so to speak.
 2. Clean Architecture changes the structure and naming a bit. We will base our core understanding on CA and its nomenclature, as it's more intuitive and still packs the same punch as regular DDD.
 3. TODO
 
-{% hint style="info" %}
+{% hint style="warning" %}
 As always, "Don't try to be clever". DDD is hard enough as it is, so it makes sense to be pragmatic and functional.
 {% endhint %}
 
