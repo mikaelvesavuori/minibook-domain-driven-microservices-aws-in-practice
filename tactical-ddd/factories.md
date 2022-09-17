@@ -10,11 +10,7 @@ Factories encapsulate the creation of, primarily, complex objects such as those 
 
 Factories help us to hide implementation and construction logic and always returns valid invariants of the class ("product") that we have created. However, invariant logic and validation should as far as possible be deferred to the product being created itself, which makes perfect sense if we are using Factories to create complex objects like Entities and Aggregates that already such logic baked-in.&#x20;
 
-You can probably imagine a case where the setup of an aggregate will require pulling lots of parameters, checking validity, and other such stuff—this is a perfect case of hiding that with a Factory.
-
-{% hint style="success" %}
-I've used factories several times when I need to create an object that requires complicated asynchronous setups. By using the factories we can avoid leaking out that complexity onto the user.
-{% endhint %}
+You can probably imagine a case where the setup of an aggregate will require pulling lots of parameters, checking validity, and other such stuff—this is a perfect case of hiding that with a Factory. I've used factories several times when I need to create an object that requires complicated asynchronous setups. By using the factories we can avoid leaking out any of that complexity onto the user.
 
 The way Factories are used in the example are very basic. There is nothing blocking you from applying the Factory pattern to creational methods on Aggregates or Services themselves (see for example Vernon 2013, p.391/397).
 
@@ -68,5 +64,7 @@ export const makeNewEventBridgeEmitter = (region: string) => {
 While very basic, all of these (especially the two last ones) get the point across: A factory can hide some of the ugly details involved in creating important objects.
 
 {% hint style="info" %}
-For an excellent and more in-depth article on factories, see [https://www.culttt.com/2014/12/24/factories-domain-driven-design](https://www.culttt.com/2014/12/24/factories-domain-driven-design) or [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example). Overall, see the creational patterns at [https://refactoring.guru/design-patterns/creational-patterns](https://refactoring.guru/design-patterns/creational-patterns).
+For an excellent and more in-depth article on factories, see [https://www.culttt.com/2014/12/24/factories-domain-driven-design](https://www.culttt.com/2014/12/24/factories-domain-driven-design) or [https://refactoring.guru/design-patterns/factory-method/typescript/example](https://refactoring.guru/design-patterns/factory-method/typescript/example).
+
+Overall, see the creational patterns at [https://refactoring.guru/design-patterns/creational-patterns](https://refactoring.guru/design-patterns/creational-patterns).
 {% endhint %}

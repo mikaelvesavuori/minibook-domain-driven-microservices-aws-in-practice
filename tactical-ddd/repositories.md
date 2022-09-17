@@ -4,11 +4,77 @@ description: "Numero uno when it comes to patterns —\_repositories are well-es
 
 # Repositories
 
-Good old repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. That's the good side, and the bad side is that I am probably not completely misled by this having some correlation to how many traditional back-end developers have been "data-oriented" in their work (often relational). As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
+Good old Repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns.
 
-The primary use-case for Repositories is to persist, load, and reconstitute your data (i.e. Aggregates).
+Let's start by addressing the need for a Repository. Somehow you will need to **retrieve the reference to an Aggregate or Entity or some other domain object**. Using the language of the domain, the Repository will be able to retrieve and return the data. The data, in turn, is typically an Aggregate or Entity which can be _reconstituted_ into its programmatic shape (Entity class etc.) when you've gotten the data back.
 
-## How we use it in the project
+The bad side of being a well-known pattern is that this may have been what has lead many traditional back-end developers to be "data-oriented" in their work; seemingly a typical child disease of having been in the "relational database school". As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
+
+{% hint style="danger" %}
+Remember that the biggest enemy of DDD is the anemic domain model. Repositories are therefore important in the technical sense to make object persistence work at all, but similarly important is the goal to make Repositories decoupled from any behaviour-altering mannerisms: The Repository is not smart, your domain objects are. So refrain from making big exercises in data modeling here beyond but is absolutely required to make object retrieval work in the domain model.&#x20;
+{% endhint %}
+
+The primary place for Repositories is therefore (as Evans writes; 2013, p.148) in the middle of the object's lifecycle: persisting, loading, and reconstituting the data. The Repository acts as **the only way to retrieve data** and this must not be bypassed.
+
+The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the aggregate in question. However, I will now explain why that's _not the way_ I am dealing with it in our example code.
+
+## How repositories are used in the project
+
+Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than being part of a domain, I do not want Repositories to have knowledge of the actual entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
+
+{% hint style="info" %}
+This model, as far as I know, therefore stays somewhat truer with Robert Martin and his Clean Architecture than with the classic DDD approach.
+{% endhint %}
+
+This point is contentious and debated, as witnessed in [this response by Subhash on Stack Overflow](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to):
+
+> Repositories and their placement in the code structure is a matter of intense debate in DDD circles. It is also a matter of preference, and often a decision taken based on the specific abilities of your framework and ORM.
+>
+> The issue is also muddied when you consider other design philosophies like Clean Architecture, which advocate using an abstract repository in the domain layer while providing concrete implementations in the infrastructure layer.
+>
+> — [https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to)
+
+In the spirit of pragmatism, the approach I am using is more relaxed, going with one Repository per persistence mechanism—DynamoDB and local/mock use. Because the solution itself is one deployable artifact and because there are no overlapping concepts, this is not problematic since there is no confusion or logical overstepping happening.
+
+First of all, let's see one of the use cases and understand where we are loading the Slot:
+
+{% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" lineNumbers="true" %}
+```typescript
+import { Reservation } from '../../domain/aggregates/Reservation';
+
+import { createSlotLoaderService } from '../services/SlotLoaderService';
+
+import { Dependencies } from '../../interfaces/Dependencies';
+import { SlotId } from '../../interfaces/Slot';
+
+/**
+ * @description Use case to handle cancelling a slot.
+ */
+export async function CancelSlotUseCase(dependencies: Dependencies, slotId: SlotId): Promise<void> {
+  const reservation = new Reservation(dependencies);
+  const slotLoader = createSlotLoaderService(dependencies.repository);
+  const slotDto = await slotLoader.loadSlot(slotId);
+
+  await reservation.cancel(slotDto);
+}
+
+```
+{% endcode %}
+
+{% hint style="success" %}
+We will discuss the `SlotLoaderService` on the next page. For now, know that it is a higher-order construct on top of the Repository itself.
+{% endhint %}
+
+You'll see that we use a Factory to vend a new `SlotLoaderService`, which we then use to load the `slotId` we have on hand. With the Slot's DTO retrieved we can call the appropriate Aggregate method, which itself then may reconstitute the data so that we can make use of the `Slot` Entity's functionality and logic before doing whatever other things it is expected to do.
+
+```typescript
+public async cancel(slotDto: SlotDTO): Promise<void> {
+    const slot = new Slot().from(slotDto);
+    // Rest of code...
+}
+```
+
+This same pattern is used for all similar use cases.
 
 Let's actually look at one of our repositories.
 
@@ -86,8 +152,6 @@ class DynamoDbRepository implements Repository {
 }
 ```
 {% endcode %}
-
-Typically you will find the requirement or recommendation that there is one repository per aggregate. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the aggregate in question.
 
 We `implement` the class based on a base class, allowing us to make a dedicated local test variant as well.
 
