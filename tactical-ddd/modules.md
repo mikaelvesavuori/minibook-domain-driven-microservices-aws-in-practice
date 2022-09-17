@@ -6,39 +6,33 @@ description: >-
 
 # Modules
 
-In the DDD context, we can use Modules as a logical construct to segregate between concerns. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the logical model of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
+In the DDD context, we use Modules as a logical construct to segregate between concerns when we technically implement our domain model. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the _logical model_ of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
 
-With all this said, though, the Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application. This can be done by language-specific mechanisms and/or by structuring our code in files and folders.
-
-## Demystifying Modules
-
-In terms of ontology, **a Module can be a namespace or a package, depending on the language** that you are using. For our example code, using TypeScript, there does not exist a mechanism to handle this. Instead we will have to do this at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules. Therefore Modules are not simply only a technical matter, but a logical matter.
-
-{% hint style="info" %}
-See for example [this article by DigitalOcean for more on how the Module pattern works](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) in JavaScript/TypeScript.
-{% endhint %}
-
-Much of DDD wisdom and attempts at concretely structuring files in a DDD-leaning sense will address why one of the most basic tactical things we can work on is deciding to use Modules (or features) rather than layers. You'll maybe have experience seeing how many trivial or common projects will use the layered, format-based approach, segmenting folders into their respective types (especially common in front-end projects) or use vague, non-descriptive categories such as `helpers`.
-
-{% hint style="info" %}
-For more, from a non-DDD angle, read [this article about why packaging by feature is better than packaging by layers](https://phauer.com/2020/package-by-feature/).
-{% endhint %}
-
-
+Again, Modules are local to the code, while Bounded Contexts may constitute one or more logical solutions. Yet these both (in particular Modules) share the common trade-offs of public interfaces:
 
 > \[E]ffective modules are deep: a simple public interface encapsulates complex logic. Ineffective modules are shallow: a shallow module's public interface encapsulates much less complexity than a deep module.
 >
 > — Khononov, p.223
 
+With all this said, though, the Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application. This can be done by language-specific mechanisms and/or by structuring our code in files and folders.
+
+## Demystifying Modules
+
+In terms of ontology, **a Module can be a namespace or a package, depending on the language** that you are using. For our example code, using TypeScript, [there do exist mechanisms to handle this](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html), but they are not completely idiomatic to how the language is typically used. Instead we will have to do this only at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules. Therefore Modules are not simply only a technical matter, but a logical matter.
+
+{% hint style="info" %}
+See for example [this article by DigitalOcean for more on how the Module pattern works](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) in JavaScript/TypeScript.
+{% endhint %}
+
+Much of DDD wisdom and attempts at concretely structuring files in a DDD-leaning sense will address why one of the most basic tactical things we can implement is packaging by Module (or features) rather than by layers. You'll perhaps already have experience seeing how many trivial or common projects will use the layered, format-based approach, segmenting folders into their respective types (especially common in front-end projects) or use vague, non-descriptive categories such as `helpers`. This makes it very hard to understand how objects and functions relate and what their respective hierarchies are. It also becomes hard to discern the domain logic from the overall structure, the Module names, and their usage. All that becomes much easier with Modules.&#x20;
+
+{% hint style="info" %}
+For more, from a non-DDD angle, read [this article about why packaging by feature is better than packaging by layers](https://phauer.com/2020/package-by-feature/).
+{% endhint %}
+
+## Structuring for a Module pattern
+
 There are several examples out in the wild that aim to present individual's takes on DDD, in particular, and some Clean Architecture, generally. Sometimes you may find these combined, like I have done, but that's typically not quite as common.
-
-It's worth noting that DDD is not prescriptive at all regarding how to set your file structure. Quite obviously it makes sense to somehow reflect the "methodology" in how the actual code is organized, but DDD won't save you here, I'm sad to say. Clean Architecture, though, _will_ paint a much more exact idea, itself borrowing from the [Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/) (or _hexagonal architecture_) notion.
-
-Taken together, we get a pretty powerful toolbox. Three things to note here:
-
-1. Many examples are based on monolithic applications, something I personally very rarely work on. The example here addresses a microservice perspective. The bounded context itself is the main feature, so to speak.
-2. Clean Architecture changes the structure and naming a bit. We will base our core understanding on CA and its nomenclature, as it's more intuitive and still packs the same punch as regular DDD.
-3. TODO
 
 Reasons I don't necessarily like some of the other examples out there, include:
 
@@ -48,7 +42,17 @@ Reasons I don't necessarily like some of the other examples out there, include:
 * Use of inversion of control (IoC) libraries and dependency injection (DI) containers/libraries rather than using the language features provided plus using regular object-oriented programming. This can be handled without external library dependencies by using higher-order functions or passing in dependencies in a functional way.
 * TODO
 
+It's worth noting that DDD is not prescriptive at all regarding how to set your file structure. Quite obviously it makes sense to somehow reflect the "methodology" in how the actual code is organized, but DDD won't save you here, I'm sad to say. Clean Architecture, though, _will_ paint a much more exact idea, itself borrowing from the [Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/) (or _hexagonal architecture_) notion.
+
+Taken together, we get a pretty powerful toolbox. Three things to note here:
+
+1. Many examples are based on monolithic applications, something I personally very rarely work on. The example here addresses a microservice perspective. The bounded context itself is the main feature, so to speak.
+2. Clean Architecture changes the structure and naming a bit. We will base our core understanding on CA and its nomenclature, as it's more intuitive and still packs the same punch as regular DDD.
+3. TODO
+
+{% hint style="info" %}
 As always, "Don't try to be clever". DDD is hard enough as it is, so it makes sense to be pragmatic and functional.
+{% endhint %}
 
 ## Serverless project organization
 
