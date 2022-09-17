@@ -14,6 +14,8 @@ Again, Modules are local to the code, while Bounded Contexts may constitute one 
 >
 > — Khononov, p.223
 
+This is the most basic tactical pattern, yet it at heart is all about classic programming concepts like "[high cohesion, low coupling](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/)" and, as per DDD, expressing the Domain through the naming and functionality.
+
 With all this said, though, the Module pattern itself is not descended from DDD; it is a common pattern that has been around probably since the start of at least object-oriented programming. We use this pattern to **encapsulate** and, sometimes, **name** some part of our application. This can be done by language-specific mechanisms and/or by structuring our code in files and folders.
 
 ## Demystifying Modules
