@@ -4,9 +4,11 @@ description: "Numero uno when it comes to patterns —\_repositories are well-es
 
 # Repositories
 
-Good old Repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns.
+Good old Repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. Well, at least in terms of its nominal recognition.
 
-Let's start by addressing the need for a Repository. Somehow you will need to **retrieve the reference to an Aggregate or Entity or some other domain object**. Using the language of the domain, the Repository will be able to retrieve and return the data. The data, in turn, is typically an Aggregate or Entity which can be _reconstituted_ into its programmatic shape (Entity class etc.) when you've gotten the data back.
+## Why Repositories?
+
+Let's start by addressing the need for a Repository. Somehow you will need to **retrieve or store the reference to an Aggregate or Entity or some other domain object**. Using the language of the domain, the Repository will be able to retrieve and return the data. The data, in turn, is typically an Aggregate or Entity which can be _reconstituted_ into its programmatic shape (Entity class etc.) when you've gotten the data back.
 
 The bad side of being a well-known pattern is that this may have been what has lead many traditional back-end developers to be "data-oriented" in their work; seemingly a typical child disease of having been in the "relational database school". As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
 
@@ -20,13 +22,13 @@ The typical "by-the-book" way is to use one Repository per higher concept or Agg
 
 ## How repositories are used in the project
 
-Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than being part of a domain, I do not want Repositories to have knowledge of the actual entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
+Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than as being part of a domain, I do not want Repositories to have knowledge of the actual entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
 
 {% hint style="info" %}
 This model, as far as I know, therefore stays somewhat truer with Robert Martin and his Clean Architecture than with the classic DDD approach.
 {% endhint %}
 
-This point is contentious and debated, as witnessed in [this response by Subhash on Stack Overflow](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to):
+This opinion is contentious and debated, as witnessed in [this response by Subhash on Stack Overflow](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to):
 
 > Repositories and their placement in the code structure is a matter of intense debate in DDD circles. It is also a matter of preference, and often a decision taken based on the specific abilities of your framework and ORM.
 >
@@ -34,7 +36,7 @@ This point is contentious and debated, as witnessed in [this response by Subhash
 >
 > — [https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to)
 
-In the spirit of pragmatism, the approach I am using is more relaxed, going with one Repository per persistence mechanism—DynamoDB and local/mock use. Because the solution itself is one deployable artifact and because there are no overlapping concepts, this is not problematic since there is no confusion or logical overstepping happening.
+In the spirit of pragmatism the approach I am using is more relaxed, going with one Repository per persistence mechanism—DynamoDB and local/mock use. Because the solution itself is one deployable artifact and because there are no overlapping concepts, this is not problematic since there is no confusion or logical overstepping happening.
 
 First of all, let's see one of the use cases and understand where we are loading the Slot:
 
@@ -76,17 +78,22 @@ public async cancel(slotDto: SlotDTO): Promise<void> {
 
 This same pattern is used for all similar use cases.
 
-Let's actually look at one of our repositories.
+Now for one of the actual repositories.
 
-{% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
+{% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
 ```typescript
-import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
+import { randomUUID } from 'crypto';
+import { DynamoDBClient, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
 
 import { Repository } from '../../interfaces/Repository';
-import { AnalyticalRecord } from '../../interfaces/AnalyticalRecord';
+import { SlotDTO, SlotId } from '../../interfaces/Slot';
+import { DynamoItems } from '../../interfaces/DynamoDb';
+import { Event, EventDetail } from '../../interfaces/Event';
 
-import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
-import { FailureToAddError } from '../../application/errors/FailureToAddError';
+import { getCleanedItems } from '../utils/getCleanedItems';
+
+import testData from '../../../testdata/dynamodb/testData.json';
 
 /**
  * @description Factory function to create a DynamoDB repository.
@@ -120,44 +127,126 @@ class DynamoDbRepository implements Repository {
   }
 
   /**
-   * @description Add (create/update) a Record to the Analytics database.
+   * @description Create and return expiration time for database item.
    */
-  public async add(record: AnalyticalRecord): Promise<void> {
-    if (
-      !record.id ||
-      !record.correlationId ||
-      !record.event ||
-      !record.slotId ||
-      !record.startsAt ||
-      !record.hostName
-    )
-      throw new FailureToAddError('Missing required inputs when adding record');
-    
-    const { id, correlationId, event, slotId, startsAt, hostName } = record;
+  private getExpiryTime(): string {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return Date.parse(tomorrow.toString()).toString().substring(0, 10);
+  }
+
+  /**
+   * @description Load a Slot from the source database.
+   */
+  public async loadSlot(slotId: SlotId): Promise<SlotDTO> {
+    const command = {
+      TableName: this.tableName,
+      KeyConditionExpression: 'itemType = :itemType AND id = :id',
+      ExpressionAttributeValues: {
+        ':itemType': { S: 'SLOT' },
+        ':id': { S: slotId }
+      },
+      ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
+    };
+
+    const data: DynamoItems =
+      process.env.NODE_ENV === 'test'
+        ? testData
+        : await this.docClient.send(new QueryCommand(command));
+
+    return getCleanedItems(data)[0] as unknown as SlotDTO;
+  }
+
+  /**
+   * @description Load all Slots for the day from the source database.
+   */
+  public async loadSlots(): Promise<SlotDTO[]> {
+    const command = {
+      TableName: this.tableName,
+      KeyConditionExpression: 'itemType = :itemType',
+      ExpressionAttributeValues: {
+        ':itemType': { S: 'SLOT' }
+      },
+      ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
+    };
+
+    const data: DynamoItems =
+      process.env.NODE_ENV === 'test'
+        ? testData
+        : await this.docClient.send(new QueryCommand(command));
+
+    return getCleanedItems(data) as unknown as SlotDTO[];
+  }
+
+  /**
+   * @description Add (create/update) a slot in the source database.
+   */
+  public async updateSlot(slot: SlotDTO): Promise<void> {
+    // @ts-ignore
+    const { slotId, hostName, timeSlot, slotStatus, createdAt, updatedAt } = slot;
+
+    const expiresAt = this.getExpiryTime();
     const command = {
       TableName: this.tableName,
       Item: {
-        event: { S: event }, // HASH
-        id: { S: id }, // RANGE
-        correlationId: { S: correlationId },
-        slotId: { S: slotId },
-        hostName: { S: hostName },
-        startsAt: { S: startsAt }
+        itemType: { S: 'SLOT' },
+        id: { S: slotId },
+        hostName: { S: hostName || '' },
+        timeSlot: { S: JSON.stringify(timeSlot) },
+        slotStatus: { S: slotStatus },
+        createdAt: { S: createdAt },
+        updatedAt: { S: updatedAt },
+        expiresAt: { N: expiresAt }
       }
     };
 
-    if (process.env.NODE_ENV === 'test') return;
-    await this.docClient.send(new PutItemCommand(command));
+    if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
+  }
+
+  /**
+   * @description Add (append) an Event in the source database.
+   */
+  public async addEvent(event: Event): Promise<void> {
+    const eventData = event.get();
+    const detail: EventDetail = JSON.parse(eventData['Detail']);
+    const data = typeof detail['data'] === 'string' ? JSON.parse(detail['data']) : detail['data'];
+
+    const command = {
+      TableName: this.tableName,
+      Item: {
+        itemType: { S: 'EVENT' },
+        id: { S: randomUUID() },
+        eventTime: { S: detail['metadata']['timestamp'] },
+        eventType: { S: data['event'] },
+        event: { S: JSON.stringify(eventData) }
+      }
+    };
+
+    if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
   }
 }
+
 ```
 {% endcode %}
 
-We `implement` the class based on a base class, allowing us to make a dedicated local test variant as well.
+We `implement` the class based on a base class (abstraction), allowing us to make a dedicated local test variant as well.
 
-You'll see the the `add()` method on line 43 uses a "broader" term than the database-fixated neighbouring words like `create`, `read` and `update`. Like anywhere else in the DDD world, avoid terms that are technological and do not carry semantic meaning.
+The "big two" methods here are `updateSlot()` on line 101 and `addEvent()` on line 126. Yet again, were we to be more orthodox we might have had two Repositories where we can set a clear split between both concerns. Because the `Event` is a technical construct, yet in the same domain, and because there is no problematic overlap, I'll happily take the trade-offs in order to have less code duplication and testing needed.
 
-While it may seem like a weird anti-pattern with `if (process.env.NODE_ENV === 'test') return;` this enables actually testing the majority also of the actual, used repository.&#x20;
+Notice that both methods are "upsert" behaviors where we never create the same item twice but overwrite in place.
+
+{% hint style="success" %}
+Like anywhere else in the DDD world, avoid terms that are technological and do not carry semantic meaning. Avoid database-fixated words like `create`, `read` and `update`.&#x20;
+{% endhint %}
+
+Finally, while it may seem like a weird anti-pattern on line 142 with
+
+```typescript
+if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
+```
+
+this enables unit testing the majority of the "real" repository.&#x20;
 
 {% hint style="info" %}
 Microsoft has a lot of good articles on microservices and DDD, for example [this article about repositories](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design).
