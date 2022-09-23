@@ -9,7 +9,7 @@ description: >-
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+**Services** do things that don't quite fit in entities or other objects. **Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of domain service usage is to orchestrate entities or aggregates, especially (as in our example code) we don't have higher-level aggregates that can hold such logic.
 {% endhint %}
 
 TODO

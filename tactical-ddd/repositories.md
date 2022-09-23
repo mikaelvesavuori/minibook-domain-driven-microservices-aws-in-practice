@@ -7,7 +7,7 @@ description: "Numero uno when it comes to patterns —\_repositories are well-es
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+When it's time to do the inevitable persisting or loading of data, it's a **Repository** you want. Similar to the Factory, a **Repository** makes its core actions (loading, saving) a deterministic and easy-to-use operation. By separating this logic out, we can avoid polluting actual domain logic with this low-level (though important) detail.
 {% endhint %}
 
 Good old Repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. Well, at least in terms of its nominal recognition.

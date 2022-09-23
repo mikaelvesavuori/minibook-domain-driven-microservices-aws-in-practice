@@ -2,15 +2,19 @@
 description: >-
   The veritable gilded halls of DDD which, like the best songs in a concert,
   come in after quite a bit of build-up: This is the "Master of Puppets" of DDD
-  patterns... "Master of Patterns"?
+  patterns... "Master of Patterns"? Dad joke.
 ---
 
 # Entities
 
+
+
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+**Entities** are maybe the reason you learned about DDD in the first place. At their heart, the **Entity** is concerned first and foremost about the virtues of conventional OOP and SOLID, and not accepting passing dumb data containers around.
+
+Every **Entity** has a unique identity. We use **Entities** to wedge in domain logic on "things" rather than abstract "SomethingServices" and other techno-speak that divorces the domain from the coded implementation. By operating on these things (**Entities**) with clear business/domain logic we solve a lot of poor programming practices.
 {% endhint %}
 
 Entities and aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.

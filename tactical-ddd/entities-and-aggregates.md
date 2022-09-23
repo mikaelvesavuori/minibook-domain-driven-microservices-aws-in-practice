@@ -7,7 +7,11 @@ description: TODO
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+The **Aggregate** can be confusing.  It has two common meanings.
+
+The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" other Entities. This entails that **Aggregates,** like entities, each have their own unique identity.
+
+For the secondary meaning, it can mean (in general) the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
 {% endhint %}
 
 Revisiting our relations between aggregates and entities we see that:

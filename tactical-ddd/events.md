@@ -7,7 +7,7 @@ description: Events make your distributed services world "go round, round, round
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+When we say **Events** we in practice always refer to Domain Events. They are a way of decoupling parts of your solution or landscape, while expressing what is going on in the terms of the ubiquitous language. **Events** can be used with any technology and DDD has no opinion on that side of things.
 {% endhint %}
 
 _Events_ indicate significant occurrences that have occurred in the domain and need to be reported to other stakeholders belonging to the domain. It is common for _Aggregates_ to publish events.

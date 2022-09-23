@@ -9,7 +9,9 @@ description: >-
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+**Modules** use the ubiquitous language to express the technical side of the domain.
+
+There is no "one way" to use **Modules**, it is primarily about naming and organizing your code. Organize your code in **Modules** by using concepts like namespaces, classes, folder structure, and even how you split responsibilities across microservices. The goal is to accurately express the domain by the way you have structured and named things.
 {% endhint %}
 
 In the DDD context, we use Modules as a logical construct to segregate between concerns when we technically implement our domain model. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the _logical model_ of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).

@@ -9,7 +9,7 @@ description: >-
 {% hint style="success" %}
 **TL;DR**
 
-Description here TODO.
+**Value Objects** are like non-unique Entities. You use them in much the same way, except they bear no own identity. An instance of a **Value Object** is equivalent to another instance if they have the same properties and values. They are excellent for containing complex creational logic and work well when combined on Entities that contain **Value Objects** as part of their data.
 {% endhint %}
 
 Value objects are a Godsend.
