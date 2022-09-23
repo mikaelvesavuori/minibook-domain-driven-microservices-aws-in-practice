@@ -158,6 +158,10 @@ For my part, I've found that Robert C. Martin's "clean architecture" is a better
 
 TODO
 
+<figure><img src="../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline.</p></figcaption></figure>
+
+TODO
+
 ## Infrastructure
 
 The "grown up" way to think about infrastructure is that they are generic functions, classes and objects that help set up non-domain-related functionality. Good examples of this include repositories, very generic utility functions, Lambda event handlers (the outer layer), and anything else that has no (or very little) unique value in the specific context.

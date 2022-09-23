@@ -28,6 +28,10 @@ aggregate root is a consistency boundary
 
 TODO
 
+<figure><img src="../.gitbook/assets/aggregates-complex.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+
+TODO
+
 ## The SlotReservation aggregate
 
 I wouldn't be surprised if you already are aware that we'll be looking at the meatiest and most significant part of our codebase. This is good! If we have it this far, using the other tactical concepts, we are truly now at the core of the business logic.

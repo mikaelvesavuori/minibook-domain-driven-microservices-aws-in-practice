@@ -64,7 +64,9 @@ The better option is, thus, to do whatever it takes to create an amenable, low-t
 
 ## The patterns of DDD
 
-![How the patterns match up, as presented in Eric Evans's book (2003)](../.gitbook/assets/DomainDrivenDesignReference.png)
+TODO
+
+<figure><img src="../.gitbook/assets/DDD model.png" alt=""><figcaption><p>How the patterns match up, as presented in Eric Evans's book (2003) and re-drawn by myself.</p></figcaption></figure>
 
 TODO
 

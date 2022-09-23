@@ -39,6 +39,16 @@ Compared to their anemic brethren, rich domain models (typically entities and ag
 
 **A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()`. As we've seen many times in this book, we want this to explain 1:1 in our common/ubiquitous language what we are doing.
 
+\---
+
+<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+
+TODO
+
+<figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+
+TODO
+
 ## Invariants
 
 TODO
