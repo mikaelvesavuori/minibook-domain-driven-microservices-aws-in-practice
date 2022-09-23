@@ -6,6 +6,12 @@ description: >-
 
 # Factories
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD (instead, please see [_Design Patterns: Elements of Reusable Object-Oriented Software_](https://www.goodreads.com/book/show/85009.Design\_Patterns)). In the context of DDD we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an entity or aggregate.
 
 Factories help us to hide implementation and construction logic and always returns valid invariants of the class ("product") that we have created. However, invariant logic and validation should as far as possible be deferred to the product being created itself, which makes perfect sense if we are using Factories to create complex objects like Entities and Aggregates that already such logic baked-in.&#x20;
@@ -45,6 +51,8 @@ export function createVerificationCodeService(securityApiEndpoint: string) {
 }
 ```
 {% endcode %}
+
+More on the `VerificationCodeService` later.
 
 We can also use it to package some important checks or validations we may have, like with the EventBridge emitter:
 

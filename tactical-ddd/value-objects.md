@@ -6,6 +6,12 @@ description: >-
 
 # Value objects
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 Value objects are a Godsend.
 
 **Value objects are defined by attributes, not by identity**. This makes them great for cases where you want to provide a "vending machine" for non-trivial objects, such as in our case, a `TimeSlot`. The `TimeSlot` itself has no identity, but it does have unique values in non-unique keys/attributes. Because this type of object needs to **always be correctly constructed**, we can delegate the responsibility into (for example) a class that creates such TimeSlots. You don't pass around value objects that much, nor update them. Instead you instantiate new ones—they are 100% replacable and interchangeable, after all!

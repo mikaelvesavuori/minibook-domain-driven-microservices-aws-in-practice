@@ -4,6 +4,12 @@ description: Events make your distributed services world "go round, round, round
 
 # Events
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 _Events_ indicate significant occurrences that have occurred in the domain and need to be reported to other stakeholders belonging to the domain. It is common for _Aggregates_ to publish events.
 
 See Evolving Event in Distributed Systems for a deeper look at how eventing is handled in this project.

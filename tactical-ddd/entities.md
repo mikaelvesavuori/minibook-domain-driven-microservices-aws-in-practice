@@ -7,6 +7,12 @@ description: >-
 
 # Entities
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 Entities and aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
 
 Both of these concepts are very much related, and it probably makes sense to start with the more general of them: The entity.

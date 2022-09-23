@@ -4,6 +4,12 @@ description: "Numero uno when it comes to patterns —\_repositories are well-es
 
 # Repositories
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 Good old Repositories! This is by my very unscientific gut-feeling maybe the most used and best-known of patterns. Well, at least in terms of its nominal recognition.
 
 ## Why Repositories?

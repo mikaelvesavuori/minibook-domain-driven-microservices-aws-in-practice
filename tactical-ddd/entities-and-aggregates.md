@@ -4,6 +4,12 @@ description: TODO
 
 # Aggregates
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 Revisiting our relations between aggregates and entities we see that:
 
 * Entities are objects that have unique identity. They are closely connected to the domain and its business logic.

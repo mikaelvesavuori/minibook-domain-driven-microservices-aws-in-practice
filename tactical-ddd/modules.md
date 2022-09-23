@@ -6,6 +6,12 @@ description: >-
 
 # Modules
 
+{% hint style="success" %}
+**TL;DR**
+
+Description here TODO.
+{% endhint %}
+
 In the DDD context, we use Modules as a logical construct to segregate between concerns when we technically implement our domain model. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the _logical model_ of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
 
 Again, Modules are local to the code, while Bounded Contexts may constitute one or more logical solutions. Yet these both (in particular Modules) share the common trade-offs of public interfaces:
