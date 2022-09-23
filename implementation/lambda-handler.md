@@ -12,36 +12,55 @@ The semantic concept of "handler" is somewhat particular to have we talk about _
 
 Enough introduction, let's go ahead and look at a handler:
 
-{% code title="code/Analytics/SlotAnalytics/src/infrastructure/adapters/web/AddRecord.ts" lineNumbers="true" %}
+{% code title="code/Reservation/Reservation/src/infrastructure/adapters/web/ReserveSlot.ts" lineNumbers="true" %}
 ```typescript
-import { Context } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import { MikroLog } from 'mikrolog';
 
-import { AddRecordUseCase } from '../../../application/usecases/AddRecordUseCase';
+import { ReserveSlotUseCase } from '../../../application/usecases/ReserveSlotUseCase';
 
-import { MissingDataFieldsError } from '../../../application/errors/MissingDataFieldsError';
+import { MissingRequestBodyError } from '../../../application/errors/MissingRequestBodyError';
+import { UnsupportedVersionError } from '../../../application/errors/UnsupportedVersionError';
 
 import { setupDependencies } from '../../utils/setupDependencies';
-import { getDTO } from '../../utils/getDTO';
+import { getVersion } from '../../utils/getVersion';
+import { setCorrelationId } from '../../utils/userMetadata';
 
 import { metadataConfig } from '../../../config/metadata';
 
 /**
- * @description Add an analytical record.
+ * @description Reserve a slot.
  */
-export async function handler(event: Record<string, any>, context: Context): Promise<any> {
+export async function handler(
+  event: APIGatewayProxyEvent,
+  context: Context
+): Promise<APIGatewayProxyResult> {
   try {
-    MikroLog.start({ metadataConfig: { ...metadataConfig, service: 'AddRecord' }, event, context });
-    const data = getDTO(event);
-    if (!data) throw new MissingDataFieldsError();
+    MikroLog.start({
+      metadataConfig: { ...metadataConfig, service: 'ReserveSlot' },
+      event,
+      context
+    });
+    if (getVersion(event) !== 1) throw new UnsupportedVersionError();
 
-    const dependencies = setupDependencies();
+    const body: Record<string, string | number> =
+      typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    if (!body || JSON.stringify(body) === '{}') throw new MissingRequestBodyError();
+    const slotId = body.id as string;
+    const hostName = body.host as string;
 
-    await AddRecordUseCase(dependencies, data);
+    setCorrelationId(event, context);
+
+    const dependencies = setupDependencies(metadataConfig('ReserveSlot'));
+
+    const response = await ReserveSlotUseCase(dependencies, {
+      slotId,
+      hostName
+    });
 
     return {
-      statusCode: 204,
-      body: ''
+      statusCode: 200,
+      body: JSON.stringify(response)
     };
   } catch (error: any) {
     return {

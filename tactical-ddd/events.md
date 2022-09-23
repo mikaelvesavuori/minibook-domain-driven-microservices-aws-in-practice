@@ -214,6 +214,58 @@ class EventBridgeEmitter implements EventEmitter {
 
 We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons, so that we can use a local mock rather than the full-blown EventBridge client.
 
+TODO
+
+{% code title="code/Reservation/Reservation/src/application/services/DomainEventPublisherService.ts" lineNumbers="true" %}
+```typescript
+/**
+ * @description Service to publish domain events.
+ */
+class ConcreteDomainEventPublisherService implements DomainEventPublisherService {
+  private readonly eventEmitter: EventEmitter;
+  private readonly analyticsBusName: string;
+  private readonly domainBusName: string;
+  private readonly logger: MikroLog;
+
+  constructor(dependencies: DomainEventPublisherDependencies) {
+    if (!dependencies.eventEmitter) throw new MissingDependenciesError();
+    const { eventEmitter } = dependencies;
+
+    this.eventEmitter = eventEmitter;
+    this.logger = MikroLog.start();
+
+    this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
+    this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
+
+    if (!this.analyticsBusName || !this.domainBusName)
+      throw new MissingEnvVarsError(
+        JSON.stringify([
+          { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
+          { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
+        ])
+      );
+  }
+
+  /**
+   * @description Convenience method to emit an event
+   * to the domain bus and to the analytics bus.
+   */
+  public async publish(event: Event): Promise<void> {
+    const source = event.get().Source;
+
+    await this.eventEmitter.emit(event.get());
+    this.logger.log(`Emitted '${source}' to '${this.domainBusName}'`);
+
+    await this.eventEmitter.emit(event.getAnalyticsVariant(this.analyticsBusName));
+    this.logger.log(`Emitted '${source}' to '${this.analyticsBusName}'`);
+  }
+}
+
+```
+{% endcode %}
+
+TODO
+
 ## The events
 
 The `EmittableEvent` value object might look long and daunting, but it's actually very simple. The  situation we have to deal with is that the event shape is rather deep meaning it does take some energy to construct it.
@@ -236,6 +288,7 @@ import { getCorrelationId } from '../../infrastructure/utils/userMetadata';
 
 import { MissingMetadataFieldsError } from '../../application/errors/MissingMetadataFieldsError';
 import { NoMatchInEventCatalogError } from '../../application/errors/NoMatchInEventCatalogError';
+import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
 
 /**
  * @description Vend a "Event Carried State Transfer" type event with state
@@ -247,11 +300,16 @@ abstract class EmittableEvent {
   metadataConfig: MetadataConfigInput;
 
   constructor(eventInput: EventInput) {
-    const { event, eventBusName, metadataConfig } = eventInput;
-    this.eventBusName = eventBusName;
+    const { event, metadataConfig } = eventInput;
+    this.eventBusName = process.env.DOMAIN_BUS_NAME || '';
     this.metadataConfig = metadataConfig;
 
-    const eventDTO: EventDTO = this.makeDTO(event);
+    if (!this.eventBusName)
+      throw new MissingEnvVarsError(
+        JSON.stringify([{ key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME }])
+      );
+
+    const eventDTO = this.toDto(event);
     this.event = this.make(eventDTO);
   }
 
@@ -259,21 +317,23 @@ abstract class EmittableEvent {
    * @description Make an intermediate Data Transfer Object that
    * contains all required information to vend out a full event.
    */
-  private makeDTO(eventInput: MakeEventInput): EventDTO {
+  private toDto(eventInput: MakeEventInput): EventDTO {
     const { eventName, slotId, slotStatus } = eventInput;
 
     const detailType = this.matchDetailType(eventName);
+    const timeNow = Date.now();
 
     return {
       eventBusName: this.eventBusName,
       eventName,
       detailType,
-      // @ts-ignore
       metadata: {
         ...this.metadataConfig,
         version: eventInput.version || 1,
         id: randomUUID().toString(),
-        correlationId: getCorrelationId()
+        correlationId: getCorrelationId(),
+        timestamp: new Date(timeNow).toISOString(),
+        timestampEpoch: `${timeNow}`
       },
       data: {
         event: eventName,
@@ -337,7 +397,7 @@ abstract class EmittableEvent {
       system: this.metadataConfig.system,
       service: this.metadataConfig.service,
       team: this.metadataConfig.team,
-      platform: this.metadataConfig.platform,
+      hostPlatform: this.metadataConfig.hostPlatform,
       owner: this.metadataConfig.owner,
       region: this.metadataConfig.region,
       jurisdiction: this.metadataConfig.jurisdiction,
@@ -352,6 +412,7 @@ abstract class EmittableEvent {
    */
   private matchDetailType(eventName: string) {
     switch (eventName) {
+      // User interaction events
       case 'CREATED':
         return 'Created';
       case 'CANCELLED':
@@ -364,6 +425,11 @@ abstract class EmittableEvent {
         return 'CheckedOut';
       case 'UNATTENDED':
         return 'Unattended';
+      // System interaction events
+      case 'OPENED':
+        return 'Opened';
+      case 'CLOSED':
+        return 'Closed';
     }
 
     throw new NoMatchInEventCatalogError(eventName);
@@ -381,7 +447,7 @@ abstract class EmittableEvent {
    * Use "Notification" type event without state.
    */
   public getAnalyticsVariant(analyticsBusName: string): EventBridgeEvent {
-    const analyticsEvent = JSON.parse(JSON.stringify(this.get()));
+    const analyticsEvent: EventBridgeEvent = JSON.parse(JSON.stringify(this.get()));
     const detail = JSON.parse(analyticsEvent.Detail);
 
     analyticsEvent['EventBusName'] = analyticsBusName;
@@ -390,7 +456,7 @@ abstract class EmittableEvent {
 
     analyticsEvent['Detail'] = JSON.stringify(detail);
 
-    return analyticsEvent as EventBridgeEvent;
+    return analyticsEvent;
   }
 }
 
@@ -435,6 +501,21 @@ export class CheckedOutEvent extends EmittableEvent {
 export class UnattendedEvent extends EmittableEvent {
   //
 }
+
+/**
+ * @description An event that represents the `Open` invariant state.
+ */
+export class OpenedEvent extends EmittableEvent {
+  //
+}
+
+/**
+ * @description An event that represents the `Closed` invariant state.
+ */
+export class ClosedEvent extends EmittableEvent {
+  //
+}
+
 ```
 {% endcode %}
 

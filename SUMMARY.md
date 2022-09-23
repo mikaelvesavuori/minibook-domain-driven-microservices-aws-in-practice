@@ -42,5 +42,5 @@
   * [Aggregates](tactical-ddd/entities-and-aggregates.md)
   * [Value objects](tactical-ddd/value-objects.md)
   * [Events](tactical-ddd/events.md)
-* [How to progress](how-to-progress.md)
+* [How to go further](how-to-go-further.md)
 * [References and resources](references.md)

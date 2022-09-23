@@ -11,7 +11,7 @@ description: >-
 
 **Modules** use the ubiquitous language to express the technical side of the domain.
 
-There is no "one way" to use **Modules**, it is primarily about naming and organizing your code. Organize your code in **Modules** by using concepts like namespaces, classes, folder structure, and even how you split responsibilities across microservices. The goal is to accurately express the domain by the way you have structured and named things.
+There is no "one way" to use **Modules**, it's all mostly about naming and organizing your code. Organize your code in **Modules** by using concepts like namespaces, classes, folder structure, and even how you split responsibilities across microservices. The goal is to accurately express the domain by the way you have structured and named things.
 {% endhint %}
 
 In the DDD context, we use Modules as a logical construct to segregate between concerns when we technically implement our domain model. Modules should precede the Bounded Contexts, because Modules typically reside in the same codebase and reflect the _logical model_ of our domain. Dividing logical wholes into separate Bounded Contexts can cause problems (Vernon 2013, p. 344). One example of a valid use is to reach for Modules if you need to create a second model in the same Bounded Context (Vernon 2016, p.50).
@@ -163,6 +163,14 @@ TODO
 <figure><img src="../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline.</p></figcaption></figure>
 
 TODO
+
+<figure><img src="../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
+
+{% hint style="info" %}
+Note that the above diagram does exclude certain code paths—such as those which represent test data, utilities and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram.
+{% endhint %}
+
+You will notice that here adapters are part of the infrastructure layer rather than being on their own.
 
 ## Infrastructure
 

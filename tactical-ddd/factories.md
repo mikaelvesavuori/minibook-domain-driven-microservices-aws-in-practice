@@ -46,8 +46,7 @@ This also works well on creating concrete instances of services that need some v
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
 ```typescript
 export function createVerificationCodeService(securityApiEndpoint: string) {
-  const verificationCodeService = new ConcreteVerificationCodeService(securityApiEndpoint);
-  return verificationCodeService;
+  return new ConcreteVerificationCodeService(securityApiEndpoint);
 }
 ```
 {% endcode %}

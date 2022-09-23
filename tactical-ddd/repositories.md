@@ -70,7 +70,7 @@ export async function CancelSlotUseCase(dependencies: Dependencies, slotId: Slot
 {% endcode %}
 
 {% hint style="success" %}
-We will discuss the `SlotLoaderService` on the next page. For now, know that it is a higher-order construct on top of the Repository itself.
+Don't think too hard about the `SlotLoaderService`. For now, know that it is a higher-order construct on top of the Repository itself.
 {% endhint %}
 
 You'll see that we use a Factory to vend a new `SlotLoaderService`, which we then use to load the `slotId` we have on hand. With the Slot's DTO retrieved we can call the appropriate Aggregate method, which itself then may reconstitute the data so that we can make use of the `Slot` Entity's functionality and logic before doing whatever other things it is expected to do.
@@ -89,13 +89,20 @@ Now for one of the actual repositories.
 {% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
 ```typescript
 import { randomUUID } from 'crypto';
-import { DynamoDBClient, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
+import {
+  AttributeValue,
+  DynamoDBClient,
+  PutItemCommand,
+  QueryCommand,
+  QueryCommandOutput
+} from '@aws-sdk/client-dynamodb';
 
 import { Repository } from '../../interfaces/Repository';
 import { SlotDTO, SlotId } from '../../interfaces/Slot';
-import { DynamoItems } from '../../interfaces/DynamoDb';
+import { DynamoItem, DynamoItems } from '../../interfaces/DynamoDb';
 import { Event, EventDetail } from '../../interfaces/Event';
+
+import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
 
 import { getCleanedItems } from '../utils/getCleanedItems';
 
@@ -104,7 +111,7 @@ import testData from '../../../testdata/dynamodb/testData.json';
 /**
  * @description Factory function to create a DynamoDB repository.
  */
-export function createNewDynamoDbRepository(): DynamoDbRepository {
+export function createDynamoDbRepository(): DynamoDbRepository {
   return new DynamoDbRepository();
 }
 
@@ -113,7 +120,7 @@ export function createNewDynamoDbRepository(): DynamoDbRepository {
  * @see https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/dynamodb-example-table-read-write.html
  */
 class DynamoDbRepository implements Repository {
-  docClient: any;
+  docClient: DynamoDBClient;
   tableName: string;
   region: string;
 
@@ -156,12 +163,14 @@ class DynamoDbRepository implements Repository {
       ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
     };
 
-    const data: DynamoItems =
+    const data: QueryCommandOutput | DynamoItems =
       process.env.NODE_ENV === 'test'
         ? testData
         : await this.docClient.send(new QueryCommand(command));
+    const items =
+      (data.Items?.map((item: Record<string, AttributeValue>) => item) as DynamoItem[]) || [];
 
-    return getCleanedItems(data)[0] as unknown as SlotDTO;
+    return getCleanedItems(items)[0] as unknown as SlotDTO;
   }
 
   /**
@@ -177,19 +186,20 @@ class DynamoDbRepository implements Repository {
       ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
     };
 
-    const data: DynamoItems =
+    const data: QueryCommandOutput | DynamoItems =
       process.env.NODE_ENV === 'test'
         ? testData
         : await this.docClient.send(new QueryCommand(command));
+    const items =
+      (data.Items?.map((item: Record<string, AttributeValue>) => item) as DynamoItem[]) || [];
 
-    return getCleanedItems(data) as unknown as SlotDTO[];
+    return getCleanedItems(items);
   }
 
   /**
    * @description Add (create/update) a slot in the source database.
    */
   public async updateSlot(slot: SlotDTO): Promise<void> {
-    // @ts-ignore
     const { slotId, hostName, timeSlot, slotStatus, createdAt, updatedAt } = slot;
 
     const expiresAt = this.getExpiryTime();
@@ -232,7 +242,6 @@ class DynamoDbRepository implements Repository {
     if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
   }
 }
-
 ```
 {% endcode %}
 
