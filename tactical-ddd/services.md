@@ -9,7 +9,9 @@ description: >-
 {% hint style="success" %}
 **TL;DR**
 
-**Services** do things that don't quite fit in entities or other objects. **Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of domain service usage is to orchestrate entities or aggregates, especially (as in our example code) we don't have higher-level aggregates that can hold such logic.
+**Services** do things that don't quite fit in entities or other objects. They are completely stateless.
+
+**Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of **domain service** usage is when you need to orchestrate entities or aggregates, especially as in our example code we don't have higher-level aggregates that can hold such logic.
 {% endhint %}
 
 Services: An overloaded and problematic term. Still, we need them. What did Eric Evans himself actually think of them?
@@ -20,9 +22,11 @@ Services: An overloaded and problematic term. Still, we need them. What did Eric
 
 While we haven't gotten to entities and aggregates yet, it's safe to say that **services** play in the next-highest league, metaphorically speaking.
 
-In many projects you might see services being used very broadly and liberally. This is similar to how in many Node/JS/TS projects you will have tons of helpers, utilities or other functionally-oriented code. A problem with this way of structuring code is that you'll start witnessing a flattening of hierarchy: Everything is on the same plane, meaning it's hard to understand how pieces fit together and what operates in which way on what.
+## Services in the DDD hierarchy
 
-Using a more object-oriented approach we can start setting up a hierarchy like this:
+In many projects you might see services being used very broadly and liberally. This is similar to how in many Node/JS/TS projects you will find tons of helpers, utilities or other functionally-oriented code. Unwittingly, this way of structuring code will introduce a flattening of hierarchies: Everything is on the same plane, meaning it's hard to understand how pieces fit together and what operates in _which_ way on _what_.
+
+Using a more object-oriented approach we can start enforcing a hierarchy like the below:
 
 * Aggregate Root (if needed)
 * Aggregate (if needed)
@@ -32,7 +36,7 @@ Using a more object-oriented approach we can start setting up a hierarchy like t
 * Value Object
 
 {% hint style="info" %}
-Some of the solutions in the example code are actually so basic that they need no entity or higher-level constructs to deal with them (not even services!).
+Some of the solutions in the example code are actually basic enough that they need no entity or higher-level constructs to deal with them (not even services!).
 
 As said in the introduction, DDD is sometimes overkill.
 {% endhint %}
@@ -47,7 +51,9 @@ Let's read what Evans writes about layering our services..
 
 TODO
 
-### Application Services (or use-cases)
+## Application Services or use cases?
+
+Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
 > Use Cases (a Clean Architecture term) are similar to **Application Services** in DDD. At least their _relative positioning_ is.
 >
@@ -60,7 +66,16 @@ TODO
 >
 > — Source: [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
 
-The above should all be familiar, so the main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
+The way I come to accept both existing is like this:
+
+* The use case is strictly equivalent to the first testable complete unit of code. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
+* You can still use application services within the use case as these operate on the same overall conceptual application level.
+
+The main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have done in other projects, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
+
+## An application service example
+
+The following is a concrete version of the `VerificationCodeService` used in the Reservation solution.
 
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
 ```typescript
@@ -97,13 +112,13 @@ class OnlineVerificationCodeService implements VerificationCodeService {
 ```
 {% endcode %}
 
-TODO
+It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this as a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
 
-### Domain Services
+## Domain Services
 
 Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple aggregates for example, otherwise keep it simple and let it be part of the aggregate itself.
 
-TODO
+Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.&#x20;
 
 {% code title="code/Reservation/SlotReservation/src/domain/services/sanitizeInputData.ts" lineNumbers="true" %}
 ```typescript
@@ -152,7 +167,7 @@ export class ReservationService {
   private readonly logger: MikroLog;
 
   constructor(dependencies: Dependencies) {
-    if (!dependencies.repository) throw new MissingDependenciesError();
+    if (!dependencies.repository || !dependencies.domainEventPublisher) throw new MissingDependenciesError();
     const { repository, domainEventPublisher, metadataConfig } = dependencies;
 
     this.repository = repository;
@@ -172,10 +187,6 @@ export class ReservationService {
     await this.repository.addEvent(event);
     await this.domainEventPublisher.publish(event);
   }
-
-  /**
-   * USE CASES ETC.
-   */
 
   /**
    * @description Make all the slots needed for a single day (same day/"today").
@@ -365,4 +376,48 @@ export class ReservationService {
 ```
 {% endcode %}
 
-TODO
+There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God\_object) either, thank...God?
+
+First of all, the service, even just by glancing the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`. When it gets constructed, it takes a number of dependencies to avoid creating its own imports and links to infrastructural objects.
+
+We make properties of the class `private`, and if we can, also `readonly`. In this case it's no problem to do so. For methods that are called in the use cases they are made public, else they are private to discourage calling internal functionality from an unwitting outside party.
+
+Most of the code handles roughly similar functionality. For a telling example of the orchestration you might sometimes need, look no further than `makeDailySlots()` on line 74: This is domain logic that would not make sense _inside_ the `Slot` but makes perfect sense here in the outer scope.
+
+### Handling the cancellation
+
+Let's look closer at a use case-oriented method, like `cancel()`. That one looks roughly similar to most of the other operations.
+
+```typescript
+public async cancel(slotDto: SlotDTO): Promise<void> {
+  const slot = new Slot().fromDto(slotDto);
+  const { event, newStatus } = slot.cancel();
+
+  const cancelEvent = new CancelledEvent({
+    event,
+    metadataConfig: this.metadataConfig
+  });
+
+  await this.transact(slot.toDto(), cancelEvent, newStatus);
+}
+```
+
+The method takes in the Data Transfer Object representation of the `Slot`. We reconstitute it by creating an actual `Slot` entity object from the DTO and then use the slot's own `cancel()` method, in turn encapsulating the relevant business and validation logic.
+
+Given that nothing broke we can construct the `CancelledEvent` with the local metadata configuration and the event object we receive from the `Slot` itself.
+
+Finally it's time to run the domain service's `transact()` method that wraps transactional boilerplate:
+
+```typescript
+private async transact(slotDto: SlotDTO, event: Event, newStatus: Status) {
+  await this.repository
+    .updateSlot(slotDto)
+    .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
+  await this.repository.addEvent(event);
+  await this.domainEventPublisher.publish(event);
+}
+```
+
+{% hint style="success" %}
+It might have been even nicer, though more work, to inject some type of service rather than the repository but at some point we can just be "normal people" and accept the compromise of (in)directly using the repository in the domain layer.
+{% endhint %}
