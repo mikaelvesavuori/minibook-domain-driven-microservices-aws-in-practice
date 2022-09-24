@@ -36,12 +36,6 @@ See: https://medium.com/serverless-transformation/eventbridge-storming-how-to-bu
 
 At a high level, events and event-driven architecture means that we can—and should—decouple systems from each other. This enables us to practically build and sustain an intentional architecture, as promoted by Domain Driven Design, Clean Architecture and most serious software engineering principles today.
 
-Ultimately, using event driven architecture optimises our IT landscape for decoupled data consumption, which is a cornerstone in modern cloud-based software development. This advice aligns with our 4th and 10th [IT principles](https://polestarjira.atlassian.net/wiki/spaces/digitaloffice/pages/2784231698):
-
-> 4\. Decouple master data from business capability providers
->
-> 10\. Optimize for data consumption
-
 See more at:
 
 * [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)

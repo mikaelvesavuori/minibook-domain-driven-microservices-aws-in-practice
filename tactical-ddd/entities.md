@@ -585,7 +585,67 @@ public toDto(): SlotDTO {
 
 The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` entity class.
 
-### Use case #1: Reserving a slot
+### Use case #1: Domain logic for checking if we can reserve and cancel
+
+Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's literally a check on the expected, valid `slotStatus`.
+
+{% code lineNumbers="true" %}
+```typescript
+/**
+ * @description Can this `Slot` be reserved?
+ */
+private canBeReserved(): boolean {
+  if (this.slotStatus !== 'OPEN') return false;
+  return true;
+}
+```
+{% endcode %}
+
+TODO
+
+```typescript
+/**
+ * @description Can this `Slot` be cancelled?
+ */
+private canBeCancelled(): boolean {
+  if (this.slotStatus !== 'RESERVED') return false;
+  return true;
+}
+```
+
+TODO
+
+### Use case #2: Is the grace period over?
+
+TODO
+
+{% code lineNumbers="true" %}
+```typescript
+ /**
+ * @description Check if our 10 minute grace period has ended,
+ * in which case we want to open the slot again.
+ */
+public isGracePeriodOver(): boolean {
+  if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
+  return false;
+}
+
+/**
+ * @description Returns the end of the grace period until a reserved
+ * slot is deemed unattended and returns to open state.
+ */
+private getGracePeriodEndTime(startTime: string): string {
+  const minutes = 10;
+  const msPerMinute = 60 * 1000;
+
+  return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
+}
+```
+{% endcode %}
+
+TODO
+
+### Use case #3: Reserving a slot
 
 TODO
 
