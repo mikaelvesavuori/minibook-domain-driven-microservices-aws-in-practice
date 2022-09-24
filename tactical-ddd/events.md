@@ -161,8 +161,6 @@ See:
 * [https://www.serverless.com/framework/docs/providers/aws/events/event-bridge](https://www.serverless.com/framework/docs/providers/aws/events/event-bridge)
 * [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
 
-## Practice
-
 ## Emitting events
 
 The way we are addressing the events and eventing infrastructure follows this model:
@@ -522,6 +520,10 @@ export class ClosedEvent extends EmittableEvent {
 {% endcode %}
 
 Admittedly the event structure (despite our decoupling of the emitter itself) is tied to EventBridge that is acceptable as we are actually only using EventBridge in our project. If we would support truly different emitters we would perhaps need to add further abstractions on the event shape. In the context of this project we can accept that as a trivia item.
+
+### Slot entity produces \`SlotCommand\`
+
+TODO
 
 ### Metadata
 

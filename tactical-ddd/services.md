@@ -113,7 +113,7 @@ Domain services encapsulate, as expected, domain logic — you'll therefore wan
 
 Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.&#x20;
 
-{% code title="code/Reservation/SlotReservation/src/domain/services/sanitizeInputData.ts" lineNumbers="true" %}
+{% code title="code/Reservation/SlotReservation/src/domain/services/ReservationService.ts" lineNumbers="true" %}
 ```typescript
 import { MikroLog } from 'mikrolog';
 
@@ -411,6 +411,10 @@ private async transact(slotDto: SlotDTO, event: Event, newStatus: Status) {
 }
 ```
 
+The `domainEventPublisher` will be discussed in the Events section.
+
 {% hint style="success" %}
 It might have been even nicer, though more work, to inject some type of service rather than the repository but at some point we can just be "normal people" and accept the compromise of (in)directly using the repository in the domain layer.
 {% endhint %}
+
+TODO
