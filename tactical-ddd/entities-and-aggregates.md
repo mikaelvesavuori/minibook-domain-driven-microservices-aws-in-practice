@@ -32,7 +32,18 @@ Revisiting our relations between aggregates and entities we see that:
 * Aggregates are objects that access and operate on entities. To be clear, an aggregate is always itself an entity, but the opposite is not necessarily true.
 * An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
 
-TODO
+Being an Aggregate means that you add a number of additional characteristics to the Entity's existential features:
+
+* Consistency enforcement is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
+* Acts as a transaction boundary: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
+* Enforces the hierarchy of entities. Multiple entities and/or value object may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
+* The rule of thumb for referencing other aggregates is that any entities that must be in strongly consistent state should be within the same aggregate boundary. Anything else is some other Aggregate's job and may be eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
+* Domain events are emitted to integrate with other systems and Aggregates whenever a transaction is completed.
+* Just as with other object types, Aggregates use the ubiquitous language to reflect the domain model.
+
+{% hint style="info" %}
+See Vlad Khononov's _Learning Domain Driven Design: Aligning Software Architecture and Business Strategy_ (2021, p.84-92).
+{% endhint %}
 
 ## Do we have Aggregates in the example project?
 
@@ -40,7 +51,7 @@ Yes and no.
 
 No, because there is no high-level object of that variety that is containing multiple Entities or similar objects. We only have the "flat" Entity named `Slot`.
 
-Yes, because our only Entity then automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, and especially not if there is no need for such a concept in a basic domain model like the one in our example project.
+Yes, because our only Entity for the above reason automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, and especially not if there is no need for such a concept in a basic domain model like the one in our example project.
 
 ## How large is an Aggregate?
 
