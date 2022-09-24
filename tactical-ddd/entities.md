@@ -19,7 +19,22 @@ Entities and aggregates are perhaps the most "prominent" of the tactical pattern
 
 Both of these concepts are very much related, and it probably makes sense to start with the more general of them: The entity.
 
-Entities are object that may mutate (change) over time, and who all have distinct identities. We can think of a `BookClubMember` as something that feels quite right being an entity. Whereas a `Meeting` may be a simple value object, as it has neither a strict identity (perhaps just a simple identifier) nor will it change after the fact, the `BookClubMember` will be a much less simple construct. It will certainly involve both data and behavior, and it will likely have clear business rules attached to these, such as for renewing membership, refreshing the member's read books and more.
+Entities are objects that may mutate (change) over time, and who all have distinct identities. We can think of a `BookClubMember` as something that feels quite right being an entity. Whereas a `Meeting` may be a simple value object, as it has neither a strict identity (perhaps just a simple identifier) nor will it change after the fact, the `BookClubMember` will be a much less simple construct. It will certainly involve both data and behavior, and it will likely have clear business rules attached to these, such as for renewing membership, refreshing the member's read books and more.
+
+## What often happens with integrations and business logic
+
+In the world of traditional back-end engineering you might find something like the below diagram: A service that interacts with several data sources. Because all of these are distinct and separated we have no good idea of who owns, and may change, what source. In the bottom we have the faint contours of other services, too.
+
+It's not uncommon that we for example:
+
+* Go with a data synchronization approach, where we duplicate data on our end (this may even be two-way but let's skip that idea for now). While it's easier today in the public cloud to set these things up, many times you'll still face the consequences of having to deal with data decoupled from the business logic (behavior). Further, you may get a problematic mix of eventual and strong consistency which could break transactional flows.
+* Decide to only read back data, making integration easier, but the resiliency and performance worse. An issue here is that at any point where a feature is needed that can update data, you will have a hard time getting that solution to be scalable, secure, and logical as the landscape is now polluted with multiple writers of the same leading data.
+
+Either case will be poor in different ways.
+
+<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+
+While in theory we have decoupling here, in essence we also have created an even bigger problem: An **anemic domain model**.
 
 ## The "anemic domain model"
 
@@ -40,10 +55,6 @@ The opposite of all of this, no surprises, is the "rich domain model"—as someo
 Compared to their anemic brethren, rich domain models (typically entities and aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain models**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
 
 **A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()`. As we've seen many times in this book, we want this to explain 1:1 in our common/ubiquitous language what we are doing.
-
-\---
-
-<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
 
 TODO
 

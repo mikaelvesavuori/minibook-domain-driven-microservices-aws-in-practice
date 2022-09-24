@@ -41,7 +41,7 @@ Some of the solutions in the example code are actually basic enough that they ne
 As said in the introduction, DDD is sometimes overkill.
 {% endhint %}
 
-Let's read what Evans writes about layering our services..
+Let's read what Evans writes about layering our services:
 
 > **Application Layer**: Defines the jobs the software is supposed to do and directs the expressive domain objects to work out problems. The tasks this layer is responsible for are meaningful to the business or necessary for interaction with the application layers of other systems. This layer is kept thin. It does not contain business rules or knowledge, but only coordinates tasks and delegates work to collaborations of domain objects in the next layer down. It does not have state reflecting the business situation, but it can have state that reflects the progress of a task for the user or the program.
 >
@@ -49,22 +49,13 @@ Let's read what Evans writes about layering our services..
 >
 > — Source: Eric Evans (via [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html))
 
-TODO
+The intuitive difference should be clear, but I've found that it may take a refactoring or two to find the best balance, especially when balancing Domain Services and Aggregates.
 
 ## Application Services or use cases?
 
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
-> Use Cases (a Clean Architecture term) are similar to **Application Services** in DDD. At least their _relative positioning_ is.
->
-> In DDD, **Application Services** (application layer concerns, obviously) represent commands or queries (like `createComment` - COMMAND or `getCommentById` - QUERY) that:
->
-> * Contain no domain-specific business logic.
-> * Are used in order to fetch domain entities (and anything else) from persistence and the outside world.
-> * Either passes off control to an Aggregate to execute domain logic by using a method of the Aggregate, or passes off several entities to a Domain Service to facilitate their interaction.
-> * Have low-levels of [Cyclomatic Complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity).
->
-> — Source: [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
+Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain entities from external or internal (repository) soruces; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity). (See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/))
 
 The way I come to accept both existing is like this:
 
