@@ -6,6 +6,8 @@ description: >-
 
 # Modules
 
+<figure><img src="../.gitbook/assets/undraw_design_components_9vy6.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

@@ -6,6 +6,8 @@ description: >-
 
 # Factories
 
+<figure><img src="../.gitbook/assets/undraw_factory_dy0a.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

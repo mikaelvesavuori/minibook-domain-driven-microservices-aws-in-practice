@@ -7,6 +7,8 @@ description: >-
 
 # Entities
 
+<figure><img src="../.gitbook/assets/undraw_Fitting_piece_re_pxay.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

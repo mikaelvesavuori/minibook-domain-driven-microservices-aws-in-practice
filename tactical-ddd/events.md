@@ -4,6 +4,8 @@ description: Events make your distributed services world "go round, round, round
 
 # Events
 
+<figure><img src="../.gitbook/assets/undraw_Solution_mindset_re_57bf.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

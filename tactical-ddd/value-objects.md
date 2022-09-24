@@ -6,6 +6,8 @@ description: >-
 
 # Value objects
 
+<figure><img src="../.gitbook/assets/undraw_Problem_solving_re_4gq3.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

@@ -4,6 +4,8 @@ description: "Numero uno when it comes to patterns —\_repositories are well-es
 
 # Repositories
 
+<figure><img src="../.gitbook/assets/undraw_Filing_system_re_56h6.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 

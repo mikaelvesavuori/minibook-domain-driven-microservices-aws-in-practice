@@ -4,6 +4,8 @@ description: TODO
 
 # Aggregates
 
+<figure><img src="../.gitbook/assets/undraw_Mind_map_re_nlb6.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+
 {% hint style="success" %}
 **TL;DR**
 
