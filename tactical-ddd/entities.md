@@ -62,6 +62,14 @@ Compared to their anemic brethren, rich domain models (typically entities and ag
 
 TODO
 
+Revisiting our relations between aggregates and entities we see that:
+
+* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
+* Entities represent our "dumb data" as actual "things" and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
+* We use the ubiquitous language to name these actions and anything else to do with the Entity.
+
+TODO
+
 <figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
 
 TODO
@@ -472,6 +480,137 @@ export interface SlotCommand {
 }
 
 ````
+{% endcode %}
+
+TODO
+
+### The constructor
+
+Let's see:
+
+```typescript
+private slotId: string;
+private hostName: string;
+private timeSlot: TimeSlotDTO;
+private slotStatus: Status;
+private createdAt: string;
+private updatedAt: string;
+
+constructor(input?: SlotCreateInput) {
+  this.slotId = '';
+  this.hostName = '';
+  this.timeSlot = {
+    startTime: '',
+    endTime: ''
+  };
+  this.slotStatus = 'OPEN';
+  this.createdAt = '';
+  this.updatedAt = '';
+
+  if (input) this.make(input);
+}
+```
+
+Our internal private fields represent the data we store. They can't be retrieved from outside the class which is perfect—this is one of the easiest but most important wins when using DDD or good OOP for that matter. Now, users will have to use our exposed public methods to actually mutate our data.
+
+When constructed, if we lack input, we will assume an almost barren state. We've also set up a basic private `make()` method that will return back the starting-state invariant which we call "open" if slot creation input is passed in.
+
+```typescript
+/**
+ * @description Create a valid, starting-state ("open") invariant of the Slot.
+ */
+private make(input: SlotCreateInput): SlotDTO {
+  const { startTime, endTime } = input;
+  const currentTime = this.getCurrentTime();
+
+  this.slotId = randomUUID().toString();
+  this.hostName = '';
+  this.timeSlot = {
+    startTime,
+    endTime
+  };
+  this.slotStatus = 'OPEN';
+  this.createdAt = currentTime;
+  this.updatedAt = currentTime;
+
+  return this.toDto();
+}
+```
+
+TODO
+
+### Reconstitute from a DTO
+
+Now for one of the most important private methods: `fromDto()`. This will enable us to create a class representation (`Slot` entity) from a Data Transfer Object. It's nothing hard nor magical, just:
+
+```typescript
+/**
+ * @description Reconstitute a Slot from a Data Transfer Object.
+ */
+public fromDto(input: SlotDTO): Slot {
+  this.slotId = input['slotId'];
+  this.hostName = input['hostName'];
+  this.timeSlot = input['timeSlot'];
+  this.slotStatus = input['slotStatus'];
+  this.createdAt = input['createdAt'];
+  this.updatedAt = input['updatedAt'];
+
+  return this;
+}
+```
+
+This acts as our public setter method. In this case we can practically always trust the input but an improvement would be to add validation logic at this point.
+
+By returning a reference to the instance we can allow chaining of commands making the programmatic use a little easier.
+
+### Make into a DTO
+
+There is no way for us to transport a class across systems, so we will have to represent the key data in some way. Luckily this is easy.
+
+```typescript
+/**
+ * @description Return data as Data Transfer Object.
+ */
+public toDto(): SlotDTO {
+  return {
+    slotId: this.slotId,
+    hostName: this.hostName,
+    timeSlot: this.timeSlot,
+    slotStatus: this.slotStatus,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
+}
+```
+
+The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` entity class.
+
+### Use case #1: Reserving a slot
+
+TODO
+
+{% code lineNumbers="true" %}
+```typescript
+public reserve(hostName: string): SlotCommand {
+  if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
+
+  const newStatus = 'RESERVED';
+
+  this.updateHostName(hostName || '');
+  this.updateStatus(newStatus);
+
+  return {
+    event: {
+      eventName: newStatus,
+      slotId: this.slotId,
+      slotStatus: newStatus,
+      hostName: this.hostName,
+      startTime: this.getStartTime()
+    },
+    newStatus
+  };
+}
+```
 {% endcode %}
 
 TODO
