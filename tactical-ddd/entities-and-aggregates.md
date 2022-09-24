@@ -11,9 +11,11 @@ description: TODO
 
 The **Aggregate** can be confusing.  It has two common meanings.
 
-The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" other Entities. This entails that **Aggregates,** like entities, each have their own unique identity. The highest-level Aggregate is called the Aggregate Root. There must be no way to access "deeper" entities without passing the Aggregate Root, or whichever other construct is highest.
+The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" or links other Entities in a logical whole. This entails that **Aggregates,** like entities, each have their own unique identity. The highest-level Aggregate is called the **Aggregate Root**. There must be no way to access "deeper" entities without passing the **Aggregate Root**, or whichever other construct is highest.
 
-For the secondary meaning, it can mean (in general) the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
+For the secondary, more colloquial meaning it can mean the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
+
+Moreover, the **Aggregate** acts as the transaction boundary so it completely deals with all the data that it pertains to. You should never modify more than a single **Aggregate** per database transaction. Any changes to the **Aggregate** result in the **Aggregate** publishing a Domain Event.
 {% endhint %}
 
 Looking in the Big Blue Book we'll read the following:
@@ -31,6 +33,14 @@ Revisiting our relations between aggregates and entities we see that:
 * An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
 
 TODO
+
+## Do we have Aggregates in the example project?
+
+Yes and no.
+
+No, because there is no high-level object of that variety that is containing multiple Entities or similar objects. We only have the "flat" Entity named `Slot`.
+
+Yes, because our only Entity then automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, and especially not if there is no need for such a concept in a basic domain model like the one in our example project.
 
 ## How large is an Aggregate?
 
@@ -80,6 +90,18 @@ The code in the class is in two major chunks: Private methods and the public ("A
 
 The examples will be presented in "roughly" sequential order, though logically reservation comes before the check-in. Those are switched in order because I want to gradually progress on their relative complexity (what little there is).
 
+### Why is this handled in a Domain Service rather than directly in the use case?
+
+Good question!
+
+In typical DDD fashion we would not want to move the persistence concern (even with a Repository) into the domain layer, but want to keep these in the application layer. However, the actual code that gets executed has more of a domain character than pure application chaff. We can see this in the nature of the code itself—such as orchestrating the entity and creating events—as well as checking our resulting imports: we directly link to the `Slot` entity and the events, all of which are in the domain.
+
+Secondly, there is a lot of wiring that needs to be done. By placing all of that into a stateless, separate class rather than in the functionally oriented use cases we can avoid having to rewrite a lot of code.
+
+Thirdly, as we have learned, Aggregates (a domain level object) are the only objects that in strict DDD may emit Domain Events. This puts us in a weird place: we have implemented the `DomainEventPublisherService` as an Application Service because it's kind of a low-level, infrastructural thing. So while persisting is then a low-tier activity, the Aggregate is at the top of the food chain, and this brings us to an unfortunate TODO
+
+At the end of the day it is not about being orthodox but by being clear and domain-oriented in our code. I am sure Evans and Vernon and others might find any number of details to complain about, but the way _it actually is_ implemented is hopefully clear enough; this is the real goal, not dogmatism.
+
 ### Why is this a Domain Service and not an Aggregate?
 
 You might have noticed that our `ReservationService` aggregate was indeed called an _aggregate_, yet it has no ID or similar (as per expectations on aggregates), nor did it carry state on itself. Well spotted.
@@ -97,7 +119,9 @@ And that's how we ended up in this compromise. Don't let DDD become dogma. Be hu
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
 {% endhint %}
 
-\++++
+### Aggregates emit Domain Events
+
+We haven't discussed Domain Events in detail yet TODO
 
 ### Use case #1: Make daily slots
 
