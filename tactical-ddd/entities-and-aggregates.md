@@ -58,7 +58,7 @@ TODO
 
 TODO
 
-## The SlotReservation aggregate
+## Our domain service as a stand-in
 
 I wouldn't be surprised if you already are aware that we'll be looking at the meatiest and most significant part of our codebase. This is good! If we have it this far, using the other tactical concepts, we are truly now at the core of the business logic.
 
