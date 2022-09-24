@@ -11,10 +11,18 @@ description: TODO
 
 The **Aggregate** can be confusing.  It has two common meanings.
 
-The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" other Entities. This entails that **Aggregates,** like entities, each have their own unique identity.
+The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" other Entities. This entails that **Aggregates,** like entities, each have their own unique identity. The highest-level Aggregate is called the Aggregate Root. There must be no way to access "deeper" entities without passing the Aggregate Root, or whichever other construct is highest.
 
 For the secondary meaning, it can mean (in general) the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
 {% endhint %}
+
+Looking in the Big Blue Book we'll read the following:
+
+> An aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate, because no outside object can ever see it out of the context of the root Entity.
+>
+> — Source: Eric Evans, DDD book (p. 126-127)
+
+TODO
 
 Revisiting our relations between aggregates and entities we see that:
 
@@ -24,13 +32,25 @@ Revisiting our relations between aggregates and entities we see that:
 
 TODO
 
-It is one of the most important and complex patterns of _Tactical Design_, _Aggregates_ are based on two other _Tactical Standards_, which are _Entities_ and _Value Objects_. An _Aggregate_ is a Cluster of one or more _Entities_, and may also contain _Value Objects_. The Parent _Entity_ of this Cluster receives the name of _Aggregate Root_.
+## How large is an Aggregate?
 
-aggregate root is a consistency boundary
+Vaughn Vernon recommends in _Implementing Domain Driven Design_ that you should strive to design small aggregates (p. 355-359). He shows how large-cluster Aggregates will scale and perform poorly, as well as become very complicated to reason about. The technical issues stem from factors such as needing to load more data, possibly from more sources, while also exposing more transactional areas for failure.
 
-> An aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes.
+## What we mean with transactions
+
+Recall how the Aggregate Root (and Entities, in essence) serves as a consistency boundary. TODO
+
+Also, as we will see more in the Events section, he writes:
+
+> Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal cam be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
 >
-> — Source: Eric Evans
+> — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 359
+
+TODO
+
+> When examining the use case (or story), ask whether it's the job of the user executing the use case to make the data consistent. If it is, try to make it transactionally consistent, but only by adhering to the other rules of Aggregates. If it is another user's job, or the job of the system, allow it to be eventually consistent. That bit of wisdom not only provides a convenient tie breaker, but it helps us gain a deeper understanding of the domain. It exposes the real system invariants: the ones that must be kept transactionally consistent.
+>
+> — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 367
 
 TODO
 
