@@ -34,6 +34,8 @@ TODO
 
 ## How large is an Aggregate?
 
+<figure><img src="../.gitbook/assets/1a6lva.jpg" alt=""><figcaption><p>Come on, the question was begging for this meme.</p></figcaption></figure>
+
 Vaughn Vernon recommends in _Implementing Domain Driven Design_ that you should strive to design small aggregates (p. 355-359). He shows how large-cluster Aggregates will scale and perform poorly, as well as become very complicated to reason about. The technical issues stem from factors such as needing to load more data, possibly from more sources, while also exposing more transactional areas for failure.
 
 ## What we mean with transactions
@@ -54,7 +56,7 @@ TODO
 
 TODO
 
-<figure><img src="../.gitbook/assets/aggregates-complex.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/aggregates-complex.png" alt=""><figcaption><p>Conceptual demonstration of an deeply-clustered Aggregate Root. This particular model may or may not make actual sense (given that it's simply an example) but we can be quite certain that the orchestration of this will be non-trivial.</p></figcaption></figure>
 
 TODO
 
@@ -80,7 +82,7 @@ The examples will be presented in "roughly" sequential order, though logically r
 
 ### Why is this a Domain Service and not an Aggregate?
 
-You might have noticed that our `SlotReservation` aggregate was indeed called an _aggregate_, yet it has no ID or similar (as per expectations on aggregates), nor did it carry state on itself. Well spotted.
+You might have noticed that our `ReservationService` aggregate was indeed called an _aggregate_, yet it has no ID or similar (as per expectations on aggregates), nor did it carry state on itself. Well spotted.
 
 My reasons for doing it this way include:
 
@@ -91,47 +93,11 @@ My reasons for doing it this way include:
 
 And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with considered and deliberate design which after all is the real goal.
 
+{% hint style="info" %}
+Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
+{% endhint %}
+
 \++++
-
-### Constructor
-
-The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `SlotAggregate` less coupled to any infrastructural concerns.
-
-We also have several custom errors that may be thrown if conditions are not valid.&#x20;
-
-```typescript
-private repository: Repository;
-private eventEmitter: EventEmitter;
-private metadataConfig: MetadataConfigInput;
-private logger: MikroLog;
-private analyticsBusName: string;
-private domainBusName: string;
-private securityApiEndpoint: string;
-
-constructor(dependencies: Dependencies) {
-  if (!dependencies.repository || !dependencies.eventEmitter)
-    throw new MissingDependenciesError();
-  const { repository, eventEmitter, metadataConfig } = dependencies;
-
-  this.repository = repository;
-  this.eventEmitter = eventEmitter;
-  this.metadataConfig = metadataConfig;
-  this.logger = MikroLog.start();
-
-  this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
-  this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
-  this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
-
-  if (!this.analyticsBusName || !this.domainBusName)
-    throw new MissingEnvVarsError(
-      JSON.stringify([
-        { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
-        { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
-      ])
-    );
-  if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
-}
-```
 
 ### Use case #1: Make daily slots
 

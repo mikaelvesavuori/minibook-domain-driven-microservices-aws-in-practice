@@ -174,11 +174,7 @@ export class ReservationService {
    * such as calling the repository and event emitter.
    */
   private async transact(slotDto: SlotDTO, event: Event, newStatus: Status) {
-    await this.repository
-      .updateSlot(slotDto)
-      .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
-    await this.repository.addEvent(event);
-    await this.domainEventPublisher.publish(event);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
@@ -229,15 +225,7 @@ export class ReservationService {
    * @description Cancel a slot reservation.
    */
   public async cancel(slotDto: SlotDTO): Promise<void> {
-    const slot = new Slot().fromDto(slotDto);
-    const { event, newStatus } = slot.cancel();
-
-    const cancelEvent = new CancelledEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), cancelEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
@@ -248,66 +236,28 @@ export class ReservationService {
     hostName: string,
     verificationCodeService: VerificationCodeService
   ): Promise<ReserveOutput> {
-    const slot = new Slot().fromDto(slotDto);
-    const { event, newStatus } = slot.reserve(hostName);
-
-    const verificationCode = await verificationCodeService.getVerificationCode(slotDto.slotId);
-
-    const reserveEvent = new ReservedEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), reserveEvent, newStatus);
-
-    return {
-      code: verificationCode
-    };
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Check in to a slot.
    */
   public async checkIn(slotDto: SlotDTO): Promise<void> {
-    const slot = new Slot().fromDto(slotDto);
-    const { event, newStatus } = slot.checkIn();
-
-    const checkInEvent = new CheckedInEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), checkInEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Check out of a slot.
    */
   public async checkOut(slotDto: SlotDTO): Promise<void> {
-    const slot = new Slot().fromDto(slotDto);
-    const { event, newStatus } = slot.checkOut();
-
-    const checkOutEvent = new CheckedOutEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), checkOutEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Re-open a slot.
    */
   public async open(slotDto: SlotDTO): Promise<void> {
-    const slot = new Slot().fromDto(slotDto);
-    const { event, newStatus } = slot.open();
-
-    const openEvent = new OpenedEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), openEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
@@ -316,54 +266,28 @@ export class ReservationService {
    * This is only triggered by scheduled events.
    */
   public async checkForClosed(slotDtos: SlotDTO[]): Promise<void> {
-    const updateSlots = slotDtos.map(async (slotDto: SlotDTO) => {
-      const slot = new Slot().fromDto(slotDto);
-      if (slot.isEnded()) return await this.close(slot);
-    });
-
-    await Promise.all(updateSlots);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Close a slot.
    */
   private async close(slot: Slot): Promise<void> {
-    const { event, newStatus } = slot.close();
-
-    const closeEvent = new ClosedEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), closeEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Check for unattended slots.
    */
   public async checkForUnattended(slotDtos: SlotDTO[]): Promise<void> {
-    const slotsToUpdate = slotDtos.filter(async (slotDto: SlotDTO) => {
-      const slot = new Slot().fromDto(slotDto);
-      if (slot.isGracePeriodOver()) return await this.unattend(slot);
-    });
-
-    await Promise.all(slotsToUpdate);
+    // Omitted for brevity, clarity, scope
   }
 
   /**
    * @description Unattend a slot that has not been checked into.
    */
   private async unattend(slot: Slot): Promise<void> {
-    const result = slot.unattend();
-    if (!result) return;
-
-    const { event, newStatus } = result;
-    const unattendEvent = new UnattendedEvent({
-      event,
-      metadataConfig: this.metadataConfig
-    });
-
-    await this.transact(slot.toDto(), unattendEvent, newStatus);
+    // Omitted for brevity, clarity, scope
   }
 }
 ```
@@ -371,11 +295,53 @@ export class ReservationService {
 
 There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God\_object) either, thank...God?
 
-First of all, the service, even just by glancing the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`. When it gets constructed, it takes a number of dependencies to avoid creating its own imports and links to infrastructural objects.
+First of all, the service, even just by glancing the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.&#x20;
 
-We make properties of the class `private`, and if we can, also `readonly`. In this case it's no problem to do so. For methods that are called in the use cases they are made public, else they are private to discourage calling internal functionality from an unwitting outside party.
+Most of the code handles roughly similar functionality. For a telling example of the orchestration you might sometimes need, look no further than `makeDailySlots()` on line 70: This is domain logic that would not make sense _inside_ the `Slot` but makes perfect sense here in the outer scope. That comment might not make sense yet, but it will after the next couple of pages.
 
-Most of the code handles roughly similar functionality. For a telling example of the orchestration you might sometimes need, look no further than `makeDailySlots()` on line 74: This is domain logic that would not make sense _inside_ the `Slot` but makes perfect sense here in the outer scope.
+### Constructor
+
+When it gets constructed, it takes a number of dependencies to avoid creating its own imports and links to infrastructural objects. We make properties of the class `private`, and if we can, also `readonly`. In this case it's no problem to do so. For methods that are called in the use cases they are made public, else they are private to discourage calling internal functionality from an unwitting outside party.
+
+The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `ReservationService` less coupled to any infrastructural concerns.
+
+We also have several custom errors that may be thrown if conditions are not valid.&#x20;
+
+```typescript
+private repository: Repository;
+private eventEmitter: EventEmitter;
+private metadataConfig: MetadataConfigInput;
+private logger: MikroLog;
+private analyticsBusName: string;
+private domainBusName: string;
+private securityApiEndpoint: string;
+
+constructor(dependencies: Dependencies) {
+  if (!dependencies.repository || !dependencies.eventEmitter)
+    throw new MissingDependenciesError();
+  const { repository, eventEmitter, metadataConfig } = dependencies;
+
+  this.repository = repository;
+  this.eventEmitter = eventEmitter;
+  this.metadataConfig = metadataConfig;
+  this.logger = MikroLog.start();
+
+  this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
+  this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
+  this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
+
+  if (!this.analyticsBusName || !this.domainBusName)
+    throw new MissingEnvVarsError(
+      JSON.stringify([
+        { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
+        { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
+      ])
+    );
+  if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
+}
+```
+
+TODO
 
 ### Handling the cancellation
 
