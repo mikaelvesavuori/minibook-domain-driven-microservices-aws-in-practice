@@ -345,8 +345,6 @@ constructor(dependencies: Dependencies) {
 }
 ```
 
-TODO
-
 ### Handling the cancellation
 
 Let's look closer at a use case-oriented method, like `cancel()`. That one looks roughly similar to most of the other operations.
@@ -386,5 +384,3 @@ The `domainEventPublisher` will be discussed in the Events section.
 {% hint style="success" %}
 It might have been even nicer, though more work, to inject some type of service rather than the repository but at some point we can just be "normal people" and accept the compromise of (in)directly using the repository in the domain layer.
 {% endhint %}
-
-TODO
