@@ -68,6 +68,8 @@ No, because there is no high-level object of that variety that is containing mul
 
 Yes, because our only Entity for the above reason automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, and especially not if there is no need for such a concept in a basic domain model like the one in our example project.
 
+We will see later in this section how I am handling this case in the project.
+
 ## How large is an Aggregate?
 
 <figure><img src="../.gitbook/assets/1a6lva.jpg" alt=""><figcaption><p>Come on, the question was begging for this meme.</p></figcaption></figure>
@@ -127,8 +129,6 @@ In typical DDD fashion we would not want to move the persistence concern (even w
 
 Secondly, there is a lot of wiring that needs to be done. By placing all of that into a stateless, separate class rather than in the functionally oriented use cases we can avoid having to rewrite a lot of code.
 
-Thirdly, as we have learned, Aggregates (a domain level object) are the only objects that in strict DDD may emit Domain Events. This puts us in a weird place: we have implemented the `DomainEventPublisherService` as an Application Service because it's kind of a low-level, infrastructural thing. So while persisting is then a low-tier activity, the Aggregate is at the top of the food chain, and this brings us to an unfortunate TODO
-
 At the end of the day it is not about being orthodox but by being clear and domain-oriented in our code. I am sure Evans and Vernon and others might find any number of details to complain about, but the way _it actually is_ implemented is hopefully clear enough; this is the real goal, not dogmatism.
 
 ### Why is this a Domain Service and not an Aggregate?
@@ -139,7 +139,7 @@ The service is stateless and identity-less, so it can't be an Entity or Aggregat
 
 It's not an Entity because it doesn't handle anything concrete _on_ anything.
 
-I really want to avoid injecting Repositories or Domain Event Publishers into the `Slot` Entity, so something else has to abstract that. However, not even a Domain Layer _should_ access such things, but it's generally not seen as a capital offense. :sweat\_smile:
+I really want to avoid injecting Repositories or Domain Event Publishers into the `Slot` Entity/Aggregate, so something else has to abstract that. However, not even a Domain Layer _should_ access such things, but it's generally not seen as a capital offense. :sweat\_smile:
 
 {% hint style="info" %}
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
@@ -153,7 +153,7 @@ And that's how we ended up in this compromise. Don't let DDD become dogma. Be hu
 
 ### Use case #1: Make daily slots
 
-The first publicly accessible use case is for making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones.
+The first publicly accessible use case is for making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones. It is run once per day, no more.
 
 ```typescript
 /**
@@ -202,15 +202,22 @@ public async makeDailySlots(): Promise<void> {
 }
 ```
 
-TODO
+The upper half is a loop to produce new Slots using the internal `makeSlot()` method. We are creating `TimeSlot` Value Objects in order to get the correct, valid representation of the time object as we create the `Slot`.
+
+For the bottom half we'll:
+
+* Loop through the Slots;
+* Return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) in which we:
+  * Update the injected Repository with the new Slot;
+  * Produce a new `CreatedEvent` event with information on the new Slot;
+  * Emit the event;
+* And finally run the Promises.&#x20;
+
+That last entire section is where we actually enforce the transactional boundary and hand-off to other's to do whatever they might need the event for.
 
 ### Use case #2: Check in
 
 The rest of the use cases have a format that resembles the one we look at here, the "check in" case.
-
-We load a slot based on the ID we have received, destructure some fields, verify that we have the correct slot status (it must be `RESERVED` to work), and then call our private `updateSlot()` method with the slot data and new status. When that's done it's time to make the correct event (here, the `CheckedInEvent`) and emit that with our private `emitEvents()` method.
-
-All in all, we have ensured the state satisfies our business needs, the new invariant is correctly shaped, made the update, and informed our domain of the change via an event.
 
 ```typescript
 /**
@@ -245,15 +252,13 @@ public async checkIn(slotId: SlotId): Promise<void> {
 }
 ```
 
-TODO
+We load a Slot based on the ID we have received, destructure some fields, verify that we have the correct slot status (it must be `RESERVED` to work), and then call our private `updateSlot()` method with the slot data and new status. When that's done it's time to make the correct event (here, the `CheckedInEvent`) and emit that with our private `emitEvents()` method.
+
+All in all, we have ensured the state satisfies our business needs, the new invariant is correctly shaped, made the update, and informed our domain of the change via an event.
 
 ### Use case #3: Reserve slot
 
-Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do.
-
-Next, we load the slot data for the requested slot, destructure the data for use, verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
-
-Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check in.
+Reserving a Slot is similar to the above case, but we need to do more this time, including actually getting a verification code for the reservation from a different service in an altogether different solution.
 
 ```typescript
 /**
@@ -306,4 +311,8 @@ public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
 }
 ```
 
-TODO
+Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do.
+
+Next, we load the slot data for the requested slot, destructure the data for use, verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
+
+Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check in.
