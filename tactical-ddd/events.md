@@ -37,7 +37,7 @@ See more at:
 * [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
 {% endhint %}
 
-### Naming, exactness and uniqueness of an event <a href="#naming-exactness-and-uniqueness-of-an-event" id="naming-exactness-and-uniqueness-of-an-event"></a>
+## Naming, exactness and uniqueness of an event <a href="#naming-exactness-and-uniqueness-of-an-event" id="naming-exactness-and-uniqueness-of-an-event"></a>
 
 Domain events should translate into clearly named and partitioned and non-overlapping names. Names are, as implied, domain-based and must use nomenclature and language that people understand in the particular domain. Key goals for us include:
 
@@ -71,7 +71,22 @@ Note that such work around naming is often more art than science.
 
 ## Persisting events
 
-Before emitting our events, we can store them in our DynamoDB table.
+It's wise to store a history of all events that have occurred. This makes it possible to "play back" the history of a system—well, Aggregate to be exact—and is a foundational component of the [CQRS (Command Query Responsibility Segregation) pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs).
+
+Personally I find full-on CQRS to be _a lot_ to deal with, and modern cloud architectures can mitigate and improve some of the conditions in which original CQRS evolved from. I would however highly advise to:
+
+* Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
+* Use an event store store to persist all events when you emit Domain Events.
+
+The solution used here is manual and is done completely in code, on behalf of the Domain Service (that stands in for the Aggregate orchestration), doing this type of transactional dance (in the case of the Reservation solution)
+
+* Update the Slot table with the updated item
+* Update the Slot table with the event
+* Emit the Domain Event
+
+{% hint style="info" %}
+AWS natives will maybe point to a more elegant solution being using DynamoDB streams as an outbox pattern, which could definitely work. I am 50/50 on which I like the most, because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
+{% endhint %}
 
 ## Resiliency
 
@@ -111,7 +126,7 @@ import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsErro
 /**
  * @description Factory function to return freshly minted EventBridge instance.
  */
-export const makeNewEventBridgeEmitter = (region: string) => {
+export const createEventBridgeEmitter = (region: string) => {
   if (!region) throw new MissingEnvVarsError(JSON.stringify([{ key: 'REGION', value: region }]));
 
   return new EventBridgeEmitter(region);
@@ -121,7 +136,7 @@ export const makeNewEventBridgeEmitter = (region: string) => {
  * @description An EventBridge implementation of the `EventEmitter`.
  */
 class EventBridgeEmitter implements EventEmitter {
-  eventBridge: any;
+  private readonly eventBridge: EventBridgeClient;
 
   constructor(region: string) {
     this.eventBridge = new EventBridgeClient({ region });
@@ -135,8 +150,7 @@ class EventBridgeEmitter implements EventEmitter {
    */
   public async emit(event: EventBridgeEvent): Promise<void> {
     const command = new PutEventsCommand({ Entries: [event] });
-    if (process.env.NODE_ENV === 'test') return;
-    await this.eventBridge.send(command);
+    if (process.env.NODE_ENV !== 'test') await this.eventBridge.send(command);
   }
 }
 ```
@@ -148,6 +162,25 @@ TODO
 
 {% code title="code/Reservation/Reservation/src/application/services/DomainEventPublisherService.ts" lineNumbers="true" %}
 ```typescript
+import { MikroLog } from 'mikrolog';
+
+import { Event } from '../../interfaces/Event';
+import {
+  DomainEventPublisherDependencies,
+  DomainEventPublisherService
+} from '../../interfaces/DomainEventPublisherService';
+import { EventEmitter } from '../../interfaces/EventEmitter';
+
+import { MissingDependenciesError } from '../errors/MissingDependenciesError';
+import { MissingEnvVarsError } from '../errors/MissingEnvVarsError';
+
+/**
+ * @description Factory function to set up the `DomainEventPublisherService`.
+ */
+export function createDomainEventPublisherService(dependencies: DomainEventPublisherDependencies) {
+  return new ConcreteDomainEventPublisherService(dependencies);
+}
+
 /**
  * @description Service to publish domain events.
  */
@@ -190,7 +223,6 @@ class ConcreteDomainEventPublisherService implements DomainEventPublisherService
     this.logger.log(`Emitted '${source}' to '${this.analyticsBusName}'`);
   }
 }
-
 ```
 {% endcode %}
 
@@ -225,9 +257,9 @@ import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsErro
  * that can be emitted with an emitter implementation.
  */
 abstract class EmittableEvent {
-  event: EventBridgeEvent;
-  eventBusName: string;
-  metadataConfig: MetadataConfigInput;
+  private readonly event: EventBridgeEvent;
+  private readonly eventBusName: string;
+  private readonly metadataConfig: MetadataConfigInput;
 
   constructor(eventInput: EventInput) {
     const { event, metadataConfig } = eventInput;
@@ -445,7 +477,6 @@ export class OpenedEvent extends EmittableEvent {
 export class ClosedEvent extends EmittableEvent {
   //
 }
-
 ```
 {% endcode %}
 
