@@ -44,6 +44,8 @@ For more, from a non-DDD angle, read [this article about why packaging by featur
 
 ## Structuring for a Module pattern
 
+In DDD (and Googling, or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
+
 It's worth noting that DDD is not prescriptive at all regarding how to set your file structure. In fact there is practically nothing in Evans' book about this. Obviously it does makes sense to somehow reflect the "methodology" in how the actual code is organized, but DDD won't save you here, I'm sad to say. Clean Architecture, though, _will_ paint a much more exact idea, itself borrowing from the [Ports and Adapters](https://alistair.cockburn.us/hexagonal-architecture/) (or _onion/hexagonal architecture_) notion.
 
 There are several examples out in the wild that aim to present various individuals' takes on DDD, in particular, and some Clean Architecture, generally. Sometimes you may find these combined, like I have done, but that's typically not quite as common.
@@ -90,9 +92,18 @@ Here we've almost completely nailed the 1:1 relationship between Bounded Context
 
 ## Clean architecture
 
-asdf
+The "Clean Architecture" is a relatively well-known variant of the onion/hexagonal/ports-and-adapters school of architectures.
 
-Robert Martin writes about the "Dependency Rule" like this:
+![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
+https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../.gitbook/assets/CleanArchitecture.jpg)
+
+I find it the most immediately effective and neat variants of these, as it:
+
+* Introduces very little in terms of novel concepts;
+* Is almost directly compatible with how DDD envisions structure in the software realm;
+* Powerfully exploits the _dependency rule_ for well-working and testable software.
+
+Robert Martin writes about the _dependency rule_ like this:
 
 > The concentric circles represent different areas of software. In general, the further in you go, the higher level the software becomes. The outer circles are mechanisms. The inner circles are policies.
 >
@@ -102,80 +113,33 @@ Robert Martin writes about the "Dependency Rule" like this:
 >
 > — Source: [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
-TODO
-
-![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
-https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../.gitbook/assets/CleanArchitecture.jpg)
-
 The intention with all of these ideas for how to structure an application are all well-meaning, but I've also seen and reflected on how a higher level of "layers" or "circles" can complicate things quite quickly.
 
-Let's at least look at the levels.
+Let's at least look at the levels and some examples of what would into them.
 
-### Entities
+* **Entities**: "Business objects of the application"
+* **Use cases**: "Use cases orchestrate the flow of data to and from the entities, and direct those entities to use their enterprise wide business rules to achieve the goals of the use case"
+* **Interface adapters**: "A set of adapters that convert data from the format most convenient for the use cases and entities, to the format most convenient for some external agency such as the Database or the Web"
+* **Frameworks and Drivers**: "Where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm"
 
-TODO
+The farther in something is, the less likely it is to change, and any inner layers must not depend on the outer layers.
 
-> Entities encapsulate Enterprise wide business rules. An entity can be an object with methods, or it can be a set of data structures and functions. It doesn’t matter so long as the entities could be used by many different applications in the enterprise.
->
-> If you don’t have an enterprise, and are just writing a single application, then these entities are the business objects of the application. They encapsulate the most general and high-level rules. They are the least likely to change when something external changes. For example, you would not expect these objects to be affected by a change to page navigation, or security. No operational change to any particular application should affect the entity layer.
-
-### Use Cases
-
-TODO
-
-> The software in this layer contains application specific business rules. It encapsulates and implements all of the use cases of the system. These use cases orchestrate the flow of data to and from the entities, and direct those entities to use their enterprise wide business rules to achieve the goals of the use case.
->
-> We do not expect changes in this layer to affect the entities. We also do not expect this layer to be affected by changes to externalities such as the database, the UI, or any of the common frameworks. This layer is isolated from such concerns.
->
-> We do, however, expect that changes to the operation of the application will affect the use-cases and therefore the software in this layer. If the details of a use-case change, then some code in this layer will certainly be affected.
-
-### Interface adapters
-
-TODO
-
-> The software in this layer is a set of adapters that convert data from the format most convenient for the use cases and entities, to the format most convenient for some external agency such as the Database or the Web. It is this layer, for example, that will wholly contain the MVC architecture of a GUI. The Presenters, Views, and Controllers all belong in here. The models are likely just data structures that are passed from the controllers to the use cases, and then back from the use cases to the presenters and views.
->
-> Similarly, data is converted, in this layer, from the form most convenient for entities and use cases, into the form most convenient for whatever persistence framework is being used. i.e. The Database. No code inward of this circle should know anything at all about the database. If the database is a SQL database, then all the SQL should be restricted to this layer, and in particular to the parts of this layer that have to do with the database.
->
-> Also in this layer is any other adapter necessary to convert data from some external form, such as an external service, to the internal form used by the use cases and entities.
-
-### Frameworks and Drivers
-
-> The outermost layer is generally composed of frameworks and tools such as the Database, the Web Framework, etc. Generally you don’t write much code in this layer other than glue code that communicates to the next circle inwards.
->
-> This layer is where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm.
-
-TODO
-
-## Importing services
-
-TODO see if this can be reused in the Modules context
-
-At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
-
-**When it comes to services, this importing may be pretty contentious to purists.**
-
-In DDD (and Googling, or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
-
-Our particular case, however, is sensible. Let me present some of my arguments:
-
-* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
-* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
-* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
-* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.
-
-## How the concepts/levels map across DDD, CA, and our project
+## Adapting the Clean Architecture
 
 Let's also make it clear that there is very little about the practicalities of code or folder structure in Eric Evans' original book. Many have simply tried to infer the concepts and their ordering into models that work for them.
 
 For my part, I've found that Robert C. Martin's "clean architecture" is a better (and simpler!) elaboration of where so many developers have tried to find a way. It's not magic, just a very nice mapping (and blog article, and book for that matter!).
 
-| DDD  | Clean Architecture                            | Example code              |
-| ---- | --------------------------------------------- | ------------------------- |
-| asdf | Frameworks & Drivers (DB, Devices...)         | infrastructure/{category} |
-| asdf | Interface Adapters (Controllers, Gateways...) | infrastructure/adapters   |
-| asdf | Application Business Rules (Use Cases)        | application               |
-| asdf | Enterprise Business Rules (Entities)          | domain                    |
+| Clean Architecture                            | Our convention | Folder name               |
+| --------------------------------------------- | -------------- | ------------------------- |
+| Frameworks & Drivers (DB, Devices...)         | Infrastructure | infrastructure/{category} |
+| Interface Adapters (Controllers, Gateways...) | Adapter        | infrastructure/adapters   |
+| Application Business Rules (Use Cases)        | Application    | application/              |
+| Enterprise Business Rules (Entities)          | Domain         | domain/                   |
+
+{% hint style="info" %}
+You will notice that here adapters are part of the infrastructure layer rather than being on their own.
+{% endhint %}
 
 TODO
 
@@ -185,11 +149,9 @@ TODO
 
 <figure><img src="../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Note that the above diagram does exclude certain code paths—such as those which represent test data, utilities and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram.
 {% endhint %}
-
-You will notice that here adapters are part of the infrastructure layer rather than being on their own.
 
 ## Infrastructure
 

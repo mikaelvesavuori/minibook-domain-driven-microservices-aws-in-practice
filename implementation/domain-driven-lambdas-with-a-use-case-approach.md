@@ -61,7 +61,7 @@ better or worse.
 >
 > The threshold upon twhich a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.
 >
-> — Source: Learning Domain Driven Design p.224, Khononov
+> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.224)
 
 TODO
 
@@ -71,7 +71,7 @@ TODO
 >
 > \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.&#x20;
 >
-> — Source: Learning Domain Driven Design p.226-227, Khononov
+> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.226-227)
 
 ## How do we size and relate microservices in serverless DDD?
 
@@ -115,7 +115,7 @@ TODO
 >
 > Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
 >
-> — Source: Learning Domain Driven Design p.228-229, Khononov
+> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
 
 Under no circumstances should bounded context compete about the same logical objects, aggregates or constructs, nor any attached responsibilities. The bounded context is never bigger than the logical entirety of the context.
 
