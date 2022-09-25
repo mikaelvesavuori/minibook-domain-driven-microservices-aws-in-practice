@@ -24,7 +24,7 @@ Every **Entity** has a unique identity. We use **Entities** to wedge in domain l
 Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
 
 {% hint style="info" %}
-**Beware snake oil salesmen**
+**Beware of snake oil salesmen**
 
 DDD has nothing to do with persistence technologies or databases. In fact, when taking a DDD approach and combining it with your required persistence tech, you'll most likely see that there are no shortcuts—you'll have to do the modeling and so forth on your own. Tools that "sell" how they map to DDD, like Entity Framework and some Object Relational Mappers, will not help you in any meaningful way.
 {% endhint %}
@@ -33,11 +33,11 @@ Both of these concepts are very much related, and it probably makes sense to sta
 
 Entities are objects that may mutate (change) over time, and who all have distinct identities. We can think of a `BookClubMember` as something that feels quite right being an Entity as it implies a person and identity behind it. On the other hand, a `Meeting` may be a simple Value Object (more on these later), as it has neither a unique identity nor will it change after the fact. All in all, it's easy to see how a `BookClubMember` will be a much less simple construct than the `Meeting`.
 
-Our example `BookClubMember` will most likely involve both data (such as identity, books read, membership date) and behavior (such as updating the member's address). It will also contain its own clear business rules attached to such behaviors, where a prospective rule could be something like renewing membership only _after_ having paid the member's fee.
+Our example `BookClubMember` will most likely involve both **data** (such as identity, books read, membership date) and **behavior** (such as updating the member's address). It will also contain its own clear **business rules** attached to such behaviors, where a prospective rule could be something like renewing membership only _after_ having paid the member's fee.
 
-**Let's make it all ultra clear**: An Entity is an object. Most often we represent these as classes. Because a class can contain data we can logically manipulate that data. The way we manipulate the data is through methods on the Entity class that correspond to our common (ubiquitous) language; We don't let anyone directly manipulate the data on the Entity instance. We can save a representation of the Entity's data (state) with a Repository and we can load back the data and reconstitute it into a valid Entity instance when needed. All of that would happen in the same Bounded Context, in our case, in the same solution (in turn consisting of Lambda functions).
+**Let's make it all ultra clear**: An Entity is an _object_. Most often we represent these as classes. Because a class can contain data we can logically manipulate that data. The way we manipulate the data is through methods on the Entity class that correspond to our common (ubiquitous) language; We don't let anyone directly manipulate the data on the Entity instance. We can save a representation of the Entity's data (state) with a Repository and we can load back the data and reconstitute it into a valid Entity instance when needed. All of that would happen in the same Bounded Context, in our case, in the same solution (in turn consisting of Lambda functions).
 
-## What often happens with integrations and business logic
+## Splitting data and behavior leads to unmaintainable code
 
 In the world of traditional back-end engineering you might find something like the below diagram: A service that interacts with several data sources. Because all of these are distinct and separated we have no good idea of who owns, and may change, what source. In the bottom we have the faint contours of other services, too.
 
@@ -48,37 +48,35 @@ It's not uncommon that we for example:
 
 Either case will be poor in different ways.
 
-<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>Conceptual diagram of tangled integrations.</p></figcaption></figure>
 
 While in theory we have decoupling here, in essence we also have created an even bigger problem: An **anemic domain model**.
 
 ## The "anemic domain model"
 
-The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be CRUDdy and allow for direct mutations through public getters and setters.
-
-Some find the criticism around "anemic domain models" academic and roundly wrong. They might argue that their experiences are that it's just as easy to get things to work, but with less hassle than going full-on with OOP. This becomes impossible to verify or prove without access to the code.
+The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be [CRUDdy](https://verraes.net/2013/04/crud-is-an-anti-pattern/) as they allow for direct mutations through public getters and setters. It can quickly becomes hard to understand all the places in a codebase in which the data is manipulated, and how it was done.
 
 {% hint style="warning" %}
-For my part, code quality and structure are paramount when building something myself, or when I work with, or coach, other engineers.
+**Good code does more than just compile**
 
-All this _is_ measurable, once you have access to the code and not just raving to some rando on an internet forum. Using competent tooling you will likely get recommendations to fix issues like this, too. OOP and refactoring practices are practically institutionalized so this not a "DDD thing".
+Some find the criticism around "anemic domain models" academic and roundly wrong. They might argue that their experiences are that it's just as easy to get things to work, but with less hassle than going full-on with OOP.
+
+Remember Robert Martin's words from [_Clean Code: A Handbook of Agile Software Craftsmanship_](https://www.goodreads.com/book/show/3735293-clean-code): "It is not enough for code to work."
+
+Speaking personally, for me code quality and structure are paramount when building something or when I work with (or coach) other engineers.
+
+All this _is_ measurable, once you have access to the code and not just raving to some rando on an internet forum. Using competent tooling you will likely get recommendations to fix issues like this, too. [Good OOP](https://medium.com/@varvara.munday/reading-books-the-object-oriented-thought-process-by-matt-weisfeld-50d1825ac988) and [refactoring practices](https://refactoring.guru/refactoring) are practically institutionalized so this not "just a DDD thing".
 
 The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly.
 {% endhint %}
 
-The opposite of all of this, no surprises, is the "rich domain model"—as someone on Stack Overflow remarked, really no more than your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
+The opposite of all of this, no surprises, is the "rich domain model"—really no more than a bit of opinionated ideas on top of your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
 
-Compared to their anemic brethren, rich domain models (typically Entities and Aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain models**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
+## Rich domain models: How Entities solves the question of "who" can do "what" on a specific dataset
 
-**A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()`. As we've seen many times in this book, we want this to explain 1:1 in our common/ubiquitous language what we are doing.
+Compared to their anemic brethren, rich domain models (typically Entities and Aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain objects**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
 
-TODO
-
-Revisiting our relations between Aggregates and Entities we see that:
-
-* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
-* Entities represent our "dumb data" as actual "things" and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
-* We use the ubiquitous language to name these actions and anything else to do with the Entity.
+**A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`), rather than a semantic abstraction (say `BookProcessManagerFactory`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()` to correlate with the actual business terms. As we've seen many times in this book, we want this to explain 1:1 in our common or ubiquitous language what we are doing.
 
 TODO
 
@@ -86,11 +84,15 @@ TODO
 
 TODO
 
-## Invariants
+* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
+* Entities represent our "dumb data" as actual "things" and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
+* We use the ubiquitous language to name these actions and anything else to do with the Entity.
 
 TODO
 
-The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)
+## The Slot entity
+
+TODO
 
 {% code title="code/Reservation/SlotReservation/src/domain/entities/Slot.ts" lineNumbers="true" %}
 ````typescript
@@ -596,6 +598,12 @@ public toDto(): SlotDTO {
 ```
 
 The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` entity class.
+
+### Invariants
+
+TODO
+
+The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)
 
 ### Use case #1: Domain logic for checking if we can reserve and cancel
 

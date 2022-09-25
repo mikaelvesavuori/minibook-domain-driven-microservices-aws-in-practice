@@ -51,6 +51,10 @@ Being an Aggregate means that you add a number of additional characteristics to 
 See Vlad Khononov's _Learning Domain Driven Design: Aligning Software Architecture and Business Strategy_ (2021, p.84-92).
 {% endhint %}
 
+### Aggregates emit Domain Events
+
+We haven't discussed Domain Events in detail yet TODO
+
 ## Do we have Aggregates in the example project?
 
 Yes and no.
@@ -85,17 +89,13 @@ TODO
 
 ## Our domain service as a stand-in
 
-I wouldn't be surprised if you already are aware that we'll be looking at the meatiest and most significant part of our codebase. This is good! If we have it this far, using the other tactical concepts, we are truly now at the core of the business logic.
-
-Expect a much longer read this time. No worries, we are going to look at select parts in due course.
-
 {% hint style="info" %}
 We inspected the code already in the Services section. For brevity, I will avoid repoducing it here once again. Instead we will look at selected sections.
 
 The code itself is located at `code/Reservation/SlotReservation/src/domain/services/ReservationService.ts` if you want to see the full source.
 {% endhint %}
 
-## Stepping through the code
+### Stepping through the code
 
 TODO REVISE As expected, there's the standard imports, but there is no Factory function. I just don't often find it very helpful to encapsulate an aggregate using one.
 
@@ -131,10 +131,6 @@ And that's how we ended up in this compromise. Don't let DDD become dogma. Be hu
 {% hint style="info" %}
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
 {% endhint %}
-
-### Aggregates emit Domain Events
-
-We haven't discussed Domain Events in detail yet TODO
 
 ### Importing services
 
