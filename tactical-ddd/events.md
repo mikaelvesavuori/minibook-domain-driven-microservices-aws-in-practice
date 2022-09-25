@@ -14,30 +14,19 @@ When we say **Events** we in practice always refer to Domain Events. They are a 
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>(Domain) Events reside in the Domain layer.</p></figcaption></figure>
 
-_Events_ indicate significant occurrences that have occurred in the domain and need to be reported to other stakeholders belonging to the domain. It is common for _Aggregates_ to publish events.
-
-See Evolving Event in Distributed Systems for a deeper look at how eventing is handled in this project.
-
-## Service communication
-
-```
-The Lambda Pinball is a Serverless anti-pattern highlighted by ThoughtWorks, in which “we lose sight of important domain logic in the tangled web of lambdas, buckets and queues as requests bounce around increasingly complex graphs of cloud services.”
-
-This is often the result of a lack of clear Service boundaries. Moving to an EDA and adopting EventBridge can help massively — but this is not a standalone silver bullet.
-
-What is needed is a focus on Services, identifying clear Bounded Contexts (to borrow from Domain-Driven Design) and sharing Event Schemas, not code, API interfaces or Data.
-```
-
-See: https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee
-
-## Why events?
-
-**Events are the result of operations**, typically done by “[aggregate](https://martinfowler.com/bliki/DDD\_Aggregate.html)” systems. In common parlance, an _aggregate_ is often the system that is the “owner” of certain data, objects, or entities.
-
-![](blob:https://app.gitbook.com/89984297-45bc-4f06-a4b6-c002b7182c79)Splitting an over-sized “Member” model into multiple aggregates and seeing how they are represented in their various bounded contexts. From: [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
+_Domain Events_ indicate **significant occurrences that have occurred in the domain** and need to be reported to other stakeholders belonging to the domain. Aggregates are responsible for publishing events, though we saw how in our example project it is the Domain Service wrapping the `Entity` that actually does that work for reasons mentioned in that section. Domain Events drive transactions and can make commands to other systems.
 
 At a high level, events and event-driven architecture means that we can—and should—decouple systems from each other. This enables us to practically build and sustain an intentional architecture, as promoted by Domain Driven Design, Clean Architecture and most serious software engineering principles today.
 
+See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation) for visual clarification:
+
+![Domain events to enforce consistency between multiple aggregates within the same domain.](../.gitbook/assets/domain-model-ordering-microservice.png)
+
+![Handling multiple actions per domain.](<../.gitbook/assets/aggregate-domain-event-handlers (1).png>)
+
+As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in scope of our domain may subscribe to.
+
+{% hint style="info" %}
 See more at:
 
 * [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
@@ -46,24 +35,7 @@ See more at:
 * [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
 * [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
-
-### Events are APIs and have contracts too
-
-Events are "first class citizens", similar to requests and responses in a REST API world.
-
-Events are—in practice—APIs. They drive transactions and make commands to systems in a distributed landscape. Therefore we should use similar hygiene around them as with any generic REST API (or other similar construct), using standardized schemas and envelopes, enabling event discovery, ensuring testability and all other concerns that we have in distributed systems.
-
-## Domain events
-
-Domain events exist to inform of something happening inside of our Domain. These events do not leak to other Domains, nor are they exposed directly. This is the primary mechanism with which most of our custom-built systems will communicate. Using this concept, we can make available any event to all parties in the Domain, decoupling us maximally from each other.
-
-See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation) for visual clarification:
-
-![Domain events to enforce consistency between multiple aggregates within the same domain](../.gitbook/assets/domain-model-ordering-microservice.png)
-
-![Handling multiple actions per domain](<../.gitbook/assets/aggregate-domain-event-handlers (1).png>)
-
-As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in scope of our domain may subscribe to.
+{% endhint %}
 
 ### Naming, exactness and uniqueness of an event <a href="#naming-exactness-and-uniqueness-of-an-event" id="naming-exactness-and-uniqueness-of-an-event"></a>
 
@@ -97,46 +69,7 @@ Very clear demarcation on this being a “sales order” (not a _broad inspecifi
 
 Note that such work around naming is often more art than science.
 
-### Use only Commands, Queries and Notifications for events <a href="#use-only-commands-queries-and-notifications-for-events" id="use-only-commands-queries-and-notifications-for-events"></a>
-
-This principle also relates very much to other types of API.
-
-We must separate our events (and ideally also API calls) into either the category of Command, Query or Notification, in line with how the [command-query separation](https://en.wikipedia.org/wiki/Command%E2%80%93query\_separation) concept and event notifications work:
-
-> It states that every method should either be a **command** that performs an action, or a **query** that returns data to the caller, but not both. In other words, asking a question should not change the answer. More formally, methods should return a value only if they are referentially transparent and hence possess no side effects.
-
-A Command in the context of events could be `RemoveStockItem`.
-
-An example of a Query event would be `GetStockStateForItem`. You may recognize this from how even a classic REST API would work, though in that case using an endpoint. Because events are asynchronous, the system design for reading back data through events is by default somewhat complicated, as another surface to do the reading must be introduced. This is to say that _the event itself will not carry back the data_, instead the event will produce (for example) an update in the related data store that may be read back consistently.
-
-This pattern may evolve into full-blown CQRS. See more at [https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
-
-On top of _Commands_ and _Queries_ we have _Notifications_, which is what most people will understood events to be about. A notification is the conceptually simplest one, as it only represents that something happened, think `StockItemRemoved`.
-
-
-
-Only aggregates must emit events since they enforce business rules. In practice this should be done post-fact as a result of an operation, for example like:
-
-1. User makes a request to our system/service (“aggregate”)
-2. Our system instantiates a class for our aggregate and fulfils the operation (if valid)
-3. Our system emits an event to notify that the operation has occurred
-
-From [https://stackoverflow.com/questions/67307449/ddd-handle-domain-events-directly-in-aggregate/67309855#67309855](https://stackoverflow.com/questions/67307449/ddd-handle-domain-events-directly-in-aggregate/67309855#67309855):
-
-> An aggregate has the responsibility of maintaining the [invariants](https://domaincentric.net/blog/modelling-business-rules-invariants-vs-corrective-policies) required by the business logic (e.g. limits on how many pallets are in a given location or a prohibition on pallets containing certain items from being placed in a given location).
->
-> However, a domain event represents a fact about the world which the aggregate cannot deny (an aggregate could ignore events if they have no meaning to it (which is not a question of validation, but of the type of event: the aggregate's current state cannot enter into it)). If an aggregate handles domain events, it therefore should do so unconditionally: if the business rule the location aggregate enforces is that there cannot be more than 20 pallets in a location, then a domain event which effectively leads to there being 20 thousand pallets in a location means that you have 20 thousand pallets in that location.
-
-See:
-
-* [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
-* [https://martinfowler.com/bliki/DDD\_Aggregate.html](https://martinfowler.com/bliki/DDD\_Aggregate.html)
-* [https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034)
-* [https://softwareengineering.stackexchange.com/questions/368358/can-an-aggregate-only-ever-consume-commands-and-produce-events](https://softwareengineering.stackexchange.com/questions/368358/can-an-aggregate-only-ever-consume-commands-and-produce-events)
-
 ## Persisting events
-
-TODO: CQRS, Event Sourcing
 
 Before emitting our events, we can store them in our DynamoDB table.
 
@@ -148,14 +81,15 @@ Further, note that there are differences for DLQs based on which service you are
 
 This is left to you as an optional exercise should you want to do this.
 
-See:
+{% hint style="info" %}
+See the following for more information:
 
 * [https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog](https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog)
 * [https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/](https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/)
 * [https://www.youtube.com/watch?v=I6cXfiMkh-U](https://www.youtube.com/watch?v=I6cXfiMkh-U)
 * [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename)
-* [https://www.serverless.com/framework/docs/providers/aws/events/event-bridge](https://www.serverless.com/framework/docs/providers/aws/events/event-bridge)
 * [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
+{% endhint %}
 
 ## Emitting events
 

@@ -60,6 +60,14 @@ And as with other object types, **Aggregates use the ubiquitous language to refl
 See Vlad Khononov's _Learning Domain Driven Design: Aligning Software Architecture and Business Strategy_ (2021, p.84-92).
 {% endhint %}
 
+{% hint style="info" %}
+For more web links on this subject, see:
+
+* [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
+* [https://martinfowler.com/bliki/DDD\_Aggregate.html](https://martinfowler.com/bliki/DDD\_Aggregate.html)
+* [https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034)
+{% endhint %}
+
 ## Do we have Aggregates in the example project?
 
 Yes and no.
@@ -82,7 +90,13 @@ If a given operation needs to have strong consistency across multiple Aggregates
 
 A _Transaction_ is the broad DDD term for committing something from start to (persisted) finish.
 
-Recall how it's already been stated that the Aggregate Root (and Entities, in essence) serves as a consistency boundary. What that means in practice is that anything to do with controlling that the data is correct (valid) and that it gets persisted in the right way is in the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible, while staying truthful to the business domain, when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
+Recall how it's already been stated that the Aggregate Root (and Entities, in essence) serves as a [consistency boundary or transactional boundary](https://www.jamesmichaelhickey.com/consistency-boundary/). What that means in practice is that:
+
+* Anything that has to do with controlling that the data is correct (valid);
+* That the data gets persisted in the right way;
+* That any nested or clustered objects change together;
+
+is the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible, while staying truthful to the business domain, when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
 
 > Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal can be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
 >
@@ -101,6 +115,12 @@ OK, so that sounds good and all but how does that actually work? Easy: Domain Ev
 We haven't discussed Domain Events in detail yet, as these will come up in an upcoming section, but the way in which the Aggregate informs the rest of the landscape is through events, specifically in the DDD context, Domain Events.
 
 A Domain Event is, in short, an event (or message) pushed to some asynchrononous messaging technology where consumers can subscribe to new events unfolding. We give events their own identity, in effect transforming them from just a blob with some data into a fully-fleshed Domain Event that "speaks" our domain's language. By using them we can stitch together interactions across many systems in our landscape without foregoing any of the rich vocabulary we have created through DDD and EventStorming.
+
+Only aggregates must emit events since they enforce business rules. In practice this should be done post-fact as a result of an operation, for example like:
+
+1. User makes a request to our system/service (“aggregate”)
+2. Our system instantiates a class for our aggregate and fulfils the operation (if valid)
+3. Our system emits an event to notify that the operation has occurred
 
 Let's look more at this later.
 
