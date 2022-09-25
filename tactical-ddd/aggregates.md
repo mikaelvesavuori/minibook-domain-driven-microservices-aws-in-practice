@@ -1,5 +1,7 @@
 ---
-description: TODO
+description: >-
+  If you were to super-charge the Entity with transactional responsibilities and
+  the ability to contain a cluster of objects, then you would get the Aggregate.
 ---
 
 # Aggregates
@@ -9,7 +11,7 @@ description: TODO
 {% hint style="success" %}
 **TL;DR**
 
-The **Aggregate** can be confusing.  It has two common meanings.
+The **Aggregate** can be confusing. It has two common meanings.
 
 The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" or links other Entities in a logical whole. This entails that **Aggregates,** like entities, each have their own unique identity. The highest-level Aggregate is called the **Aggregate Root**. There must be no way to access "deeper" entities without passing the **Aggregate Root**, or whichever other construct is highest.
 
@@ -20,40 +22,43 @@ Moreover, the **Aggregate** acts as the transaction boundary so it completely de
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Aggregates reside in the Domain layer.</p></figcaption></figure>
 
-Looking in the Big Blue Book we'll read the following:
+For the "truth" on the matter of aggregates, we will look no further than to the Big Blue Book:
 
 > An aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate, because no outside object can ever see it out of the context of the root Entity.
 >
-> — Source: Eric Evans, DDD book (p. 126-127)
+> — Source: Eric Evans, _Domain Driven Design: Tackling Complexity in the Heart of Software_ (p. 126-127)
 
-TODO
+{% hint style="danger" %}
+The Aggregate is the most complex pattern, for sure. It is the one I myself have had to contend most with.
 
-Revisiting our relations between aggregates and entities we see that:
+I hope to get across the fundamentals here, but let it be known that _a lot_ of paper has been printed around various ways to think about them, referencing other Aggregate Roots, data modeling, efficient persistence, and so on.
 
-* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
-* Aggregates are objects that access and operate on entities. To be clear, an aggregate is always itself an entity, but the opposite is not necessarily true.
-* An Aggregate Root is an object that can access the root object/entity collecting a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between entities.
+Get a coffee, you deserve it, and don't sweat it all here and now. Read up and evolve when you have gotten your [sea legs](https://www.marineinsight.com/life-at-sea/what-does-the-term-get-your-sea-legs-means/).
+{% endhint %}
+
+Revisiting our relations between aggregates and entities we see the fundamental items to understand include:
+
+* Aggregates are mostly just Entities with extra responsibilities; more on these in a moment. The opposite case is however not necessarily true.
+* Aggregates are the only objects that access and operate on Entities.
+* An Aggregate Root is an object that can access the root object (Entity) that itself may collect a group of entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between Entities.
+
+The below conceptual diagram should give you an idea of how this might actually work.
 
 <figure><img src="../.gitbook/assets/aggregates-complex.png" alt=""><figcaption><p>Conceptual demonstration of an deeply-clustered Aggregate Root. This particular model may or may not make actual sense (given that it's simply an example) but we can be quite certain that the orchestration of this will be non-trivial.</p></figcaption></figure>
 
-TODO
-
 Being an Aggregate means that you add a number of additional characteristics to the Entity's existential features:
 
-* Consistency enforcement is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
-* Acts as a transaction boundary: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
-* Enforces the hierarchy of entities. Multiple entities and/or value object may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
-* The rule of thumb for referencing other aggregates is that any entities that must be in strongly consistent state should be within the same aggregate boundary. Anything else is some other Aggregate's job and may be eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
-* Domain events are emitted to integrate with other systems and Aggregates whenever a transaction is completed.
-* Just as with other object types, Aggregates use the ubiquitous language to reflect the domain model.
+* **Consistency enforcement** is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
+* **Acts as a transaction boundary**: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
+* **Enforces the hierarchy of entities**. Multiple entities and/or value object may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
+* The rule of thumb for referencing other aggregates is that **any entities that must be in strongly consistent state should be within the same aggregate boundary**. Anything else is some other Aggregate's job and may be eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
+* **Domain events are emitted** to integrate with other systems (and Aggregates) whenever a transaction is completed.
+
+And as with other object types, **Aggregates use the ubiquitous language to reflect the domain model**.
 
 {% hint style="info" %}
 See Vlad Khononov's _Learning Domain Driven Design: Aligning Software Architecture and Business Strategy_ (2021, p.84-92).
 {% endhint %}
-
-### Aggregates emit Domain Events
-
-We haven't discussed Domain Events in detail yet TODO
 
 ## Do we have Aggregates in the example project?
 
@@ -86,6 +91,10 @@ TODO
 > — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 367
 
 TODO
+
+### Aggregates emit Domain Events
+
+We haven't discussed Domain Events in detail yet TODO
 
 ## Our domain service as a stand-in
 
@@ -149,7 +158,7 @@ Our particular case, however, is sensible. Let me present some of my arguments:
 * **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
 * **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
 * **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
-* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.&#x20;
+* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.
 
 ### Use case #1: Make daily slots
 
@@ -202,6 +211,8 @@ public async makeDailySlots(): Promise<void> {
 }
 ```
 
+TODO
+
 ### Use case #2: Check in
 
 The rest of the use cases have a format that resembles the one we look at here, the "check in" case.
@@ -242,6 +253,8 @@ public async checkIn(slotId: SlotId): Promise<void> {
   await this.emitEvents(event);
 }
 ```
+
+TODO
 
 ### Use case #3: Reserve slot
 
