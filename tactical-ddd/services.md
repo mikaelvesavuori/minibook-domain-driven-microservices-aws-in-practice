@@ -55,6 +55,8 @@ The intuitive difference should be clear, but I've found that it may take a refa
 
 ## Application Services or use cases?
 
+<figure><img src="../.gitbook/assets/CA + DDD selected 3.png" alt=""><figcaption><p>Application Services reside in the Application layer.</p></figcaption></figure>
+
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
 Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain entities from external or internal (repository) soruces; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity). (See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/))
@@ -108,6 +110,8 @@ class OnlineVerificationCodeService implements VerificationCodeService {
 It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this as a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
 
 ## Domain Services
+
+<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Domain Services reside in the Domain layer.</p></figcaption></figure>
 
 Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple aggregates for example, otherwise keep it simple and let it be part of the aggregate itself.
 

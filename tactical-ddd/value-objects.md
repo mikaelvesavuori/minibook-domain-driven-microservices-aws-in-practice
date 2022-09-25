@@ -1,10 +1,10 @@
 ---
 description: >-
-  Value objects help us define semi-complex, identityless objects without us
+  Value Objects help us define semi-complex, identity-less objects without us
   needing to resort to spaghetti code.
 ---
 
-# Value objects
+# Value Objects
 
 <figure><img src="../.gitbook/assets/undraw_Problem_solving_re_4gq3.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
 
@@ -13,6 +13,8 @@ description: >-
 
 **Value Objects** are like non-unique Entities. You use them in much the same way, except they bear no own identity. An instance of a **Value Object** is equivalent to another instance if they have the same properties and values. They are excellent for containing complex creational logic and work well when combined on Entities that contain **Value Objects** as part of their data.
 {% endhint %}
+
+<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Value Objects reside in the Domain layer.</p></figcaption></figure>
 
 Value objects are a Godsend.
 

@@ -14,6 +14,8 @@ description: >-
 The **Factory** pattern is a classic creational pattern. Some important reasons to use the pattern include that it appropriately encapsulates creation logic, as well as provides a structured way of creating objects in a deterministic manner.
 {% endhint %}
 
+<figure><img src="../.gitbook/assets/CA + DDD selected 3.png" alt=""><figcaption><p>Factories reside in the Application layer.</p></figcaption></figure>
+
 Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD (instead, please see [_Design Patterns: Elements of Reusable Object-Oriented Software_](https://www.goodreads.com/book/show/85009.Design\_Patterns)). In the context of DDD we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an entity or aggregate.
 
 Factories help us to hide implementation and construction logic and always returns valid invariants of the class ("product") that we have created. However, invariant logic and validation should as far as possible be deferred to the product being created itself, which makes perfect sense if we are using Factories to create complex objects like Entities and Aggregates that already such logic baked-in.&#x20;

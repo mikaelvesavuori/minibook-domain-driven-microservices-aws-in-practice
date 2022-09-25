@@ -18,6 +18,8 @@ For the secondary, more colloquial meaning it can mean the actual "data object" 
 Moreover, the **Aggregate** acts as the transaction boundary so it completely deals with all the data that it pertains to. You should never modify more than a single **Aggregate** per database transaction. Any changes to the **Aggregate** result in the **Aggregate** publishing a Domain Event.
 {% endhint %}
 
+<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Aggregates reside in the Domain layer.</p></figcaption></figure>
+
 Looking in the Big Blue Book we'll read the following:
 
 > An aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate, because no outside object can ever see it out of the context of the root Entity.
