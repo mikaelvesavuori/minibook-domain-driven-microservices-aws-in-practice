@@ -35,6 +35,8 @@ Entities are objects that may mutate (change) over time, and who all have distin
 
 Our example `BookClubMember` will most likely involve both **data** (such as identity, books read, membership date) and **behavior** (such as updating the member's address). It will also contain its own clear **business rules** attached to such behaviors, where a prospective rule could be something like renewing membership only _after_ having paid the member's fee.
 
+Entities are persisted (saved, loaded) with a Repository in the shape of a Data Transfer Object. Before using them in your code, you "turn them into" DTOs or into Entities. DTOs must never be directly mutated.
+
 **Let's make it all ultra clear**: An Entity is an _object_. Most often we represent these as classes. Because a class can contain data we can logically manipulate that data. The way we manipulate the data is through methods on the Entity class that correspond to our common (ubiquitous) language; We don't let anyone directly manipulate the data on the Entity instance. We can save a representation of the Entity's data (state) with a Repository and we can load back the data and reconstitute it into a valid Entity instance when needed. All of that would happen in the same Bounded Context, in our case, in the same solution (in turn consisting of Lambda functions).
 
 ## Splitting data and behavior leads to unmaintainable code
@@ -48,11 +50,11 @@ It's not uncommon that we for example:
 
 Either case will be poor in different ways.
 
-<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>Conceptual diagram of tangled integrations.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>Conceptual diagram of tangled integrations where separation of data and behavior leads to uncertainty of who can mutate data in which ways.</p></figcaption></figure>
 
 While in theory we have decoupling here, in essence we also have created an even bigger problem: An **anemic domain model**.
 
-## The "anemic domain model"
+### The "anemic domain model"
 
 The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be [CRUDdy](https://verraes.net/2013/04/crud-is-an-anti-pattern/) as they allow for direct mutations through public getters and setters. It can quickly becomes hard to understand all the places in a codebase in which the data is manipulated, and how it was done.
 
@@ -72,27 +74,30 @@ The anemic type of objects will maybe _do the job_, but they will become liabili
 
 The opposite of all of this, no surprises, is the "rich domain model"—really no more than a bit of opinionated ideas on top of your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
 
-## Rich domain models: How Entities solves the question of "who" can do "what" on a specific dataset
+## Rich domain models
+
+The rich domain model is how Entities solve the question of "who" can do "what" on a specific dataset.
 
 Compared to their anemic brethren, rich domain models (typically Entities and Aggregates) will be easier to understand, will be more resilient to change and disruptions, and are much better encapsulated; we can always know what object can operate on a set of data, and in which ways it does this. **We centralize the majority of our business logic to these domain objects**, and we can entrust them with that because of this encapsulation and overall correctness of behavior.
 
 **A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`), rather than a semantic abstraction (say `BookProcessManagerFactory`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()` to correlate with the actual business terms. As we've seen many times in this book, we want this to explain 1:1 in our common or ubiquitous language what we are doing.
 
-TODO
+In the below diagram (note that the use case isn't the same as in the last diagram!) you can see how a single `Slot` entity (since it's the only one, it gets "promoted" to Aggregate Root; more on this in the next section) is the surface that contains all the data and behavior required to create the slot for a room reservation. It also handles the `TimeSlot` Value Object as part of the overall Slot. Any changes to the Slot gets pushed as a Domain Event, so that we can inform other Aggregates or the rest of the technical landscape of ongoing changes.
 
-<figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>TODO</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>Diagram for how user interactions to the Slot ensure the complete transactional boundary for any data it holds.</p></figcaption></figure>
 
-TODO
+We expose the operations on the `Slot` as calls one can make to our API Gateway, firing the relevant Lambda functions that will orchestrate, through use cases, the operations. Thus we can be totally sure that specific operations are only permissible in a deterministic flow, rather than leak it across our complete solution. Any time we are dealing with an Aggregate or Aggregate Root (as we are here, as the Entity is all alone) we publish a Domain Event detailing what happened, such as `SlotReserved`.
 
-* Entities are objects that have unique identity. They are closely connected to the domain and its business logic.
-* Entities represent our "dumb data" as actual "things" and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
+Before we go to the code, let's revisit some highlights.
+
+* Entities are objects that have unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
+* Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
+* Entities typically use verbs to express its commands—its public interface.
 * We use the ubiquitous language to name these actions and anything else to do with the Entity.
-
-TODO
 
 ## The Slot entity
 
-TODO
+Be ready for one of our biggest and most important classes, the `Slot`.
 
 {% code title="code/Reservation/SlotReservation/src/domain/entities/Slot.ts" lineNumbers="true" %}
 ````typescript
@@ -218,13 +223,6 @@ export class Slot {
   public updateStatus(status: Status): void {
     this.slotStatus = status;
     this.updatedAt = this.getCurrentTime();
-  }
-
-  /**
-   * @description Returns the current status of the slot.
-   */
-  public checkStatus(): Status {
-    return this.slotStatus;
   }
 
   /**
@@ -492,11 +490,14 @@ export interface SlotCommand {
   event: MakeEventInput;
   newStatus: Status;
 }
-
 ````
 {% endcode %}
 
-TODO
+There's a bunch of private and public methods here, with a slightly higher public method count than on the private side. You'll notice that there are a couple of patterns that keep repeating like those that return `SlotCommand` and those that check rules.
+
+{% hint style="info" %}
+It might have been more "effective" in a strict, technocratic sense to leave `removeHostName()`, `updateStatus()` and `getCurrentTime()` out as functions and just directly manipulate the values. I am sure you know I will complain about how that breaks our possibility to encapsulate and truly trust our provided mechanisms if we gave even an inch away on this matter.
+{% endhint %}
 
 ### The constructor
 
@@ -550,8 +551,6 @@ private make(input: SlotCreateInput): SlotDTO {
   return this.toDto();
 }
 ```
-
-TODO
 
 ### Reconstitute from a DTO
 
