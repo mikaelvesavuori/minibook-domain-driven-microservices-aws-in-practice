@@ -108,11 +108,25 @@ See the following for more information:
 
 ## Emitting events
 
-The way we are addressing the events and eventing infrastructure follows this model:
+At this point it should be relatively clear that Domain Events are important and that they should be named well and be persisted. But what are they?
 
-`EventEmitter` -> `EmittableEvent` -> `Event`
+In the example project we use AWS EventBridge, which similarly to other such services, takes in an object as the event payload. There's more to it, but more or less you'll get to stick in whatever object you want (with some size restrictions etc.).
 
-&#x20;Let's see it in action:
+To work with Domain Events in a controlled manner we'll however need more than just an odd JSON blob.
+
+Our project uses:
+
+* The `SlotCommand` output from the Slot Entity, which dictates the majority of actual content coming from changes.
+* `EventEmitter` abstraction that does the infrastructural work. This has both a "local/mock" and an EventBridge implementation.
+* A `DomainEventPublisher` Application Service that wraps the event emitter (which will emit two events—one for actual use and one for the analytics service—and log out the event).
+* An `EmittableEvent` abstraction class that handles all the logic of producing the right shape and metadata and other such laborious things.
+* A range of Events (one for each Domain Event) that extends the `EmittableEvent`.
+
+{% hint style="success" %}
+A Domain Event is therefore always constructed from a `SlotCommand`. The `DomainEventPublisher` is the Application Service that is injected into `ReservationService`.
+{% endhint %}
+
+### The event emitter
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
 ```typescript
@@ -158,7 +172,7 @@ class EventBridgeEmitter implements EventEmitter {
 
 We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons, so that we can use a local mock rather than the full-blown EventBridge client.
 
-TODO
+### Domain event publisher service
 
 {% code title="code/Reservation/Reservation/src/application/services/DomainEventPublisherService.ts" lineNumbers="true" %}
 ```typescript
@@ -226,7 +240,7 @@ class ConcreteDomainEventPublisherService implements DomainEventPublisherService
 ```
 {% endcode %}
 
-TODO
+As written previously, this one adds a layer of extra spice with the multiple emitted events and logging. Other than that it's not much else under the hood. At least it makes it much easier and one step more removed from the real infrastructure.
 
 ## The events
 
@@ -480,11 +494,9 @@ export class ClosedEvent extends EmittableEvent {
 ```
 {% endcode %}
 
+{% hint style="warning" %}
 Admittedly the event structure (despite our decoupling of the emitter itself) is tied to EventBridge that is acceptable as we are actually only using EventBridge in our project. If we would support truly different emitters we would perhaps need to add further abstractions on the event shape. In the context of this project we can accept that as a trivia item.
-
-### Slot entity produces \`SlotCommand\`
-
-TODO
+{% endhint %}
 
 ### Metadata
 
