@@ -134,6 +134,25 @@ Here's an example of a Stack Overflow answer that also makes the point that it's
 
 We haven't discussed Domain Events in detail yet TODO
 
+### Importing services
+
+{% hint style="danger" %}
+Hold on to your feelings, if I've converted you to a Mini-Me version of Uncle Bob or Eric Evans!
+{% endhint %}
+
+At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
+
+**When it comes to services, this importing may be pretty contentious to purists.**
+
+In DDD (and Googling or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
+
+Our particular case, however, is sensible. Let me present some of my arguments:
+
+* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
+* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
+* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
+* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.&#x20;
+
 ### Use case #1: Make daily slots
 
 The first publicly accessible use case is making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones.
@@ -286,28 +305,3 @@ public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
 ```
 
 TODO
-
-\---------
-
-### Importing services
-
-{% hint style="danger" %}
-Hold on to your feelings, if I've converted you to a Mini-Me version of Uncle Bob or Eric Evans!
-{% endhint %}
-
-At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
-
-**When it comes to services, this importing may be pretty contentious to purists.**
-
-In DDD (and Googling or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
-
-Our particular case, however, is sensible. Let me present some of my arguments:
-
-* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
-* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
-* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
-* OK, so with them refactored to services, why don't we inject them instead? This too is sensible. **However, I decided against injecting them becomes this would create significant up-front bloat** across the use cases, or worse (but more pure), in the web adapters. This will carry down to affecting many of the tests as well. At this stage it is simply more pragmatic to accept the direct importing of services. The tests already cover enough to guarantee that any mischievous work in the services would be caught.
-
-And with no more than that, to each his own, but it's a realistic as well as solid approach, without compromising too much on the integrity of the Clean Architecture and DDD principles.
-
-\++++

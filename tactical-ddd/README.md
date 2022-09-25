@@ -16,10 +16,14 @@ DDD has deep ties into object-oriented programming and its ways of thinking. We 
 We will inspect and analyze some of the usage of all (TODO most?) of the tactical patterns:
 
 * Modules
-* Services
-* Repositories
 * Factories
-* Value objects
+* Repositories
+* Services
 * Entities
 * Aggregates
-* Events
+* Value objects
+* Domain Events
+
+{% hint style="warning" %}
+In the "blue and red books" you will see that the order that these are presented is different. My reason for presenting the patterns in this particular order is because I believe it makes for an easier guiding, starting with those that are more basic and moving into the deeper domain objects halfway through.&#x20;
+{% endhint %}
