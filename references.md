@@ -49,6 +49,10 @@ description: >-
 * https://www.youtube.com/watch?app=desktop\&v=2JB1\_e5wZmU
 * https://mcode.it/blog/2021-02-26-du\_invariants/
 * https://www.youtube.com/watch?app=desktop\&v=7NAyn1DC420
+* [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
+* [https://www.jamesmichaelhickey.com/consistency-boundary/](https://www.jamesmichaelhickey.com/consistency-boundary/)
+* [https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee](https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee)
+* [https://medium.com/nick-tune-tech-strategy-blog/uncovering-hidden-business-rules-with-ddd-aggregates-67fb02abc4b](https://medium.com/nick-tune-tech-strategy-blog/uncovering-hidden-business-rules-with-ddd-aggregates-67fb02abc4b)
 
 ## Event modeling and event storming
 

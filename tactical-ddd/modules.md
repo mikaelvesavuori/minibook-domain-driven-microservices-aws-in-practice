@@ -22,7 +22,7 @@ Again, Modules are local to the code, while Bounded Contexts may constitute one 
 
 > \[E]ffective modules are deep: a simple public interface encapsulates complex logic. Ineffective modules are shallow: a shallow module's public interface encapsulates much less complexity than a deep module.
 >
-> — Khononov, p.223
+> — Vlad Khononov, _Learning Domain Driven Design_ (p. 223)
 
 This is the most basic tactical pattern, yet it at heart is all about classic programming concepts like "[high cohesion, low coupling](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/)" and, as per DDD, expressing the Domain through the naming and functionality.
 
@@ -71,7 +71,7 @@ Clean Architecture also changes the structure and naming a bit. We will base our
 As always, "Don't try to be clever". DDD is hard enough as it is, so it makes sense to be pragmatic and functional.
 {% endhint %}
 
-## Serverless project organization
+## High level project organization
 
 In our case, the principal module structure for code is:
 
@@ -90,9 +90,11 @@ In our case, the principal module structure for code is:
 
 Here we've almost completely nailed the 1:1 relationship between Bounded Context and subdomain, as well as have a top-level modularization of solutions/code into these.
 
-## Clean architecture
+## Using Clean Architecture as our foundation
 
-The "Clean Architecture" is a relatively well-known variant of the onion/hexagonal/ports-and-adapters school of architectures.
+The "Clean Architecture" is a relatively well-known variant of the onion/hexagonal/ports-and-adapters school of architectures.&#x20;
+
+Many have tried and many have failed when it comes to setting up a folder structure for DDD. For my part, I've found that Robert C. Martin's "clean architecture" is a better (and simpler!) elaboration of where so many developers have tried to find a way. It's not magic, just a very nice mapping (and [blog article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), and [book](https://www.goodreads.com/en/book/show/18043011-clean-architecture) for that matter!).
 
 ![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
 https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../.gitbook/assets/CleanArchitecture.jpg)
@@ -122,38 +124,40 @@ Let's at least look at the levels and some examples of what would into them.
 * **Interface adapters**: "A set of adapters that convert data from the format most convenient for the use cases and entities, to the format most convenient for some external agency such as the Database or the Web"
 * **Frameworks and Drivers**: "Where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm"
 
-The farther in something is, the less likely it is to change, and any inner layers must not depend on the outer layers.
+The farther in something is, the less likely it is to change, and any inner layers must not depend on the outer layers. This
 
-## Adapting the Clean Architecture
+### Adapting the Clean Architecture
 
-Let's also make it clear that there is very little about the practicalities of code or folder structure in Eric Evans' original book. Many have simply tried to infer the concepts and their ordering into models that work for them.
+I will apply a set of small modifications to this just to juice it up even more. Some of the names from above are too narrow ("entities") and some are just weird when used in the everyday work ("frameworks and drivers"). We can also steer it a smidge towards the DDD nomenclature, and we would arrive at this concept:
 
-For my part, I've found that Robert C. Martin's "clean architecture" is a better (and simpler!) elaboration of where so many developers have tried to find a way. It's not magic, just a very nice mapping (and blog article, and book for that matter!).
+<figure><img src="../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline. Upper (bigger) names represent the layer name, and the lower (smaller) represents examples of what goes into the layer.</p></figcaption></figure>
 
-| Clean Architecture                            | Our convention | Folder name               |
-| --------------------------------------------- | -------------- | ------------------------- |
-| Frameworks & Drivers (DB, Devices...)         | Infrastructure | infrastructure/{category} |
-| Interface Adapters (Controllers, Gateways...) | Adapter        | infrastructure/adapters   |
-| Application Business Rules (Use Cases)        | Application    | application/              |
-| Enterprise Business Rules (Entities)          | Domain         | domain/                   |
+Or in tabular form with the actual folder names too:
+
+| Clean Architecture         | Our convention | Folder name               |
+| -------------------------- | -------------- | ------------------------- |
+| Frameworks & Drivers       | Infrastructure | infrastructure/{category} |
+| Interface Adapters         | Adapter        | infrastructure/adapters   |
+| Application Business Rules | Application    | application/              |
+| Enterprise Business Rules  | Domain         | domain/                   |
 
 {% hint style="info" %}
 You will notice that here adapters are part of the infrastructure layer rather than being on their own.
 {% endhint %}
 
-TODO
-
-<figure><img src="../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline.</p></figcaption></figure>
-
-TODO
+If we use a tool like [Madge](https://github.com/pahen/madge) to generate a diagram of the code, we should be able to see the same [acyclic flow ](https://en.wikipedia.org/wiki/Directed\_acyclic\_graph)that we want (given that we actually also write the code in the "clean" way!). Below an example of the `Reservation` solution.
 
 <figure><img src="../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
 
 {% hint style="warning" %}
-Note that the above diagram does exclude certain code paths—such as those which represent test data, utilities and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram.
+Note that the above diagram excludes certain code paths—such as those which represent test data, utilities and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram. They just make the diagram overly busy and are an acceptable omission.
 {% endhint %}
 
-## Infrastructure
+Now, this I am happy with!
+
+### Some words about our layers
+
+#### Infrastructure
 
 The "grown up" way to think about infrastructure is that they are generic functions, classes and objects that help set up non-domain-related functionality. Good examples of this include repositories, very generic utility functions, Lambda event handlers (the outer layer), and anything else that has no (or very little) unique value in the specific context.
 
@@ -161,18 +165,23 @@ I've been totally happy with not using Clean Architecture's "frameworks and driv
 
 For me, a useful heuristic has been "Can I move this thing without making essentially no changes and still get it working?". That does however maybe also say something about the desired level of quality, too...&#x20;
 
-## Application
+**Adapters are part of the infrastructure layer**, because, well...they are infrastructure.
+
+#### Application
 
 In the application layer we put anything that is not core to the business, but which _does have_ unique value. This should be the first layer where something "new" happens while all the code running before this layer could theoretically be basic boilerplate.&#x20;
 
-## Domain
+**We still use the concept of "use cases" and they go into this layer.**
+
+#### Domain
 
 Now for the crème de la crème, the secret sauce, and [the figurative room where the magic happens](https://www.urbandictionary.com/define.php?term=this%20is%20where%20the%20magic%20happens). This is, as expected, where all the snazzy unique business logic and domain-orientation truly happens.
 
-## Interfaces
+#### BONUS: Interfaces
 
-This collects the types and interfaces. The reason I set this as a root-level item is so that we can effectively do things like:
+Bonus time: `Interfaces` is an additional folder that I tend to keep at the root—it just collects the types and interfaces. The reason I set this as a root-level item is so that we can effectively do things like:
 
 * Exclude the folder when rendering dependencies
 * Put them in the least nested and separate part of the overall structure, as practically every file will have to use some interface or another
+* Get them out of the way while still actually putting these in their own place
 
