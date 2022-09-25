@@ -88,12 +88,36 @@ In the below diagram (note that the use case isn't the same as in the last diagr
 
 We expose the operations on the `Slot` as calls one can make to our API Gateway, firing the relevant Lambda functions that will orchestrate, through use cases, the operations. Thus we can be totally sure that specific operations are only permissible in a deterministic flow, rather than leak it across our complete solution. Any time we are dealing with an Aggregate or Aggregate Root (as we are here, as the Entity is all alone) we publish a Domain Event detailing what happened, such as `SlotReserved`.
 
+## Invariants
+
+Invariants are "consistency rules that must be maintained whenever data changes" (Evans 2004, p. 128). A complete domain model has no holes in it, in other words, there is no possibility for it to be invalid. This is sometimes called the ["always-valid" model](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). I highly recommend reading that link, as we will keep it short here.
+
+To actually be to have an always-valid domain model, what would you need to keep in mind?
+
+> * Your domain model should be valid at all times.
+> * For that, do the following:
+>   * Make the boundary of your domain model explicit.
+>   * Validate all external requests before they cross that boundary.
+> * Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
+> * You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
+>
+> — Source: [https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/)
+
+{% hint style="info" %}
+See also the following article from Microsoft for more on designing domain-layer validations: [https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-model-layer-validations](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-model-layer-validations)
+{% endhint %}
+
+In plain English, by having moved all the actual domain logic and validations and invariants to the domain layer (where the Entity is the core part), we're already on a good path. We'll see in the code samples some of the basic ways we can handle unique invariants that must be enforced.
+
+## Before we move on
+
 Before we go to the code, let's revisit some highlights.
 
 * Entities are objects that have unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
 * Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
 * Entities typically use verbs to express its commands—its public interface.
 * We use the ubiquitous language to name these actions and anything else to do with the Entity.
+* Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
 
 ## The Slot entity
 
@@ -598,12 +622,6 @@ public toDto(): SlotDTO {
 
 The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` entity class.
 
-### Invariants
-
-TODO
-
-The "always-valid" model. More at [https://enterprisecraftsmanship.com/posts/always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/)
-
 ### Use case #1: Domain logic for checking if we can reserve and cancel
 
 Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's literally a check on the expected, valid `slotStatus`.
@@ -620,7 +638,7 @@ private canBeReserved(): boolean {
 ```
 {% endcode %}
 
-TODO
+Now that's some nice, basic logic right there! No need for enums or anything, we just need to check for an open status.
 
 ```typescript
 /**
@@ -632,11 +650,13 @@ private canBeCancelled(): boolean {
 }
 ```
 
-TODO
+Same goes for the cancellation check, we need to know if we are reserved or not. Both, as seen, return boolean results which makes it into a simple-to-understand and expressive check.
+
+Nothing is blocking you to conduct much deeper checking, though that seems overboard in our example code.
 
 ### Use case #2: Is the grace period over?
 
-TODO
+Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()` method when checking if we have any reservations that have expired their 10 minute grace period.
 
 {% code lineNumbers="true" %}
 ```typescript
@@ -662,11 +682,11 @@ private getGracePeriodEndTime(startTime: string): string {
 ```
 {% endcode %}
 
-TODO
+The internal logic is here a tiny bit more elaborate than the super-simple ones from the last example. All the logic around this is neatly stored within the Entity and we are left with a clean, nice public interface to get our answer.
 
 ### Use case #3: Reserving a slot
 
-TODO
+Here's now an example of the actual reservation logic.
 
 {% code lineNumbers="true" %}
 ```typescript
@@ -692,4 +712,4 @@ public reserve(hostName: string): SlotCommand {
 ```
 {% endcode %}
 
-TODO
+It will throw an error if it cannot be reserved, which is [cruder than how we could do it](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). Nevertheless this seems like a reasonable version 1 of our solution. Next, we will set a new status, update host name and status internally, and then return a `SlotCommand` which is a type of object that we can create an actual Domain Event from later. Note how, at this point, we have not persisted anything, just made sure that it's all valid, our object is in a regulated and valid state, and that we feed back the basis of our upcoming event for our integration purposes.
