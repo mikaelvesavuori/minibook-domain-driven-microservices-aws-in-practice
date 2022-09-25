@@ -147,6 +147,23 @@ TODO
 
 TODO
 
+## Importing services
+
+TODO see if this can be reused in the Modules context
+
+At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
+
+**When it comes to services, this importing may be pretty contentious to purists.**
+
+In DDD (and Googling, or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
+
+Our particular case, however, is sensible. Let me present some of my arguments:
+
+* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
+* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
+* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
+* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.
+
 ## How the concepts/levels map across DDD, CA, and our project
 
 Let's also make it clear that there is very little about the practicalities of code or folder structure in Eric Evans' original book. Many have simply tried to infer the concepts and their ordering into models that work for them.

@@ -17,7 +17,7 @@ The "correct" and orthodox one is that the **Aggregate** is simply an Entity tha
 
 For the secondary, more colloquial meaning it can mean the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
 
-Moreover, the **Aggregate** acts as the transaction boundary so it completely deals with all the data that it pertains to. You should never modify more than a single **Aggregate** per database transaction. Any changes to the **Aggregate** result in the **Aggregate** publishing a Domain Event.
+Moreover, the **Aggregate** acts as the _transaction boundary_ so it completely deals with all the data that it pertains to. You should never modify more than a single **Aggregate** per database transaction. Any changes to the **Aggregate** result in the **Aggregate** publishing a Domain Event.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Aggregates reside in the Domain layer.</p></figcaption></figure>
@@ -72,45 +72,52 @@ Yes, because our only Entity for the above reason automatically becomes the Aggr
 
 <figure><img src="../.gitbook/assets/1a6lva.jpg" alt=""><figcaption><p>Come on, the question was begging for this meme.</p></figcaption></figure>
 
-Vaughn Vernon recommends in _Implementing Domain Driven Design_ that you should strive to design small aggregates (p. 355-359). He shows how large-cluster Aggregates will scale and perform poorly, as well as become very complicated to reason about. The technical issues stem from factors such as needing to load more data, possibly from more sources, while also exposing more transactional areas for failure.
+Vaughn Vernon recommends in _Implementing Domain Driven Design_ that you should strive to **design small aggregates** (p. 355-359). He shows how large-cluster Aggregates will scale and perform poorly, as well as become very complicated to reason about. The technical issues stem from factors such as needing to load more data, possibly from more sources, while also exposing more transactional areas for failure. The bigger the Aggregate the more cumbersome it will become regardless of dimension, whether technical or cognitive.
+
+If a given operation needs to have strong consistency across multiple Aggregates, then that should give a hint that there is poor design at play.
 
 ## What we mean with transactions
 
-Recall how the Aggregate Root (and Entities, in essence) serves as a consistency boundary. TODO
+A _Transaction_ is the broad DDD term for committing something from start to (persisted) finish.
 
-Also, as we will see more in the Events section, he writes:
+Recall how it's already been stated that the Aggregate Root (and Entities, in essence) serves as a consistency boundary. What that means in practice is that anything to do with controlling that the data is correct (valid) and that it gets persisted in the right way is in the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible, while staying truthful to the business domain, when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
 
-> Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal cam be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
+> Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal can be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
 >
 > — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 359
 
-TODO
+Eventual consistency in practice means that we'll offload the change to some other system, rather than stay inside the same process and synchronously await the change. Or worse: have to keep all that logic in "our" solution. Vernon discussed the common question of when to use (and not to use) eventual consistency. Evans answered that someone else's job should always be deemed eventually consistent from "our" angle:
 
 > When examining the use case (or story), ask whether it's the job of the user executing the use case to make the data consistent. If it is, try to make it transactionally consistent, but only by adhering to the other rules of Aggregates. If it is another user's job, or the job of the system, allow it to be eventually consistent. That bit of wisdom not only provides a convenient tie breaker, but it helps us gain a deeper understanding of the domain. It exposes the real system invariants: the ones that must be kept transactionally consistent.
 >
 > — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 367
 
-TODO
+OK, so that sounds good and all but how does that actually work? Easy: Domain Events.
 
 ### Aggregates emit Domain Events
 
-We haven't discussed Domain Events in detail yet TODO
+We haven't discussed Domain Events in detail yet, as these will come up in an upcoming section, but the way in which the Aggregate informs the rest of the landscape is through events, specifically in the DDD context, Domain Events.
+
+A Domain Event is, in short, an event (or message) pushed to some asynchrononous messaging technology where consumers can subscribe to new events unfolding. We give events their own identity, in effect transforming them from just a blob with some data into a fully-fleshed Domain Event that "speaks" our domain's language. By using them we can stitch together interactions across many systems in our landscape without foregoing any of the rich vocabulary we have created through DDD and EventStorming.
+
+Let's look more at this later.
 
 ## Our domain service as a stand-in
 
+Our code base for the Reservation solution has the following more substantial ingredients:
+
+* A number of use cases
+* A number of application services
+* The `Slot` Entity
+* The `ReservationService` Domain Service
+
 {% hint style="info" %}
-We inspected the code already in the Services section. For brevity, I will avoid repoducing it here once again. Instead we will look at selected sections.
+We inspected the code already in the Services section. For brevity, I will avoid reproducing it here once again. Instead we will look at selected sections.
 
 The code itself is located at `code/Reservation/SlotReservation/src/domain/services/ReservationService.ts` if you want to see the full source.
 {% endhint %}
 
-### Stepping through the code
-
-TODO REVISE As expected, there's the standard imports, but there is no Factory function. I just don't often find it very helpful to encapsulate an aggregate using one.
-
-The code in the class is in two major chunks: Private methods and the public ("API") methods.
-
-The examples will be presented in "roughly" sequential order, though logically reservation comes before the check-in. Those are switched in order because I want to gradually progress on their relative complexity (what little there is).
+Before looking too intently at the code itself, I'll clarify the way that I am using a Domain Service to do the Aggregate-type operations on top of our `Slot` Entity.
 
 ### Why is this handled in a Domain Service rather than directly in the use case?
 
@@ -126,43 +133,27 @@ At the end of the day it is not about being orthodox but by being clear and doma
 
 ### Why is this a Domain Service and not an Aggregate?
 
-You might have noticed that our `ReservationService` aggregate was indeed called an _aggregate_, yet it has no ID or similar (as per expectations on aggregates), nor did it carry state on itself. Well spotted.
+Services are something we try to avoid in DDD (as long as we can put behavior on "things" instead) and the uses I understand them to be best for include typical "heavy lifting", not necessarily being important orchestrators. The `SlotReservation` aggregate has quite a bit of such orchestration happening on the `Slot` entity and more.
 
-My reasons for doing it this way include:
+The service is stateless and identity-less, so it can't be an Entity or Aggregate.
 
-* Services are something we try to avoid in DDD, and the uses I understand them to be best for include typical "heavy lifting", not necessarily being important orchestrators. The `SlotReservation` aggregate has quite a bit of such orchestration happening on the `Slot` entity and more.
-* It's not an entity because it does not handle something, on its own, concrete.
-* It's not reduced to orchestration bits-and-bobs in the use case either. This for me seems right, coming from the Clean Architecture angle, though there is too much domain logic and entity operations for me to feel that would be right.
-* Finally: It _does_ act like an aggregate as it functions as the "entry point" to the value object (generation) and the `Slot` entity that we actually operate on and persist. We also send the domain events from here: It is the transaction boundary.
+It's not an Entity because it doesn't handle anything concrete _on_ anything.
 
-And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with considered and deliberate design which after all is the real goal.
+I really want to avoid injecting Repositories or Domain Event Publishers into the `Slot` Entity, so something else has to abstract that. However, not even a Domain Layer _should_ access such things, but it's generally not seen as a capital offense. :sweat\_smile:
 
 {% hint style="info" %}
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
 {% endhint %}
 
-### Importing services
+It _does act_ like an Aggregate as it functions as the "entry point" to the `Slot` entity that we actually operate on and persist. We also send the Domain Events from here: it therefore acts is the transaction boundary.
 
-{% hint style="danger" %}
-Hold on to your feelings, if I've converted you to a Mini-Me version of Uncle Bob or Eric Evans!
-{% endhint %}
+And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with considered and deliberate design which after all is the real goal.
 
-At the top of the file we are making a whole bunch of imports. Some of them are unreasonable to not import (at least in TypeScript) like types/interfaces, errors (and other "global" functionality), and similar.
-
-**When it comes to services, this importing may be pretty contentious to purists.**
-
-In DDD (and Googling or reading on Stack Overflow) you'll hear a lot of arguments against importing outer-level objects (such as services) in deeper-level objects, such as aggregates. This is sound advice, generally speaking. If we start importing left-right-and-center without discipline we will end up in a really bad place.
-
-Our particular case, however, is sensible. Let me present some of my arguments:
-
-* **Aggregates are one of the most important objects that express our business logic in the language of the domain**. The aggregate is very big, and _was_ even bigger. At an earlier stage it included quite a few private methods that are now imported from the application and domain layer after a bit of refactoring. To actually do these things we need bits and bobs to help with sometimes menial tasks. It is reasonable to refactor those parts into functional services.
-* **Refactoring them from private methods to functional services means that their testability is improved**, should we want to write function/class-specific tests for these.
-* **Extracting these methods into services also allow better reuse**, though to be frank, right now there is no such need.
-* OK, so with them refactored to services, why don't we inject them instead? This too is sensible.
+## Examples from our project
 
 ### Use case #1: Make daily slots
 
-The first publicly accessible use case is making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones.
+The first publicly accessible use case is for making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones.
 
 ```typescript
 /**
