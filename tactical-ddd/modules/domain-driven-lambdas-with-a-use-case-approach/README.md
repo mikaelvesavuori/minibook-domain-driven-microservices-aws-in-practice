@@ -111,7 +111,7 @@ The way I've found to best encapsulate microservices and bounded contexts is tha
 | API gateway                                                                      | The exposure point for the **microservices**                                                                                                              |
 
 {% hint style="info" %}
-This approach is valid as far as the bounded context truly is well-defined and self-contained without any excessive territorial encroachment on other contexts.
+This approach is valid as far as the bounded context truly is well-defined and self-contained without any excessive territorial encroachment on other contexts!
 {% endhint %}
 
 If the bounded context is wide or simply more coarsely defined, there is absolutely the possibility to relate your service to act as a **component** of the bounded context.
@@ -124,22 +124,20 @@ Of course, under no circumstances should bounded contexts compete about the same
 
 Remember that DDD and its terminology is a semantic and logical construct, whereas the code is a technical construct. Therefore any correlation must be handled logically and manually. Nothing forces you to make a single bounded context into a single deployable artifact.
 
-\---
-
 This table, in plain text, could be summarized as:
 
 > A **Git repository** contains (typically) one **microservice that fully represents a single bounded context**. Each microservice is defined by a **single authoritative definition/configuration** and may contain **one or multiple functions that each represent a use case in the bounded context**. An API gateway is the typical way to expose (and protect) the functions.
 
-Let's say that again: A microservice is not the individual function, it's the bounded context with all of its functions. "Microservices", hence, refers to the granular style and explicit scope of each bounded context together with the tiny, decoupled deployment artifacts (functions).
+Let's say that again: A microservice is not the individual function, it's the bounded context with _all of its functions_. "Microservices", hence, refer to the granular style and explicit scope of each bounded context together with the tiny, decoupled deployment artifacts (functions).
 
-Continuing with some of the features I listed at the start of this page:
+Continuing with some of the features I listed at the start of this page, we can attain the following benefits:
 
-* Functions are truly independent
-* We can use any number of functions that may or may not interact with each other (or other systems)
-* We have colocation of code that is logically shared (i.e. bounded context)
-* You have the option of atomically deploying (i.e. individual functions) or update the whole microservice (bounded context)
-* We have complete isolation from code and artifacts from other bounded contexts
-* The approach is logically and technically scalable
+* Functions that are truly independent
+* Ability to use any number of functions that may or may not interact with each other (or other systems)
+* Colocation of code that is logically shared (i.e. bounded context)
+* Ability to atomically deploy (i.e. individual functions) or update the whole microservice (i.e. Bounded Context)
+* Complete isolation from code and artifacts from other bounded contexts
+* Logically and technically scalable solution
 
 ## Clean architecture-style use cases
 

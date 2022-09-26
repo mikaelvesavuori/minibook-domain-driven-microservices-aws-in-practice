@@ -6,7 +6,7 @@ description: >-
 
 # Modules
 
-<figure><img src="../.gitbook/assets/undraw_design_components_9vy6.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/undraw_design_components_9vy6.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
 
 {% hint style="success" %}
 **TL;DR**
@@ -97,7 +97,7 @@ The "Clean Architecture" is a relatively well-known variant of the onion/hexagon
 Many have tried and many have failed when it comes to setting up a folder structure for DDD. For my part, I've found that Robert C. Martin's "clean architecture" is a better (and simpler!) elaboration of where so many developers have tried to find a way. It's not magic, just a very nice mapping (and [blog article](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), and [book](https://www.goodreads.com/en/book/show/18043011-clean-architecture) for that matter!).
 
 ![From Robert C. Martin's blog. "The Clean Architecture", 10 August 2012.
-https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../.gitbook/assets/CleanArchitecture.jpg)
+https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](../../.gitbook/assets/CleanArchitecture.jpg)
 
 I find it the most immediately effective and neat variants of these, as it:
 
@@ -130,7 +130,7 @@ The farther in something is, the less likely it is to change, and any inner laye
 
 I will apply a set of small modifications to this just to juice it up even more. Some of the names from above are too narrow ("entities") and some are just weird when used in the everyday work ("frameworks and drivers"). We can also steer it a smidge towards the DDD nomenclature, and we would arrive at this concept:
 
-<figure><img src="../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline. Upper (bigger) names represent the layer name, and the lower (smaller) represents examples of what goes into the layer.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/CA + DDD.png" alt=""><figcaption><p>Our adjusted model that will follow the overall Clean Architecture outline. Upper (bigger) names represent the layer name, and the lower (smaller) represents examples of what goes into the layer.</p></figcaption></figure>
 
 Or in tabular form with the actual folder names too:
 
@@ -147,7 +147,7 @@ You will notice that here adapters are part of the infrastructure layer rather t
 
 If we use a tool like [Madge](https://github.com/pahen/madge) to generate a diagram of the code, we should be able to see the same [acyclic flow ](https://en.wikipedia.org/wiki/Directed\_acyclic\_graph)that we want (given that we actually also write the code in the "clean" way!). Below an example of the `Reservation` solution.
 
-<figure><img src="../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
 
 {% hint style="warning" %}
 Note that the above diagram excludes certain code paths—such as those which represent test data, utilities and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram. They just make the diagram overly busy and are an acceptable omission.
