@@ -39,31 +39,29 @@ Something I _have_ borrowed from Khalil is [his objection to using Dependency In
 You may certainly want to look at his work when, or if, you feel inspired to accelerate my way of doing things. I know I learned a lot from reading his stuff!
 {% endhint %}
 
-TODO
-
 {% hint style="info" %}
 You may also find various Node + DDD projects out in the wild. Without mentioning any names or details (since I've never used them; just inspected them), this approach is better suited to the serverless microservices context (also of course being directly adapted for such a context) and I personally believe my Clean Architecture/DDD-layering stays truer and more conceptually steadfast than what at least I have seen in various projects.
 {% endhint %}
 
-TODO
+## How do we size and relate microservices in serverless DDD?
 
-You will continuously want to question if decisions make
+There are a number of different takes on how one would relate and size Lambdas, deployments, and how they map to DDD concepts. You will continuously want to question if decisions make
 
 * **local complexity** (i.e. the bounded context or solution itself),
 * **global complexity** (i.e. the total landscape),
 * **integration complexit**y (i.e. how hard it is to make relevant solutions communicate with each other
 
-better or worse.
+better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates is all part of the same game. Vlad Khononov (and I) would recommend moving towards services that hide significant business logic (ultimately providing something very rich to the user) with the smallest possible surface area (API):
 
-> From a system complexity standpoint, a deep module reduces the system's global complexity, while a shallow module increases it by introducing a component that doesn't encapsulate its local complexity.
+> From a system complexity standpoint, a **deep module** reduces the system's global complexity, while a shallow module increases it by introducing a component that doesn't encapsulate its local complexity.
 >
-> Shallow services are also the reason why so many microservices-oriented projects fail. The mistaken definition of a microservice as a service having no more than X lines of code, or as a service that should be easier to rewrite than to modify, concentrate on the individual service while missing the most important aspect of the architecture: the system.
+> **Shallow services are also the reason why so many microservices-oriented projects fail**. The mistaken definition of a microservice as a service having no more than X lines of code, or as a service that should be easier to rewrite than to modify, concentrate on the individual service while missing the most important aspect of the architecture: the system.
 >
-> The threshold upon twhich a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.
+> **The threshold upon which a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.**
 >
-> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.224)
+> — Source: _Learning Domain Driven Design_ (Khononov 2021, p.224)
 
-TODO
+For me all of this spells out that use case-oriented APIs, rather than resource-based getter/setter APIs, are what we are aiming form. He also writes more on the actual sizing and boundaries:
 
 > Both microservices and bounded contexts are physical boundaries. Microservices, as bounded contexts, are owned by a single team. As in bounded contexts, conflicting models cannot be implemented in a microservice, resulting in complex interfaces. Microservices are indeed bounded contexts. \[...]
 >
@@ -71,17 +69,30 @@ TODO
 >
 > \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.&#x20;
 >
-> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.226-227)
+> — Source: _Learning Domain Driven Design_ (Khononov 2021, p.226-227)
 
-## How do we size and relate microservices in serverless DDD?
+Finally, when it comes to heuristics he writes that:
 
-There are some number of different takes on how one would relate and size Lambdas, deployments, and how they map to DDD concepts.
+> A more balanced heuristic for designing microservices is to **align the services with the boundaries of business subdomains**. \[S]ubdomains are correlated with fine-grained business capabilities. These are the business building blocks required for the company to compete in its business domain(s). \[...]
+>
+> Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
+>
+> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
 
-The below is what I've come to find is the most lucid and rational way to do this when we are building and designing our own system.
+In our case we will see that we did not have to fully follow this advice, however I do see it being a powerful way of closing the loop between:
+
+* The Bounded Context, which is our "designed" and smallest component of the solution
+* The subdomain, which acts as the logical container for related components in the domain
+
+If nothing else makes sense, then a sufficiently well-understood subdomain could be packed into a single solution. The beauty of microservices in Lambda, as we will see, is that we can speak of logical monoliths, while still having the individual Lambda functions to work for us.
 
 {% hint style="info" %}
 For a deeper dive by Eric Evans on different types of bounded contexts and some critique on how one microservice _is not necessarily_ one bounded context (which I think it should be), see [Language in Context - Eric Evans - DDD Europe 2019](https://www.youtube.com/watch?v=xyuKx5HsGK8).
 {% endhint %}
+
+Personally I find the above sections of Khononov's book very illuminating, but what in practice does that look like...? :thinking:
+
+The below is what I've come to find is the most lucid and rational way to do this when we are building and designing our own system.
 
 ### Typical sizing table
 
@@ -109,17 +120,9 @@ If the bounded context is wide or simply more coarsely defined, there is absolut
 The word "component" isn't the best, I'm well aware of this, but there is a lack of more descriptive or self-explanatory words.
 {% endhint %}
 
-TODO
+Of course, under no circumstances should bounded contexts compete about the same logical objects, aggregates or constructs, nor any attached responsibilities. The bounded context is never bigger than the logical entirety of the context.
 
-> A more balanced heuristic for designing microservices is to align the services with the boundaries of business subdomain. \[S]ubdomains are correlated with fine-grained business capabilities. These are the business building blocks required for the company to compete in its business domain(s). \[...]
->
-> Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
->
-> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
-
-Under no circumstances should bounded context compete about the same logical objects, aggregates or constructs, nor any attached responsibilities. The bounded context is never bigger than the logical entirety of the context.
-
-Remember that DDD and this terminology is a semantic and logical construct, whereas the code is a technical construct. Therefore any correlation must be handled logically and manually. Nothing forces you to make a single bounded context into a single deployable artifact.
+Remember that DDD and its terminology is a semantic and logical construct, whereas the code is a technical construct. Therefore any correlation must be handled logically and manually. Nothing forces you to make a single bounded context into a single deployable artifact.
 
 \---
 
@@ -138,8 +141,6 @@ Continuing with some of the features I listed at the start of this page:
 * We have complete isolation from code and artifacts from other bounded contexts
 * The approach is logically and technically scalable
 
-TODO
-
 ## Clean architecture-style use cases
 
 We've already touched on structure several times. This time it's going to be both high-level of how Modules relate as a DDD concept but also how our project is actually divided.
@@ -147,8 +148,6 @@ We've already touched on structure several times. This time it's going to be bot
 {% hint style="info" %}
 Read more at [https://www.culttt.com/2014/12/10/modules-domain-driven-design](https://www.culttt.com/2014/12/10/modules-domain-driven-design)
 {% endhint %}
-
-asdf
 
 This far we have seen how these might work:
 
@@ -208,7 +207,6 @@ If you have been around the block, maybe you feel one or more of the below:
 
 * "OK, this seems like just adding more chaff into the mix, doesn't it?"
 * "Isn't this a _Transaction Script_... WTH mate?"
-* TODO
 
 When it comes to the question of adding more (useless?) code and more layers of abstractions, rather we should see the benefits. Because we broke up the handler and its boilerplate from our business and use case, **the use case is the first meaningfully **_**testable**_** layer**. That is, the surface for our widest unit testing is the _use case_ as it effectively exercises the full flow and we can afford to be totally oblivious about anything in the handler itself. So, yes indeed, it does add a further layer but again we get something better back as a result for that minimal investment.
 
@@ -222,8 +220,6 @@ Now, let's consider first Martin Fowler's words on the Transaction Script patter
 >
 > — Source: [https://martinfowler.com/eaaCatalog/transactionScript.html](https://martinfowler.com/eaaCatalog/transactionScript.html)
 
-TODO: Add "Learning DDD" quotes on transaction script
-
 The gist I am trying to tell is that the use case itself should act essentially as a readable, easy-to-follow orchestration of the use case's mechanics. A key difference is that between a novice programmer and a seasoned one, the use case itself must not touch the details, concretions or infrastructure. Instead (as we see) we trust that our commands on abstractions work as intended:
 
 ```typescript
@@ -231,7 +227,7 @@ const { repository } = dependencies;
 await repository.add(record);
 ```
 
-This pattern scales well, as long as the deeper layers (entities etc.) are doing their job. For this particular case, there isn't an actual aggregate or entity involved, just the basic repository. (TODO?)
+This pattern scales well, as long as the deeper layers (entities etc.) are doing their job. For this particular case, there isn't an actual aggregate or entity involved, just the basic repository.
 
 We can also look at how this scales to a much more complex case. In this case though, you will never see that complexity! It looks almost the same:
 
