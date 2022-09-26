@@ -24,13 +24,11 @@ Beginning with language has many benefits. One of them is that it's non-technica
 
 If it's not clear yet, all of this work has to be done in a cross-functional group where domain experts are part. Domain experts is a broad term but you can think of this as any people who have driving roles and knowledge in your business context. The result is the collaborative work, rather than any sub-group having more (or less) privilege than any other. When an accepted set of terms is produced, [word is bond](https://www.urbandictionary.com/define.php?term=Word%20is%20bond).
 
-As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.html), Eric Evans writes the following in his book:
+As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.html), Eric Evans writes the following in _Domain Driven Design: Tackling Complexity in the Heart of Software_:
 
 > By using the model-based language pervasively and not being satisfied until it flows, we approach a model that is complete and comprehensible, made up of simple elements that combine to express complex ideas. \[...]
 >
 > Domain experts should object to terms or structures that are awkward or inadequate to convey domain understanding; developers should watch for ambiguity or inconsistency that will trip up design.
->
-> — Eric Evans (TODO)
 
 Some important features to understand:
 

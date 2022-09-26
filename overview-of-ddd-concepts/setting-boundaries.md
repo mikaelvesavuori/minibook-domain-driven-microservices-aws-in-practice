@@ -9,7 +9,27 @@ description: >-
 
 <figure><img src="../.gitbook/assets/undraw_circles_y7s2.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
 
-While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, I'd say that **the defining of bounded contexts remains the most powerful tool**. Language makes us define the concepts in play, as well as what (and how) they represent something. Setting boundaries on contexts, on the other hand, carves out the landscape, pointing out where responsibilities lay.&#x20;
+While the ubiquitous language might be the most pervasive and influential tool in the strategic DDD toolbox, I'd say that **the defining of bounded contexts remains the most powerful tool**. Language makes us define the concepts in play, as well as what (and how) they represent something. Setting boundaries on contexts, on the other hand, carves out the landscape, pointing out where responsibilities lay.
+
+## Core principles
+
+{% hint style="info" %}
+I will adapt some of the great points made in [https://learn.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries](https://learn.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries)
+{% endhint %}
+
+### Aggregates are shaped by business needs
+
+asdf
+
+### You can't split an Aggregate smaller than its cohesive entirety
+
+asdf
+
+### Aggregates don't depend on others
+
+Consequently, services are completely independent of other services and aggregates.
+
+
 
 ```
 Now we're ready to go from domain model to application design. Here's an approach that you can use to derive microservices from the domain model.
@@ -37,6 +57,8 @@ That said, consider whether you really need strong consistency. There are strate
 ```
 
 See: https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries
+
+
 
 <figure><img src="../.gitbook/assets/Get-A-Room Context Map 1.png" alt=""><figcaption><p>Diagram with only contexts</p></figcaption></figure>
 

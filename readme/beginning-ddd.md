@@ -16,7 +16,7 @@ The "problem", if one can call it that, is that both of the books are big. Like 
 
 Already Vernon wrote in his first book that sometimes DDD is "first embraced as a technical tool set" (Vernon 2013, p. xxi) saying that some refer to this modus as "DDD-Lite". This will bring forth a number of useful patterns, but will miss out on the glue that binds together DDD as a complete concept.
 
-## OK, so what is DDD?
+## What is DDD?
 
 The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition is actually very good and condensed. I'm going to reference it as-is. It says that...
 
@@ -34,7 +34,7 @@ The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition 
 
 For a software engineer or architect the above should at least superficially sound clear and reasonably. Two terms, however, should outline themselves as being in repeated use and being somewhat mysterious or vague in meaning: _domain_ and _model_. These are core to understanding Domain Driven Design.
 
-### The domain
+## The "domain"
 
 The domain can be thought as the principal subject or materia of the project. It may be as broad or as narrow as necessary. Eric Evans defines it as:
 
@@ -44,7 +44,7 @@ The domain can be thought as the principal subject or materia of the project. It
 
 It should be somewhat clear in most circumstances what the implicit domain boundaries are. DDD eschews implicit boundaries and is particular on boundaries being collabratively and explicitly defined.
 
-### The model
+## The "model"
 
 Eric Evans spends quite some space in the start of his book on the notion of a "model" and what model-driven design means. Being model-driven can be likened to virtually being domain-driven. By having a shared understanding, and respecting that there is a need for zooming in/out, we can condense our knowledge to an efficient and useful model that is possible to share with others without losing meaning in the process.
 
@@ -64,18 +64,26 @@ The better option is, thus, to do whatever it takes to create an amenable, low-t
 
 ## The patterns of DDD
 
-TODO
+Domain Driven Design is not just something that makes you sound smart, but it's actually a very hands-on toolbox as well. I've reproduced one of Eric Evans' diagrams with colored bubbles to easier see where the tactical and strategic patterns reside. Green (top) is for tactical patterns, more concerning the implementation and code side, and the lilac (bottom) is for strategic ones that deal with the modeling, understanding, and integration of our domains.
 
 <figure><img src="../.gitbook/assets/DDD model.png" alt=""><figcaption><p>How the patterns match up, as presented in Eric Evans's book (2003) and re-drawn by myself.</p></figcaption></figure>
 
-TODO
+The central concept is "Model-Driven Design", which I am sure comes as no surprise—without that, there is nothing more than _either_ theory or some sound coding advice.
 
-## Tactical DDD
+{% hint style="info" %}
+There are dedicated sections in this book for strategic and tactical DDD, respectively.&#x20;
+{% endhint %}
+
+### Strategic DDD
+
+You need to start with the strategic work. In this work you will uncover the domain(s), its language and terminology, how things relate to one another, and where responsibilities lay (or should lay!).
+
+The work here is collective and should be done with a broad set of constituents, from business to design to programmers and any domain experts. Expect diagrams, post-it notes, coffee, and arguments!
+
+### Tactical DDD
+
+The opposite side of the coin is the tactical work, which instead revolves chiefly around the code and any implementation work. The beauty of DDD is that we are expected to express 1:1 the actual business processes and language through the code and its functionality. DDD provides a small set of patterns to use, all of which are mutually complementary.
 
 See [https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd)
 
 From [https://thedomaindrivendesign.io/what-is-tactical-design/](https://thedomaindrivendesign.io/what-is-tactical-design/)
-
-The _Tactical Design_ helps us create an elegant _Domain Model_ using _Building Blocks_, see below the main _Building Blocks_:
-
-You need to understand that not all of these concepts need to be applied to your _Domain Model_, you need to do an analysis so that it does not add unnecessary complexity to your project.
