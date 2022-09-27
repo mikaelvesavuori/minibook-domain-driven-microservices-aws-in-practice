@@ -46,7 +46,7 @@ Using primarily messaging mechanisms—such as Kafka or AWS EventBridge—we can
 I am writing another book for events that will go deeper on this subject.
 {% endhint %}
 
-What's worth keeping in mind is that there is little that is "new" with this way compared to traditional service-to-service communication. Ideally we would have:
+What's worth keeping in mind is that there is little that is "new" with this way compared to traditional service-to-service communication. Ideally, we would have:
 
 - Documentation for the API and events (using a modern schema format like [AsyncAPI](https://www.asyncapi.com))
 - Microservice discovery catalog (like [Catalogist](https://github.com/mikaelvesavuori/catalogist) or [Port](https://www.getport.io))
@@ -71,17 +71,17 @@ For more examples (including books going as far back as the 1970s!) see [https:/
 
 Principles and broad patterns simply don't age as much as (most) languages and pretty much anything that is only implementation-oriented. It's safe to say that DDD and its patterns have survived many changes in technology without losing its relevance—though absolutely there are other approaches to DDD popping up.
 
-The bigger issue with DDD and related terms is that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is_domain_driven_design_still_the_recommended/)":
+The bigger issue with DDD and related terms are that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is_domain_driven_design_still_the_recommended/)":
 
-> **Well what is in the original DDD book is not what tends to be written about or used in practice**. The book is about how to successfully and repeatedly implement the plumbing to support a complex problem domain object model. It advocates that standard plumbing so you can _concentrate_ on object modeling the problem domain.
+> **Well what is in the original DDD book is not what tends to be written about or used in practice**. The book is about how to successfully and repeatedly implement plumbing to support a complex problem domain object model. It advocates that standard plumbing so you can _concentrate_ on object modeling the problem domain.
 >
 > > "The goal of domain-driven design is to create better software by focusing on a model of the domain rather than technology.", Eric Evans, Domain Driven Design p148.
 >
-> **Unfortunately, very very few know how to object model a domain model independent of UI and persistence, so all sort of **_**alternatives**_** have arisen**. Most notably Event Sourcing/CQRS, or Data Table based object model architectures (aka Repository Driven Development), or "it's really just about boundaries and language" (lol). **This is particularly the case in the .NET world where object modeling was never advocated by Microsoft or adopted by the community given its database tooling/wizard orientation.**
+> **Unfortunately, very very few know how to object model a domain model independent of UI and persistence, so all sorts of **_**alternatives**_** have arisen**. Most notably Event Sourcing/CQRS, or Data Table-based object model architectures (aka Repository Driven Development), or "it's really just about boundaries and language" (lol). **This is particularly the case in the .NET world where object modeling was never advocated by Microsoft or adopted by the community given its database tooling/wizard orientation.**
 >
-> So DDD is popular in the same way that “Agile” is. In both cases their meanings have been corrupted in popular use, and in DDD's by a community that hasn't even read _the_ book ("but hey we read some articles or YouTube"). So something ambiguously labeled "DDD" is often recommended today, but does that really help?
+> So DDD is popular in the same way that “Agile” is. In both cases, their meanings have been corrupted in popular use, and in DDDs by a community that hasn't even read _the_ book ("but hey we read some articles or YouTube"). So something ambiguously labeled "DDD" is often recommended today but does that really help?
 
-With this book I definitely don't want to fall over on the wrong side of history!
+With this book, I definitely don't want to fall over on the wrong side of history!
 
 To be fair, I've had a situation like this in mind while writing and I believe you will have a broader yet practical understanding of DDD without us overcomplicating things more than warranted.&#x20;
 
@@ -93,7 +93,7 @@ My own work with this book and project simply complements and illustrates some o
 
 ## But...!
 
-Let's look at some reasonable objections to our two core subjects. These might seem off-kilter, since I'm not changing course as we are just starting, but giving you a taste of when the approach we will work with may be too much.
+Let's look at some reasonable objections to our two core subjects. These might seem off-kilter since I'm not changing course as we are just starting, but giving you a taste of when the approach we will work with may be too much.
 
 ### "DDD might be too much?"
 
@@ -104,16 +104,16 @@ This point is raised in at least Evans' book, Vernon's book, and [_Learning Doma
 Their point, and mine, is typically that trivial and/or CRUD-oriented systems are good examples of when there is no meaningful reason to pursue the route of DDD. Based on the fact that a lot more software than we sometimes want to accept is just trivial "getting and setting" of basic data, this point should carry across powerfully over a rather wide swath of software engineering projects.
 
 {% hint style="info" %}
-You can find deeper, but often somewhat similar, lines of thought being presented in the serious literature around DDD, but for an online version see for example this one. (TODO)
+You can find deeper, but often somewhat similar, lines of thought presented in the serious literature around DDD, but for an online version see for example this one. (TODO)
 {% endhint %}
 
-There are ways to make DDD more managable and I am satisfied with the coded solution we will work on as being representative of such a "lighter-weight" path.
+There are ways to make DDD more manageable and I am satisfied with the coded solution we will work on as being representative of such a "lighter-weight" path.
 
 ### "Microservices might be complicating things?"
 
 Yes.
 
-Microservices have, as every architectural decision and architecture style, its own trade-offs and pros and cons. In the early design stages it should be clear if there are sufficient reasons to opt for a domain-driven, message oriented and decoupled landscape or if another type of solution makes better sense.
+Microservices have, like every architectural decision and architecture style, their own trade-offs and pros and cons. In the early design stages, it should be clear if there are sufficient reasons to opt for a domain-driven, message-oriented, and decoupled landscape or if another type of solution makes better sense.
 
 {% hint style="info" %}
 Read more about related concerns at:
@@ -124,11 +124,11 @@ Read more about related concerns at:
 - [https://continuousarchitecture.com/continuous-architecture-principles/](https://continuousarchitecture.com/continuous-architecture-principles/)
   {% endhint %}
 
-One of the most obvious and significant negative sides of microservices is that their relative autonomy means that you get a linear amount of extraneous "surface area" for each new service: Starting perhaps with the same CI pipes, same scaffolding, same interfaces, and so on. These might be duplicated, or worse, contain tiny differences in between them. At the same time, there are ways to handle this (like loading several repos into an IDE workspace, "poor man's mono repo style") or simply accept that each service is truly decoupled from the others. :person_shrugging:
+One of the most obvious and significant negative sides of microservices is that their relative autonomy means that you get a linear amount of extraneous "surface area" for each new service: Starting perhaps with the same CI pipes, same scaffolding, same interfaces, and so on. These might be duplicated, or worse, contain tiny differences between them. At the same time, there are ways to handle this (like loading several repos into an IDE workspace, "poor man's mono repo style") or simply accept that each service is truly decoupled from the others. :person_shrugging:
 
-Similar to the previous point (on DDD sometimes being "too much") it's sometimes a better proposition to make a monolith, or to at least bundle applications/systems in a coarser fashion. There is nothing controversial with that. However, by doing so you also discard the quality attributes of microservices (independence, scalability,likely more natural representation of bounded contexts, etc.).
+Similar to the previous point (on DDD sometimes being "too much") it's sometimes a better proposition to make a monolith, or to at least bundle applications/systems in a coarser fashion. There is nothing controversial about that. However, by doing so you also discard the quality attributes of microservices (independence, scalability, likely more natural representation of bounded contexts, etc.).
 
-During my years working with microservices, as with anything, I have learned that the notion of microservices being _complicated_ (or _complicating_) or not is very dependent on an engineer's or architect's background and experience. Personally, I've grown a lot since working with serverless microservices as they abstract the "right things" while providing the powerful tools I expect in a modern tech environment. Without them I would not have started my back-end journey the way I did. So as ever: One man's curse is another's gift.
+During my years working with microservices, as with anything, I have learned that the notion of microservices being _complicated_ (or _complicating_) or not is very dependent on an engineer's or architect's background and experience. Personally, I've grown a lot since working with serverless microservices as they abstract the "right things" while providing the powerful tools I expect in a modern tech environment. Without them, I would not have started my back-end journey the way I did. So as ever: One man's curse is another's a gift.
 
 ## In closing
 
