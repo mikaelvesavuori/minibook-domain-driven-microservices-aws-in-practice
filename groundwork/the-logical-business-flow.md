@@ -1,13 +1,13 @@
 ---
 description: >-
-  Few people love process diagrams but when you really need them and none exists,
-  you might be in a world of doo-doo.
+  Few people love process diagrams but when you really need them and none
+  exists, you might be in a world of doo-doo.
 ---
 
 # The logical business flow
 
 {% hint style="info" %}
-You could certainly go full-bore with EventStorming (introduced later) and essentially encapsulate the business flows there.
+You could certainly go full-bore with EventStorming and essentially encapsulate the business flows there.
 
 An optional approach could be to do some (lightweight?) BPMN model, though I would perhaps rather lean back into the full EventStorming approach in that case so we aren't caught in unnecessary complexity spreading around the work.
 {% endhint %}

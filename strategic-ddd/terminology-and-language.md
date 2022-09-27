@@ -100,6 +100,6 @@ The Security domain has, also, only a single unique concept: The (verification) 
 
 In the reference implementation, this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario, this format is probably quickly exhausted as definitions may need to be richer and exemplified. Note also how we ascribe each term to specific domains.
 
-![Describing, in short, our Ubiquitous Languages through the domain concepts](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
+![Describing, in short, our Ubiquitous Languages through the domain concepts](<../.gitbook/assets/Get-A-Room Ubiquitous Language (1).png>)
 
 Having this glossary or Ubiquitous Language always ready at hand will be a major benefit, from onboarding to understanding if there are any issues stemming from conceptual misalignment.

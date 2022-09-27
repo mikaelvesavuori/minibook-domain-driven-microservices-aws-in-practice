@@ -6,7 +6,7 @@ description: >-
 
 # References and resources
 
-<figure><img src=".gitbook/assets/undraw_deconstructed_alud.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/undraw_deconstructed_alud (1).png" alt=""><figcaption></figcaption></figure>
 
 Hopefully you've already found many interesting resources by reading and following along. In this section I will add further resources on the overall subjects we have covered for your reading pleasure.
 
