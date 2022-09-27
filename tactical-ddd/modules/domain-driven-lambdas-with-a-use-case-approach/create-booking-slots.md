@@ -2,9 +2,9 @@
 
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 6.png" alt=""><figcaption><p>Creating slots is a scheduled ("cronjob") function call.</p></figcaption></figure>
 
-The root use case must be the slot creation, because without it we don't have much of anything.
+The root use case must be the slot creation, because without it we don't have much of anything. It's fair to call this an "under the hood" type of use case.
 
-Slots need to be created into the main DynamoDB table.
+For it do something meaningful, Slots need to be created into the main DynamoDB table so these can be reproduced by the Display service.
 
 This particular solution is trivial, as we only need to allow it being called as a scheduled function. In our case we call it at 05:00 GMT every Monday through Friday:
 

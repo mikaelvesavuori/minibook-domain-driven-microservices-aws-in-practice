@@ -1,7 +1,5 @@
 # Reserve a slot
 
-TODO
-
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 2.png" alt=""><figcaption></figcaption></figure>
 
 Friday:
@@ -21,13 +19,58 @@ ReserveSlot:
 ```
 {% endcode %}
 
-The use case itself doesn't do much other than defer to the `ReservationService` to create the slots.
+TODO
+
+{% code title="code/Reservation/Display/serverless.yml" %}
+```yaml
+UpdateSlot:
+    handler: src/infrastructure/adapters/web/UpdateSlot.handler
+    description: Update a room slot projection
+    events:
+      # Can be activated if you need to do HTTP-based calls or testing
+      #- http:
+      #    method: POST
+      #    path: /update
+      - eventBridge:
+          eventBus: ${self:custom.aws.domainBusArn}
+          pattern:
+            detail-type:
+              # User events
+              - "Created"
+              - "Cancelled"
+              - "Reserved"
+              - "CheckedIn"
+              - "CheckedOut"
+              - "Unattended"
+              # System events
+              - "Closed"
+            source:
+              - prefix: ""
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:PutItem
+        Resource: ${self:custom.aws.databaseArn}
+```
+{% endcode %}
+
+TODO
 
 ```typescript
-export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<string[]> {
+export async function ReserveSlotUseCase(
+  dependencies: Dependencies,
+  slotInput: SlotInput
+): Promise<ReserveOutput> {
+  const securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
+
+  const { slotId, hostName } = slotInput;
+  const slotLoader = createSlotLoaderService(dependencies.repository);
+  const slotDto = await slotLoader.loadSlot(slotId);
+
+  const verificationCodeService = createVerificationCodeService(securityApiEndpoint);
   const reservationService = new ReservationService(dependencies);
 
-  return await reservationService.makeDailySlots();
+  return await reservationService.reserve(slotDto, hostName, verificationCodeService);
 }
 ```
 

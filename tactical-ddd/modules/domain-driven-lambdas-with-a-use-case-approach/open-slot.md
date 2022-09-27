@@ -1,6 +1,8 @@
 # Open slot
 
-Friday:
+TODO diagram
+
+TODO
 
 {% code title="code/Reservation/Reservation/serverless.yml" %}
 ```yaml
@@ -27,14 +29,16 @@ OpenSlot:
 ```
 {% endcode %}
 
-The use case itself doesn't do much other than defer to the `ReservationService` to create the slots.
+TODO
 
 ```typescript
-export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<string[]> {
-  const reservationService = new ReservationService(dependencies);
+export async function OpenSlotUseCase(dependencies: Dependencies, slotId: SlotId) {
+  const slotLoader = createSlotLoaderService(dependencies.repository);
+  const slotDto = await slotLoader.loadSlot(slotId);
 
-  return await reservationService.makeDailySlots();
+  const reservationService = new ReservationService(dependencies);
+  await reservationService.open(slotDto);
 }
 ```
 
-asdf
+TODO

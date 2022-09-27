@@ -1,7 +1,5 @@
 # Unattend no-shows
 
-TODO
-
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 7.png" alt=""><figcaption></figcaption></figure>
 
 Friday:
@@ -23,10 +21,12 @@ UnattendSlots:
 The use case itself doesn't do much other than defer to the `ReservationService` to create the slots.
 
 ```typescript
-export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<string[]> {
-  const reservationService = new ReservationService(dependencies);
+export async function UnattendSlotsUseCase(dependencies: Dependencies) {
+  const slotLoader = createSlotLoaderService(dependencies.repository);
+  const slots = await slotLoader.loadSlots();
 
-  return await reservationService.makeDailySlots();
+  const reservationService = new ReservationService(dependencies);
+  await reservationService.checkForUnattended(slots);
 }
 ```
 

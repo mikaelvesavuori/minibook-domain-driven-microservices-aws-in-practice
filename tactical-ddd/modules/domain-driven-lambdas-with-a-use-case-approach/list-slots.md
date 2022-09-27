@@ -1,33 +1,33 @@
 # List slots
 
-TODO
-
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 1.png" alt=""><figcaption></figcaption></figure>
 
-Friday:
+TODO
 
-{% code title="code/Reservation/Reservation/serverless.yml" %}
+{% code title="code/Reservation/Display/serverless.yml" %}
 ```yaml
-CreateSlots:
-    handler: src/infrastructure/adapters/web/CreateSlots.handler
-    description: Create new slots
+GetSlots:
+    handler: src/infrastructure/adapters/web/GetSlots.handler
+    description: Get room time slots
     events:
-      # You can activate this to allow for HTTP-based calls
       - http:
           method: GET
-          path: /CreateSlots
-      - schedule: cron(0 5 ? * MON-FRI *)
+          path: /slots
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:Query
+        Resource: ${self:custom.aws.databaseArn}
 ```
 {% endcode %}
 
-The use case itself doesn't do much other than defer to the `ReservationService` to create the slots.
+TODO
 
 ```typescript
-export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<string[]> {
-  const reservationService = new ReservationService(dependencies);
-
-  return await reservationService.makeDailySlots();
+export async function GetSlotsUseCase(dependencies: Dependencies) {
+  const { repository } = dependencies;
+  return await repository.getSlots();
 }
 ```
 
-asdf
+TODO
