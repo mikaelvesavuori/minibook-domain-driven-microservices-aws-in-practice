@@ -6,71 +6,45 @@ description: >-
 
 # References and resources
 
-## Something
+Hopefully you've already found many interesting resources by reading and following along. In this section I will add further resources on the overall subjects we have covered for your reading pleasure.
+
+## Clean Architecture
 
 * [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * [Comparison of Domain-Driven Design and Clean Architecture Concepts](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/)
-* [Identify microservice boundaries](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries)
-* [Big Picture Event Storming](https://medium.com/@chatuev/big-picture-event-storming-7a1fe18ffabb)
-* [Awesome Domain-Driven Design](https://github.com/heynickc/awesome-ddd)
-* [Awesome Software Architecture](https://awesome-architecture.com)
-* [The Bounded Context Canvas](https://github.com/ddd-crew/bounded-context-canvas)
-* [Designing Cloud Native Microservices on AWS (via DDD/EventStormingWorkshop)](https://github.com/aws-samples/designing-cloud-native-microservices-on-aws)
-* [EventBridge Storming — How to build state-of-the-art Event-Driven Serverless Architectures](https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee)
-* https://www.youtube.com/watch?app=desktop\&v=HWX6BbPV\_QA
-* [TypeScript DDD Demo Application](https://github.com/yerinadler/typescript-ddd-boilerplate)
-* [Using tactical DDD to design microservices](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd)
-* https://medium.com/nick-tune-tech-strategy-blog/domains-subdomain-problem-solution-space-in-ddd-clearly-defined-e0b49c7b586c
-* https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/
-* http://www.plainionist.net/Implementing-Clean-Architecture-UseCases/
-* https://khalilstemmler.com/articles/enterprise-typescript-nodejs/application-layer-use-cases/
-* https://github.com/mirzaakhena/gogen
-* https://bazaglia.com/clean-architecture-with-typescript-ddd-onion/
-* https://khalilstemmler.com/articles/typescript-domain-driven-design/chain-business-logic-domain-events/
-* [How to Design & Persist Aggregates - Domain-Driven Design w/ TypeScript](https://khalilstemmler.com/articles/typescript-domain-driven-design/aggregate-design-persistence/)
-* https://khalilstemmler.com/articles/typescript-domain-driven-design/updating-aggregates-in-domain-driven-design/
-* https://khalilstemmler.com/articles/domain-driven-design-intro/
-* https://viktorkugay.medium.com/strategic-domain-driven-design-and-enterprise-architecture-daefc346835f
-* https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation#domain-events-as-a-preferred-way-to-trigger-side-effects-across-multiple-aggregates-within-the-same-domain
-* https://martinfowler.com/eaaDev/DomainEvent.html
-* https://medium.com/swlh/the-domain-driven-designs-missing-pattern-319bf16dad91
-* https://www.jamesmichaelhickey.com/how-do-i-persist-ddd-aggregates/
-* https://khalilstemmler.com/articles/graphql/ddd/schema-design/
-* https://dgraph.io/blog/post/ddd-with-graphql/
-* [https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/seedwork-domain-model-base-classes-interfaces](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/seedwork-domain-model-base-classes-interfaces)
-* [https://github.com/Sairyss/domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon)
 
 ## DDD
 
-* [https://leejamesgilmore.medium.com/serverless-domain-driven-design-6da44e151cfa](https://leejamesgilmore.medium.com/serverless-domain-driven-design-6da44e151cfa)
-* https://www.gentlydownthe.stream/
-* https://vladikk.com/2018/01/26/revisiting-the-basics-of-ddd/
-* https://increment.com/software-architecture/primer-on-functional-architecture/
-* https://www.youtube.com/watch?app=desktop\&v=2JB1\_e5wZmU
-* https://mcode.it/blog/2021-02-26-du\_invariants/
-* https://www.youtube.com/watch?app=desktop\&v=7NAyn1DC420
-* [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
-* [https://www.jamesmichaelhickey.com/consistency-boundary/](https://www.jamesmichaelhickey.com/consistency-boundary/)
-* [https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee](https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee)
-* [https://medium.com/nick-tune-tech-strategy-blog/uncovering-hidden-business-rules-with-ddd-aggregates-67fb02abc4b](https://medium.com/nick-tune-tech-strategy-blog/uncovering-hidden-business-rules-with-ddd-aggregates-67fb02abc4b)
+* [Serverless Domain Driven Design](https://leejamesgilmore.medium.com/serverless-domain-driven-design-6da44e151cfa)
+* [Uncovering Hidden Business Rules with DDD Aggregates](https://medium.com/nick-tune-tech-strategy-blog/uncovering-hidden-business-rules-with-ddd-aggregates-67fb02abc4b)
+* [Revisiting the Basics of Domain-Driven Design](https://vladikk.com/2018/01/26/revisiting-the-basics-of-ddd/)
+* [Why Your Microservices Architecture Needs Aggregates](https://betterprogramming.pub/why-your-microservices-architecture-needs-aggregates-342b16dd9b6d)
+* [What Are Aggregates In Domain-Driven Design?](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
+* [DDD Aggregates: Consistency Boundary](https://www.jamesmichaelhickey.com/consistency-boundary/)
+* [Identify microservice boundaries](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/microservice-boundaries)
+* [Using tactical DDD to design microservices](https://docs.microsoft.com/en-us/azure/architecture/microservices/model/tactical-ddd)
+* [An Introduction to Domain Storytelling](https://youtu.be/d9k9Szkdprk)
 
-## Event modeling and event storming
+## EventStorming and event modeling
 
-* https://www.youtube.com/watch?v=mLXQIYEwK24
-* https://philippe.bourgau.net/detailed-agenda-for-a-ddd-design-level-event-storming-part-2/
-* https://xebia.com/blog/visualise-coupling-between-contexts-in-big-picture-eventstorming/
+* [Event Storming - Alberto Brandolini - DDD Europe 2019](https://www.youtube.com/watch?v=mLXQIYEwK24)
+* [Event Modeling: What is it?](https://eventmodeling.org/posts/what-is-event-modeling/)
+* [Big Picture Event Storming](https://medium.com/@chatuev/big-picture-event-storming-7a1fe18ffabb)
+* [Visualise coupling between contexts in Big Picture EventStorming](https://xebia.com/blog/visualise-coupling-between-contexts-in-big-picture-eventstorming/)
+* [Detailed agenda for a DDD Design-Level Event Storming - part 2](https://philippe.bourgau.net/detailed-agenda-for-a-ddd-design-level-event-storming-part-2/)
+* [EventBridge Storming — How to build state-of-the-art Event-Driven Serverless Architectures](https://medium.com/serverless-transformation/eventbridge-storming-how-to-build-state-of-the-art-event-driven-serverless-architectures-e07270d4dee)
 
-## Domain storytelling
+## Event-Driven Architecture
 
-* https://www.youtube.com/watch?v=d9k9Szkdprk
+* [Designing Cloud Native Microservices on AWS (via DDD/EventStormingWorkshop)](https://github.com/aws-samples/designing-cloud-native-microservices-on-aws)
+* [How to use EventBridge as a Cross-Account Event Backbone](https://dev.to/eoinsha/how-to-use-eventbridge-as-a-cross-account-event-backbone-5fik)
+* [Serverless Streamed Events](https://levelup.gitconnected.com/serverless-streamed-events-ada6ed9a9ecf)
+* [AWS re:Invent 2021 - Evolutionary AWS Lambda functions with hexagonal architecture \[REPEAT\]](https://youtu.be/kRFg6fkVChQ)
+* [Statefarm: Comparison of AWS Services for Event Driven Architecture](https://engineering.statefarm.com/blog/comparison-of-aws-services-for-event-driven-architecture/)
 
-## EDA
+## Resources
 
-* https://www.reactivesystems.eu/2022/06/09/event-collaboration-event-sourcing.html
-* https://eventmodeling.org/posts/what-is-event-modeling/
-* https://betterprogramming.pub/solutions-architect-tips-how-to-design-around-serverless-service-limits-15e12b5c4235
-* https://dev.to/eoinsha/how-to-use-eventbridge-as-a-cross-account-event-backbone-5fik
-* https://betterprogramming.pub/why-your-microservices-architecture-needs-aggregates-342b16dd9b6d
-* https://levelup.gitconnected.com/serverless-streamed-events-ada6ed9a9ecf
-* https://www.youtube.com/watch?app=desktop\&v=kRFg6fkVChQ\&feature=emb\_title
-* [https://engineering.statefarm.com/blog/comparison-of-aws-services-for-event-driven-architecture/](https://engineering.statefarm.com/blog/comparison-of-aws-services-for-event-driven-architecture/)
+* [Awesome Domain-Driven Design](https://github.com/heynickc/awesome-ddd)
+* [Awesome Software Architecture](https://awesome-architecture.com)
+* [The Bounded Context Canvas](https://github.com/ddd-crew/bounded-context-canvas)
+
