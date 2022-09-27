@@ -12,7 +12,7 @@ We live in a time of change when it comes to technology and cloud with ever high
 
 I will equate microservices roughly with serverless. Indeed they are not the same, but the scope of this chapter is also generally broader and more imprecise than what we will work on later.
 
-In this chapter I want to elevate some of the issues that I have seen in understanding and working with serverless, so that we can better understand how the contents of this minibook attempt to solve real issues for you.
+In this chapter I want to elevate some of the issues that I have seen in understanding and working with serverless, so that we can better understand how the contents of this book attempt to solve real issues for you.
 
 ## Not just back-end engineers work with servers these days
 
@@ -34,12 +34,12 @@ As anyone in the IT world can probably attest to, there is a pervasive skills sh
 
 There is an interplay between education, market, and industry in which certain technical developments may not be part of these trajectories. That means that in an ugly scenario we have something like the following to happen:
 
-* **2022**: New technology starts being used ("widely enough" for our example)
-* **2023**: Architecture group at Company puts the technology as part of its strategic vision; early recruiting for roles with the given tech skill starts; education curricula start updating with the technology
-* **2024**: Education starts
-* **2025-2027**: First batch of students learning the technology are graduating; technology is likely surpassed and/or replaced
+- **2022**: New technology starts being used ("widely enough" for our example)
+- **2023**: Architecture group at Company puts the technology as part of its strategic vision; early recruiting for roles with the given tech skill starts; education curricula start updating with the technology
+- **2024**: Education starts
+- **2025-2027**: First batch of students learning the technology are graduating; technology is likely surpassed and/or replaced
 
-The above is a made-up, dumb example, but it has some truth to it. Never expect the "traditional paths"  to be fast enough to actually cater for your tactical recruiting and skill building needs.
+The above is a made-up, dumb example, but it has some truth to it. Never expect the "traditional paths" to be fast enough to actually cater for your tactical recruiting and skill building needs.
 
 Serverless gives developers a vast extension of capabilities but good use of it assumes **solid core skills**, ergo: It's likely easier to train someone from scratch to deliver basic value with serverless tech (augmenting the person and abstracting parts of typical engineering) than with older takes on the same things, but the question remains "Is this a good engineer at the end of it?".
 
@@ -59,7 +59,7 @@ Expect to learn and that you need to support a team making the move to serverles
 
 ## Serverless functions "identity crisis"
 
-There is a minor identity crisis in the functions-as-a-service world that we can address in this minibook.
+There is a minor identity crisis in the functions-as-a-service world that we can address in this book.
 
 There are two typical styles:
 
@@ -68,9 +68,9 @@ There are two typical styles:
 
 Worst of all, it's not like it's being very clearly communicated, especially to newcomers. Why I find this detail important is that it points to a certain orthodoxy in the FaaS or microservice world. Are any of these familiar?
 
-* "Microservices don't share a database"
-* "Microservices are single purpose functions"
-* "Microservices are no longer than a screen of text"
+- "Microservices don't share a database"
+- "Microservices are single purpose functions"
+- "Microservices are no longer than a screen of text"
 
 {% hint style="warning" %}
 I've said and written all of those ideas or principles at some point and I am 100% sure you have seen most of those already if you have read up on this subject.

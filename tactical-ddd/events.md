@@ -20,7 +20,7 @@ At a high level, events and event-driven architecture means that we can—and sh
 
 See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation) for visual clarification:
 
-![Domain events to enforce consistency between multiple aggregates within the same domain.](../.gitbook/assets/domain-model-ordering-microservice.png)
+![Domain events to enforce consistency between multiple Aggregates within the same domain.](../.gitbook/assets/domain-model-ordering-microservice.png)
 
 ![Handling multiple actions per domain.](../.gitbook/assets/aggregate-domain-event-handlers.png)
 
@@ -29,28 +29,28 @@ As seen in the diagrams, a typical domain event could be `OrderStarted` if we ar
 {% hint style="info" %}
 See more at:
 
-* [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
-* [https://martinfowler.com/bliki/DomainDrivenDesign.html](https://martinfowler.com/bliki/DomainDrivenDesign.html)
-* [https://en.wikipedia.org/wiki/Domain-driven\_design](https://en.wikipedia.org/wiki/Domain-driven\_design)
-* [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
-* [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-* [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
-{% endhint %}
+- [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
+- [https://martinfowler.com/bliki/DomainDrivenDesign.html](https://martinfowler.com/bliki/DomainDrivenDesign.html)
+- [https://en.wikipedia.org/wiki/Domain-driven_design](https://en.wikipedia.org/wiki/Domain-driven_design)
+- [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
+- [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
+  {% endhint %}
 
 ## Naming, exactness and uniqueness of an event <a href="#naming-exactness-and-uniqueness-of-an-event" id="naming-exactness-and-uniqueness-of-an-event"></a>
 
 Domain events should translate into clearly named and partitioned and non-overlapping names. Names are, as implied, domain-based and must use nomenclature and language that people understand in the particular domain. Key goals for us include:
 
-* Removing **semantic ambiguity** (not understanding what something refers to)
-* Removing **terminological contention** (many contexts claiming the same terms)
-* Increasing and enforcing **domain language** (using the same terms that our domain stakeholders use and express)
+- Removing **semantic ambiguity** (not understanding what something refers to)
+- Removing **terminological contention** (many contexts claiming the same terms)
+- Increasing and enforcing **domain language** (using the same terms that our domain stakeholders use and express)
 
 Domain nomenclature is ultimately _only valid and meaningful within the domain_. Therefore, as a logical consequence, we should not spend time synchronizing nomenclature _across_ domains.
 
 **Bad name example**
 
-* `OrderUpdated`
-* `ErrorOccurred`
+- `OrderUpdated`
+- `ErrorOccurred`
 
 **Why?**
 
@@ -58,14 +58,14 @@ Too broad term; very inspecific; easy to see that others may make claims to the 
 
 **Good name examples**
 
-* `SalesOrderDeliveryFieldChanged`
-* `ManufacturingOrderDispatched`
+- `SalesOrderDeliveryFieldChanged`
+- `ManufacturingOrderDispatched`
 
 **Why?**
 
 Very clear demarcation on this being a “sales order” (not a _broad inspecific_ “order”); also communicates what exactly was changed.
 
-`SalesOrder` would be a better example than `OrderUpdated` also because (we can assume in this fictional case) our system (or aggregate) controls and enforces this particular type of order.
+`SalesOrder` would be a better example than `OrderUpdated` also because (we can assume in this fictional case) our system (or Aggregate) controls and enforces this particular type of order.
 
 Note that such work around naming is often more art than science.
 
@@ -75,14 +75,14 @@ It's wise to store a history of all events that have occurred. This makes it pos
 
 Personally I find full-on CQRS to be _a lot_ to deal with, and modern cloud architectures can mitigate and improve some of the conditions in which original CQRS evolved from. I would however highly advise to:
 
-* Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
-* Use an event store store to persist all events when you emit Domain Events.
+- Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
+- Use an event store store to persist all events when you emit Domain Events.
 
 The solution used here is manual and is done completely in code, on behalf of the Domain Service (that stands in for the Aggregate orchestration), doing this type of transactional dance (in the case of the Reservation solution)
 
-* Update the Slot table with the updated item
-* Update the Slot table with the event
-* Emit the Domain Event
+- Update the Slot table with the updated item
+- Update the Slot table with the event
+- Emit the Domain Event
 
 {% hint style="info" %}
 AWS natives will maybe point to a more elegant solution being using DynamoDB streams as an outbox pattern, which could definitely work. I am 50/50 on which I like the most, because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
@@ -99,12 +99,12 @@ This is left to you as an optional exercise should you want to do this.
 {% hint style="info" %}
 See the following for more information:
 
-* [https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog](https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog)
-* [https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/](https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/)
-* [https://www.youtube.com/watch?v=I6cXfiMkh-U](https://www.youtube.com/watch?v=I6cXfiMkh-U)
-* [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename)
-* [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
-{% endhint %}
+- [https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog](https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog)
+- [https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/](https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/)
+- [https://www.youtube.com/watch?v=I6cXfiMkh-U](https://www.youtube.com/watch?v=I6cXfiMkh-U)
+- [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename)
+- [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
+  {% endhint %}
 
 ## Emitting events
 
@@ -116,11 +116,11 @@ To work with Domain Events in a controlled manner we'll however need more than j
 
 Our project uses:
 
-* The `SlotCommand` output from the Slot Entity, which dictates the majority of actual content coming from changes.
-* `EventEmitter` abstraction that does the infrastructural work. This has both a "local/mock" and an EventBridge implementation.
-* A `DomainEventPublisher` Application Service that wraps the event emitter (which will emit two events—one for actual use and one for the analytics service—and log out the event).
-* An `EmittableEvent` abstraction class that handles all the logic of producing the right shape and metadata and other such laborious things.
-* A range of Events (one for each Domain Event) that extends the `EmittableEvent`.
+- The `SlotCommand` output from the Slot Entity, which dictates the majority of actual content coming from changes.
+- `EventEmitter` abstraction that does the infrastructural work. This has both a "local/mock" and an EventBridge implementation.
+- A `DomainEventPublisher` Application Service that wraps the event emitter (which will emit two events—one for actual use and one for the analytics service—and log out the event).
+- An `EmittableEvent` abstraction class that handles all the logic of producing the right shape and metadata and other such laborious things.
+- A range of Events (one for each Domain Event) that extends the `EmittableEvent`.
 
 {% hint style="success" %}
 A Domain Event is therefore always constructed from a `SlotCommand`. The `DomainEventPublisher` is the Application Service that is injected into `ReservationService`.
@@ -129,19 +129,26 @@ A Domain Event is therefore always constructed from a `SlotCommand`. The `Domain
 ### The event emitter
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
+
 ```typescript
-import { EventBridgeClient, PutEventsCommand } from '@aws-sdk/client-eventbridge';
+import {
+  EventBridgeClient,
+  PutEventsCommand,
+} from "@aws-sdk/client-eventbridge";
 
-import { EventBridgeEvent } from '../../interfaces/Event';
-import { EventEmitter } from '../../interfaces/EventEmitter';
+import { EventBridgeEvent } from "../../interfaces/Event";
+import { EventEmitter } from "../../interfaces/EventEmitter";
 
-import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
+import { MissingEnvVarsError } from "../../application/errors/MissingEnvVarsError";
 
 /**
  * @description Factory function to return freshly minted EventBridge instance.
  */
 export const createEventBridgeEmitter = (region: string) => {
-  if (!region) throw new MissingEnvVarsError(JSON.stringify([{ key: 'REGION', value: region }]));
+  if (!region)
+    throw new MissingEnvVarsError(
+      JSON.stringify([{ key: "REGION", value: region }])
+    );
 
   return new EventBridgeEmitter(region);
 };
@@ -164,10 +171,11 @@ class EventBridgeEmitter implements EventEmitter {
    */
   public async emit(event: EventBridgeEvent): Promise<void> {
     const command = new PutEventsCommand({ Entries: [event] });
-    if (process.env.NODE_ENV !== 'test') await this.eventBridge.send(command);
+    if (process.env.NODE_ENV !== "test") await this.eventBridge.send(command);
   }
 }
 ```
+
 {% endcode %}
 
 We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons, so that we can use a local mock rather than the full-blown EventBridge client.
@@ -175,30 +183,35 @@ We see that there is a basic Factory there, and then the `EventBridgeEmitter` ju
 ### Domain event publisher service
 
 {% code title="code/Reservation/Reservation/src/application/services/DomainEventPublisherService.ts" lineNumbers="true" %}
-```typescript
-import { MikroLog } from 'mikrolog';
 
-import { Event } from '../../interfaces/Event';
+```typescript
+import { MikroLog } from "mikrolog";
+
+import { Event } from "../../interfaces/Event";
 import {
   DomainEventPublisherDependencies,
-  DomainEventPublisherService
-} from '../../interfaces/DomainEventPublisherService';
-import { EventEmitter } from '../../interfaces/EventEmitter';
+  DomainEventPublisherService,
+} from "../../interfaces/DomainEventPublisherService";
+import { EventEmitter } from "../../interfaces/EventEmitter";
 
-import { MissingDependenciesError } from '../errors/MissingDependenciesError';
-import { MissingEnvVarsError } from '../errors/MissingEnvVarsError';
+import { MissingDependenciesError } from "../errors/MissingDependenciesError";
+import { MissingEnvVarsError } from "../errors/MissingEnvVarsError";
 
 /**
  * @description Factory function to set up the `DomainEventPublisherService`.
  */
-export function createDomainEventPublisherService(dependencies: DomainEventPublisherDependencies) {
+export function createDomainEventPublisherService(
+  dependencies: DomainEventPublisherDependencies
+) {
   return new ConcreteDomainEventPublisherService(dependencies);
 }
 
 /**
  * @description Service to publish domain events.
  */
-class ConcreteDomainEventPublisherService implements DomainEventPublisherService {
+class ConcreteDomainEventPublisherService
+  implements DomainEventPublisherService
+{
   private readonly eventEmitter: EventEmitter;
   private readonly analyticsBusName: string;
   private readonly domainBusName: string;
@@ -211,14 +224,14 @@ class ConcreteDomainEventPublisherService implements DomainEventPublisherService
     this.eventEmitter = eventEmitter;
     this.logger = MikroLog.start();
 
-    this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
-    this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
+    this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || "";
+    this.domainBusName = process.env.DOMAIN_BUS_NAME || "";
 
     if (!this.analyticsBusName || !this.domainBusName)
       throw new MissingEnvVarsError(
         JSON.stringify([
-          { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
-          { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
+          { key: "DOMAIN_BUS_NAME", value: process.env.DOMAIN_BUS_NAME },
+          { key: "ANALYTICS_BUS_NAME", value: process.env.ANALYTICS_BUS_NAME },
         ])
       );
   }
@@ -233,22 +246,26 @@ class ConcreteDomainEventPublisherService implements DomainEventPublisherService
     await this.eventEmitter.emit(event.get());
     this.logger.log(`Emitted '${source}' to '${this.domainBusName}'`);
 
-    await this.eventEmitter.emit(event.getAnalyticsVariant(this.analyticsBusName));
+    await this.eventEmitter.emit(
+      event.getAnalyticsVariant(this.analyticsBusName)
+    );
     this.logger.log(`Emitted '${source}' to '${this.analyticsBusName}'`);
   }
 }
 ```
+
 {% endcode %}
 
 As written previously, this one adds a layer of extra spice with the multiple emitted events and logging. Other than that it's not much else under the hood. At least it makes it much easier and one step more removed from the real infrastructure.
 
 ## The events
 
-The `EmittableEvent` value object might look long and daunting, but it's actually very simple. The  situation we have to deal with is that the event shape is rather deep meaning it does take some energy to construct it.
+The `EmittableEvent` Value Object might look long and daunting, but it's actually very simple. The situation we have to deal with is that the event shape is rather deep meaning it does take some energy to construct it.
 
 {% code title="code/Reservation/SlotReservation/src/domain/valueObjects/Event.ts" lineNumbers="true" %}
+
 ```typescript
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 
 import {
   EventInput,
@@ -256,15 +273,15 @@ import {
   EventBridgeEvent,
   EventDTO,
   MakeEventInput,
-  MetadataInput
-} from '../../interfaces/Event';
-import { Metadata, MetadataConfigInput } from '../../interfaces/Metadata';
+  MetadataInput,
+} from "../../interfaces/Event";
+import { Metadata, MetadataConfigInput } from "../../interfaces/Metadata";
 
-import { getCorrelationId } from '../../infrastructure/utils/userMetadata';
+import { getCorrelationId } from "../../infrastructure/utils/userMetadata";
 
-import { MissingMetadataFieldsError } from '../../application/errors/MissingMetadataFieldsError';
-import { NoMatchInEventCatalogError } from '../../application/errors/NoMatchInEventCatalogError';
-import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
+import { MissingMetadataFieldsError } from "../../application/errors/MissingMetadataFieldsError";
+import { NoMatchInEventCatalogError } from "../../application/errors/NoMatchInEventCatalogError";
+import { MissingEnvVarsError } from "../../application/errors/MissingEnvVarsError";
 
 /**
  * @description Vend a "Event Carried State Transfer" type event with state
@@ -277,12 +294,14 @@ abstract class EmittableEvent {
 
   constructor(eventInput: EventInput) {
     const { event, metadataConfig } = eventInput;
-    this.eventBusName = process.env.DOMAIN_BUS_NAME || '';
+    this.eventBusName = process.env.DOMAIN_BUS_NAME || "";
     this.metadataConfig = metadataConfig;
 
     if (!this.eventBusName)
       throw new MissingEnvVarsError(
-        JSON.stringify([{ key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME }])
+        JSON.stringify([
+          { key: "DOMAIN_BUS_NAME", value: process.env.DOMAIN_BUS_NAME },
+        ])
       );
 
     const eventDTO = this.toDto(event);
@@ -309,15 +328,15 @@ abstract class EmittableEvent {
         id: randomUUID().toString(),
         correlationId: getCorrelationId(),
         timestamp: new Date(timeNow).toISOString(),
-        timestampEpoch: `${timeNow}`
+        timestampEpoch: `${timeNow}`,
       },
       data: {
         event: eventName,
         slotId,
         slotStatus,
-        hostName: eventInput.hostName || '',
-        startTime: eventInput.startTime || ''
-      }
+        hostName: eventInput.hostName || "",
+        startTime: eventInput.startTime || "",
+      },
     };
   }
 
@@ -331,14 +350,14 @@ abstract class EmittableEvent {
 
     const detail: EventDetail = {
       metadata: this.produceMetadata({ version, id, correlationId }),
-      data
+      data,
     };
 
     return {
       EventBusName: eventBusName,
       Source: source,
       DetailType: detailType,
-      Detail: JSON.stringify(detail)
+      Detail: JSON.stringify(detail),
     };
   }
 
@@ -378,7 +397,7 @@ abstract class EmittableEvent {
       region: this.metadataConfig.region,
       jurisdiction: this.metadataConfig.jurisdiction,
       tags: this.metadataConfig.tags,
-      dataSensitivity: this.metadataConfig.dataSensitivity
+      dataSensitivity: this.metadataConfig.dataSensitivity,
     };
   }
 
@@ -389,23 +408,23 @@ abstract class EmittableEvent {
   private matchDetailType(eventName: string) {
     switch (eventName) {
       // User interaction events
-      case 'CREATED':
-        return 'Created';
-      case 'CANCELLED':
-        return 'Cancelled';
-      case 'RESERVED':
-        return 'Reserved';
-      case 'CHECKED_IN':
-        return 'CheckedIn';
-      case 'CHECKED_OUT':
-        return 'CheckedOut';
-      case 'UNATTENDED':
-        return 'Unattended';
+      case "CREATED":
+        return "Created";
+      case "CANCELLED":
+        return "Cancelled";
+      case "RESERVED":
+        return "Reserved";
+      case "CHECKED_IN":
+        return "CheckedIn";
+      case "CHECKED_OUT":
+        return "CheckedOut";
+      case "UNATTENDED":
+        return "Unattended";
       // System interaction events
-      case 'OPENED':
-        return 'Opened';
-      case 'CLOSED':
-        return 'Closed';
+      case "OPENED":
+        return "Opened";
+      case "CLOSED":
+        return "Closed";
     }
 
     throw new NoMatchInEventCatalogError(eventName);
@@ -423,14 +442,16 @@ abstract class EmittableEvent {
    * Use "Notification" type event without state.
    */
   public getAnalyticsVariant(analyticsBusName: string): EventBridgeEvent {
-    const analyticsEvent: EventBridgeEvent = JSON.parse(JSON.stringify(this.get()));
+    const analyticsEvent: EventBridgeEvent = JSON.parse(
+      JSON.stringify(this.get())
+    );
     const detail = JSON.parse(analyticsEvent.Detail);
 
-    analyticsEvent['EventBusName'] = analyticsBusName;
-    detail['metadata']['id'] = randomUUID().toString();
-    if (detail.data?.slotStatus) delete detail['data']['slotStatus'];
+    analyticsEvent["EventBusName"] = analyticsBusName;
+    detail["metadata"]["id"] = randomUUID().toString();
+    if (detail.data?.slotStatus) delete detail["data"]["slotStatus"];
 
-    analyticsEvent['Detail'] = JSON.stringify(detail);
+    analyticsEvent["Detail"] = JSON.stringify(detail);
 
     return analyticsEvent;
   }
@@ -492,6 +513,7 @@ export class ClosedEvent extends EmittableEvent {
   //
 }
 ```
+
 {% endcode %}
 
 {% hint style="warning" %}
@@ -522,9 +544,9 @@ In order to use the class (remember, data _and_ behavior!) rather than a dumb pl
 
 Just as the regular `get()` method, the `getAnalyticsVariant()` method returns a representation of the event. The reasons we want to have this as a specific method is:
 
-* The analytics event bus is not the same as the regular one
-* We want to redact the (potentially sensitive) ID
-* The analytics context does not need the slot status
+- The analytics event bus is not the same as the regular one
+- We want to redact the (potentially sensitive) ID
+- The analytics context does not need the slot status
 
 ### Extended classes
 

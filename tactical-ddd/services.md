@@ -11,9 +11,9 @@ description: >-
 {% hint style="success" %}
 **TL;DR**
 
-**Services** do things that don't quite fit in entities or other objects. They are completely stateless.
+**Services** do things that don't quite fit in Entities or other objects. They are completely stateless.
 
-**Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of **domain service** usage is when you need to orchestrate entities or aggregates, especially as in our example code we don't have higher-level aggregates that can hold such logic.
+**Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of **domain service** usage is when you need to orchestrate Entities or Aggregates, especially as in our example code we don't have higher-level Aggregates that can hold such logic.
 {% endhint %}
 
 Services: An overloaded and problematic term. Still, we need them. What did Eric Evans himself actually think of them?
@@ -22,7 +22,7 @@ Services: An overloaded and problematic term. Still, we need them. What did Eric
 >
 > —Source: Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_ (p. 106)
 
-While we haven't gotten to entities and aggregates yet, it's safe to say that **services** play in the next-highest league, metaphorically speaking.
+While we haven't gotten to Entities and Aggregates yet, it's safe to say that **Services** play in the next-highest league, metaphorically speaking.
 
 ## Services in the DDD hierarchy
 
@@ -30,15 +30,15 @@ In many projects you might see services being used very broadly and liberally. T
 
 Using a more object-oriented approach we can start enforcing a hierarchy like the below:
 
-* Aggregate Root (if needed)
-* Aggregate (if needed)
-* Entity (if needed)
-* Domain Service
-* Application Service
-* Value Object
+- Aggregate Root (if needed)
+- Aggregate (if needed)
+- Entity (if needed)
+- Domain Service
+- Application Service
+- Value Object
 
 {% hint style="info" %}
-Some of the solutions in the example code are actually basic enough that they need no entity or higher-level constructs to deal with them (not even services!).
+Some of the solutions in the example code are actually basic enough that they need no Entity or higher-level constructs to deal with them (not even services!).
 
 As said in the introduction, DDD is sometimes overkill.
 {% endhint %}
@@ -59,12 +59,12 @@ The intuitive difference should be clear, but I've found that it may take a refa
 
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
-Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain entities from external or internal (repository) soruces; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity). (See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/))
+Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain Entities from external or internal (Repository) sources; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity). (See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/))
 
 The way I come to accept both existing is like this:
 
-* The use case is strictly equivalent to the first testable complete unit of code. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
-* You can still use application services within the use case as these operate on the same overall conceptual application level.
+- The use case is strictly equivalent to the first testable complete unit of code. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
+- You can still use application services within the use case as these operate on the same overall conceptual application level.
 
 The main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have done in other projects, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
 
@@ -73,6 +73,7 @@ The main takeaway is that we understand that use cases and application services 
 The following is a concrete version of the `VerificationCodeService` used in the Reservation solution.
 
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
+
 ```typescript
 /**
  * @description The `OnlineVerificationCodeService` calls an online service
@@ -92,19 +93,21 @@ class OnlineVerificationCodeService implements VerificationCodeService {
   async getVerificationCode(slotId: string): Promise<string> {
     const verificationCode = await fetch(this.securityApiEndpoint, {
       body: JSON.stringify({
-        slotId: slotId
+        slotId: slotId,
       }),
-      method: 'POST'
+      method: "POST",
     }).then((res: Response) => {
       if (res?.status >= 200 && res?.status < 300) return res.json();
     });
 
-    if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
+    if (!verificationCode)
+      throw new FailedGettingVerificationCodeError("Bad status received!");
 
     return verificationCode;
   }
 }
 ```
+
 {% endcode %}
 
 It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this as a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
@@ -113,16 +116,17 @@ It has a single public method, `getVerificationCode()`. Using it, one can call a
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Domain Services reside in the Domain layer.</p></figcaption></figure>
 
-Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple aggregates for example, otherwise keep it simple and let it be part of the aggregate itself.
+Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple Aggregates for example, otherwise keep it simple and let it be part of the Aggregate itself.
 
 Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.&#x20;
 
 {% code title="code/Reservation/SlotReservation/src/domain/services/ReservationService.ts" lineNumbers="true" %}
+
 ```typescript
-import { MikroLog } from 'mikrolog';
+import { MikroLog } from "mikrolog";
 
 // Aggregates/Entities
-import { Slot } from '../entities/Slot';
+import { Slot } from "../entities/Slot";
 
 // Events
 import {
@@ -133,24 +137,24 @@ import {
   CreatedEvent,
   OpenedEvent,
   ReservedEvent,
-  UnattendedEvent
-} from '../events/Event';
+  UnattendedEvent,
+} from "../events/Event";
 
 // Value objects
-import { TimeSlot } from '../valueObjects/TimeSlot';
+import { TimeSlot } from "../valueObjects/TimeSlot";
 
 // Interfaces
-import { SlotDTO, Status } from '../../interfaces/Slot';
-import { Repository } from '../../interfaces/Repository';
-import { Dependencies } from '../../interfaces/Dependencies';
-import { ReserveOutput } from '../../interfaces/ReserveOutput';
-import { MetadataConfigInput } from '../../interfaces/Metadata';
-import { Event } from '../../interfaces/Event';
-import { DomainEventPublisherService } from '../../interfaces/DomainEventPublisherService';
-import { VerificationCodeService } from '../../interfaces/VerificationCodeService';
+import { SlotDTO, Status } from "../../interfaces/Slot";
+import { Repository } from "../../interfaces/Repository";
+import { Dependencies } from "../../interfaces/Dependencies";
+import { ReserveOutput } from "../../interfaces/ReserveOutput";
+import { MetadataConfigInput } from "../../interfaces/Metadata";
+import { Event } from "../../interfaces/Event";
+import { DomainEventPublisherService } from "../../interfaces/DomainEventPublisherService";
+import { VerificationCodeService } from "../../interfaces/VerificationCodeService";
 
 // Errors
-import { MissingDependenciesError } from '../../application/errors/MissingDependenciesError';
+import { MissingDependenciesError } from "../../application/errors/MissingDependenciesError";
 
 /**
  * @description Acts as the aggregate for Slot reservations (representing rooms and
@@ -164,7 +168,8 @@ export class ReservationService {
   private readonly logger: MikroLog;
 
   constructor(dependencies: Dependencies) {
-    if (!dependencies.repository || !dependencies.domainEventPublisher) throw new MissingDependenciesError();
+    if (!dependencies.repository || !dependencies.domainEventPublisher)
+      throw new MissingDependenciesError();
     const { repository, domainEventPublisher, metadataConfig } = dependencies;
 
     this.repository = repository;
@@ -207,13 +212,13 @@ export class ReservationService {
 
       const createdEvent = new CreatedEvent({
         event: {
-          eventName: 'CREATED', // Transient state
+          eventName: "CREATED", // Transient state
           slotId,
           slotStatus,
           hostName,
-          startTime: timeSlot.startTime
+          startTime: timeSlot.startTime,
         },
-        metadataConfig: this.metadataConfig
+        metadataConfig: this.metadataConfig,
       });
 
       await this.transact(slot.toDto(), createdEvent, slotStatus);
@@ -295,9 +300,10 @@ export class ReservationService {
   }
 }
 ```
+
 {% endcode %}
 
-There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God\_object) either, thank...God?
+There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God_object) either, thank...God?
 
 First of all, the service, even just by glancing the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.&#x20;
 
@@ -363,7 +369,7 @@ public async cancel(slotDto: SlotDTO): Promise<void> {
 }
 ```
 
-The method takes in the Data Transfer Object representation of the `Slot`. We reconstitute it by creating an actual `Slot` entity object from the DTO and then use the slot's own `cancel()` method, in turn encapsulating the relevant business and validation logic.
+The method takes in the Data Transfer Object representation of the `Slot`. We reconstitute it by creating an actual `Slot` Entity object from the DTO and then use the slot's own `cancel()` method, in turn encapsulating the relevant business and validation logic.
 
 Given that nothing broke we can construct the `CancelledEvent` with the local metadata configuration and the event object we receive from the `Slot` itself.
 

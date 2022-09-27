@@ -11,6 +11,7 @@ A bit of a misunderstood gold nugget, which gets a more nuanced use in a DDD con
 Example:
 
 {% code title="code/Reservation/SlotReservation/src/interfaces/Slot.ts" lineNumbers="true" %}
+
 ```typescript
 /**
  * @description Represents the valid and complete data of a
@@ -43,6 +44,7 @@ export interface SlotDTO {
   updatedAt: string;
 }
 ```
+
 {% endcode %}
 
 What we don't want with the DTO is to make it other than a basic transferable representation.
@@ -53,9 +55,9 @@ Working in a class-oriented fashion, we want to pass around classes representing
 
 It might be worthwhile to consider some of the obvious problems of POJOs (Plain Old Javascript Objects; or POCOs or whatever that pertains to your language). At this point you are well-aware that what we are working towards are _domain driven microservices_. Contrary to being domain driven is being _anemic_. Wikipedia has this terse and good description:
 
-> The **Anemic domain model** is a programming [Anti-pattern](https://en.wikipedia.org/wiki/Anti-pattern) where the [domain objects](https://en.wikipedia.org/wiki/Domain\_objects) contain little or no [business logic](https://en.wikipedia.org/wiki/Business\_logic) like validations, calculations, rules, and so forth. The business logic is thus baked into the architecture of the program itself, making refactoring and maintenance more difficult and time-consuming.
+> The **Anemic domain model** is a programming [Anti-pattern](https://en.wikipedia.org/wiki/Anti-pattern) where the [domain objects](https://en.wikipedia.org/wiki/Domain_objects) contain little or no [business logic](https://en.wikipedia.org/wiki/Business_logic) like validations, calculations, rules, and so forth. The business logic is thus baked into the architecture of the program itself, making refactoring and maintenance more difficult and time-consuming.
 >
-> — Source: [https://en.wikipedia.org/wiki/Anemic\_domain\_model](https://en.wikipedia.org/wiki/Anemic\_domain\_model)
+> — Source: [https://en.wikipedia.org/wiki/Anemic_domain_model](https://en.wikipedia.org/wiki/Anemic_domain_model)
 
 Let's look at that a bit more in the words of Martin Fowler:
 
@@ -77,15 +79,15 @@ TODO
 
 On the blog [The Domain Driven Design we find a set of useful tips](https://thedomaindrivendesign.io/anemic-model/):
 
-> * Use private setters. If your properties are defined by the Client directly you will lose the chance to use Domain Events and you will have to validate your Entities by external methods.
-> * Always validate the status of your entities, your Entities must self validate.
-> * Avoid constructors without parameters. Certainly your objects will need some initialization data to maintain a valid state.
-> * Think long before you create a Domain Services, they are used as real Silver Bullets by the developers, but end up being the biggest causes of the _Anemic Model_.
-> * Be careful with ORM, they are responsible for creating Domain Objects automatically, producing real containers of public setters and public getters, which leads to an _Anemic Model_.
+> - Use private setters. If your properties are defined by the Client directly you will lose the chance to use Domain Events and you will have to validate your Entities by external methods.
+> - Always validate the status of your entities, your Entities must self validate.
+> - Avoid constructors without parameters. Certainly your objects will need some initialization data to maintain a valid state.
+> - Think long before you create a Domain Services, they are used as real Silver Bullets by the developers, but end up being the biggest causes of the _Anemic Model_.
+> - Be careful with ORM, they are responsible for creating Domain Objects automatically, producing real containers of public setters and public getters, which leads to an _Anemic Model_.
 
-Let's not steal the thunder from the later sections on entities, but maybe you are seeing a pattern here: Really do avoid objects that are mutable and that separate data from behavior, at least internally and logically within your own system or service.
+Let's not steal the thunder from the later sections on Entities, but maybe you are seeing a pattern here: Really do avoid objects that are mutable and that separate data from behavior, at least internally and logically within your own system or service.
 
-Prefer passing instances of classes of entities or value objects rather than DTOs. DTOs do make it easier to do "dumb objects" and are much more portable (the portability is the reason we want them in the first place), especially if you are integrating, say with APIs, but then you lose the behavior. What is the driving need: The data or the behavior? Choose wisely.
+Prefer passing instances of classes of Entities or Value Objects rather than DTOs. DTOs do make it easier to do "dumb objects" and are much more portable (the portability is the reason we want them in the first place), especially if you are integrating, say with APIs, but then you lose the behavior. What is the driving need: The data or the behavior? Choose wisely.
 
 ### In closing
 

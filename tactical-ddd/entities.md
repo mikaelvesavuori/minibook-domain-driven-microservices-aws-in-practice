@@ -45,8 +45,8 @@ In the world of traditional back-end engineering you might find something like t
 
 It's not uncommon that we for example:
 
-* Go with a data synchronization approach, where we duplicate data on our end (this may even be two-way but let's skip that idea for now). While it's easier today in the public cloud to set these things up, many times you'll still face the consequences of having to deal with data decoupled from the business logic (behavior). Further, you may get a problematic mix of eventual and strong consistency which could break transactional flows.
-* Decide to only read back data, making integration easier, but the resiliency and performance worse. An issue here is that at any point where a feature is needed that can update data, you will have a hard time getting that solution to be scalable, secure, and logical as the landscape is now polluted with multiple writers of the same leading data.
+- Go with a data synchronization approach, where we duplicate data on our end (this may even be two-way but let's skip that idea for now). While it's easier today in the public cloud to set these things up, many times you'll still face the consequences of having to deal with data decoupled from the business logic (behavior). Further, you may get a problematic mix of eventual and strong consistency which could break transactional flows.
+- Decide to only read back data, making integration easier, but the resiliency and performance worse. An issue here is that at any point where a feature is needed that can update data, you will have a hard time getting that solution to be scalable, secure, and logical as the landscape is now polluted with multiple writers of the same leading data.
 
 Either case will be poor in different ways.
 
@@ -82,7 +82,7 @@ Compared to their anemic brethren, rich domain models (typically Entities and Ag
 
 **A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`), rather than a semantic abstraction (say `BookProcessManagerFactory`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()` to correlate with the actual business terms. As we've seen many times in this book, we want this to explain 1:1 in our common or ubiquitous language what we are doing.
 
-In the below diagram (note that the use case isn't the same as in the last diagram!) you can see how a single `Slot` entity (since it's the only one, it gets "promoted" to Aggregate Root; more on this in the next section) is the surface that contains all the data and behavior required to create the slot for a room reservation. It also handles the `TimeSlot` Value Object as part of the overall Slot. Any changes to the Slot gets pushed as a Domain Event, so that we can inform other Aggregates or the rest of the technical landscape of ongoing changes.
+In the below diagram (note that the use case isn't the same as in the last diagram!) you can see how a single `Slot` Entity (since it's the only one, it gets "promoted" to Aggregate Root; more on this in the next section) is the surface that contains all the data and behavior required to create the slot for a room reservation. It also handles the `TimeSlot` Value Object as part of the overall Slot. Any changes to the Slot gets pushed as a Domain Event, so that we can inform other Aggregates or the rest of the technical landscape of ongoing changes.
 
 <figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>Diagram for how user interactions to the Slot ensure the complete transactional boundary for any data it holds.</p></figcaption></figure>
 
@@ -94,12 +94,12 @@ Invariants are "consistency rules that must be maintained whenever data changes"
 
 To actually be to have an always-valid domain model, what would you need to keep in mind?
 
-> * Your domain model should be valid at all times.
-> * For that, do the following:
->   * Make the boundary of your domain model explicit.
->   * Validate all external requests before they cross that boundary.
-> * Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
-> * You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
+> - Your domain model should be valid at all times.
+> - For that, do the following:
+>   - Make the boundary of your domain model explicit.
+>   - Validate all external requests before they cross that boundary.
+> - Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
+> - You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
 >
 > — Source: [https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/](https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/)
 
@@ -113,28 +113,29 @@ In plain English, by having moved all the actual domain logic and validations an
 
 Before we go to the code, let's revisit some highlights.
 
-* Entities are objects that have unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
-* Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
-* Entities typically use verbs to express its commands—its public interface.
-* We use the ubiquitous language to name these actions and anything else to do with the Entity.
-* Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
+- Entities are objects that have unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
+- Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
+- Entities typically use verbs to express its commands—its public interface.
+- We use the ubiquitous language to name these actions and anything else to do with the Entity.
+- Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
 
 ## The Slot entity
 
 Be ready for one of our biggest and most important classes, the `Slot`.
 
 {% code title="code/Reservation/SlotReservation/src/domain/entities/Slot.ts" lineNumbers="true" %}
+
 ````typescript
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 
-import { SlotCreateInput, SlotDTO, Status } from '../../interfaces/Slot';
-import { TimeSlotDTO } from '../../interfaces/TimeSlot';
-import { MakeEventInput } from '../../interfaces/Event';
+import { SlotCreateInput, SlotDTO, Status } from "../../interfaces/Slot";
+import { TimeSlotDTO } from "../../interfaces/TimeSlot";
+import { MakeEventInput } from "../../interfaces/Event";
 
-import { CheckInConditionsNotMetError } from '../../application/errors/CheckInConditionsNotMetError';
-import { CheckOutConditionsNotMetError } from '../../application/errors/CheckOutConditionsNotMetError';
-import { CancellationConditionsNotMetError } from '../../application/errors/CancellationConditionsNotMetError';
-import { ReservationConditionsNotMetError } from '../../application/errors/ReservationConditionsNotMetError';
+import { CheckInConditionsNotMetError } from "../../application/errors/CheckInConditionsNotMetError";
+import { CheckOutConditionsNotMetError } from "../../application/errors/CheckOutConditionsNotMetError";
+import { CancellationConditionsNotMetError } from "../../application/errors/CancellationConditionsNotMetError";
+import { ReservationConditionsNotMetError } from "../../application/errors/ReservationConditionsNotMetError";
 
 /**
  * @description The `Slot` entity handles the lifecycle
@@ -164,15 +165,15 @@ export class Slot {
   private updatedAt: string;
 
   constructor(input?: SlotCreateInput) {
-    this.slotId = '';
-    this.hostName = '';
+    this.slotId = "";
+    this.hostName = "";
     this.timeSlot = {
-      startTime: '',
-      endTime: ''
+      startTime: "",
+      endTime: "",
     };
-    this.slotStatus = 'OPEN';
-    this.createdAt = '';
-    this.updatedAt = '';
+    this.slotStatus = "OPEN";
+    this.createdAt = "";
+    this.updatedAt = "";
 
     if (input) this.make(input);
   }
@@ -185,12 +186,12 @@ export class Slot {
     const currentTime = this.getCurrentTime();
 
     this.slotId = randomUUID().toString();
-    this.hostName = '';
+    this.hostName = "";
     this.timeSlot = {
       startTime,
-      endTime
+      endTime,
     };
-    this.slotStatus = 'OPEN';
+    this.slotStatus = "OPEN";
     this.createdAt = currentTime;
     this.updatedAt = currentTime;
 
@@ -201,12 +202,12 @@ export class Slot {
    * @description Reconstitute a Slot from a Data Transfer Object.
    */
   public fromDto(input: SlotDTO): Slot {
-    this.slotId = input['slotId'];
-    this.hostName = input['hostName'];
-    this.timeSlot = input['timeSlot'];
-    this.slotStatus = input['slotStatus'];
-    this.createdAt = input['createdAt'];
-    this.updatedAt = input['updatedAt'];
+    this.slotId = input["slotId"];
+    this.hostName = input["hostName"];
+    this.timeSlot = input["timeSlot"];
+    this.slotStatus = input["slotStatus"];
+    this.createdAt = input["createdAt"];
+    this.updatedAt = input["updatedAt"];
 
     return this;
   }
@@ -221,7 +222,7 @@ export class Slot {
       timeSlot: this.timeSlot,
       slotStatus: this.slotStatus,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
     };
   }
 
@@ -229,7 +230,7 @@ export class Slot {
    * @description Remove host name from data.
    */
   public removeHostName(): void {
-    this.hostName = '';
+    this.hostName = "";
   }
 
   /**
@@ -269,7 +270,11 @@ export class Slot {
    * in which case we want to open the slot again.
    */
   public isGracePeriodOver(): boolean {
-    if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
+    if (
+      this.getCurrentTime() >
+      this.getGracePeriodEndTime(this.timeSlot.startTime)
+    )
+      return true;
     return false;
   }
 
@@ -281,7 +286,9 @@ export class Slot {
     const minutes = 10;
     const msPerMinute = 60 * 1000;
 
-    return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
+    return new Date(
+      new Date(startTime).getTime() + minutes * msPerMinute
+    ).toISOString();
   }
 
   /**
@@ -295,7 +302,7 @@ export class Slot {
    * @description Can this `Slot` be cancelled?
    */
   private canBeCancelled(): boolean {
-    if (this.slotStatus !== 'RESERVED') return false;
+    if (this.slotStatus !== "RESERVED") return false;
     return true;
   }
 
@@ -303,7 +310,7 @@ export class Slot {
    * @description Can this `Slot` be reserved?
    */
   private canBeReserved(): boolean {
-    if (this.slotStatus !== 'OPEN') return false;
+    if (this.slotStatus !== "OPEN") return false;
     return true;
   }
 
@@ -311,7 +318,7 @@ export class Slot {
    * @description Can this `Slot` be checked in to?
    */
   private canBeCheckedInTo(): boolean {
-    if (this.slotStatus !== 'RESERVED') return false;
+    if (this.slotStatus !== "RESERVED") return false;
     return true;
   }
 
@@ -319,7 +326,7 @@ export class Slot {
    * @description Can this `Slot` be checked out of?
    */
   private canBeCheckedOutOf(): boolean {
-    if (this.slotStatus !== 'CHECKED_IN') return false;
+    if (this.slotStatus !== "CHECKED_IN") return false;
     return true;
   }
 
@@ -327,7 +334,7 @@ export class Slot {
    * @description Can this `Slot` be unattended?
    */
   private canBeUnattended(): boolean {
-    if (this.slotStatus === 'RESERVED') return true;
+    if (this.slotStatus === "RESERVED") return true;
     return false;
   }
 
@@ -339,22 +346,23 @@ export class Slot {
    * @emits `CANCELLED`
    */
   public cancel(): SlotCommand {
-    if (!this.canBeCancelled()) throw new CancellationConditionsNotMetError(this.slotStatus);
+    if (!this.canBeCancelled())
+      throw new CancellationConditionsNotMetError(this.slotStatus);
 
-    const newStatus = 'OPEN';
+    const newStatus = "OPEN";
 
     this.removeHostName();
     this.updateStatus(newStatus);
 
     return {
       event: {
-        eventName: 'CANCELLED', // Transient state
+        eventName: "CANCELLED", // Transient state
         slotId: this.slotId,
         slotStatus: this.slotStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -366,11 +374,12 @@ export class Slot {
    * @emits `RESERVED`
    */
   public reserve(hostName: string): SlotCommand {
-    if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
+    if (!this.canBeReserved())
+      throw new ReservationConditionsNotMetError(this.slotStatus);
 
-    const newStatus = 'RESERVED';
+    const newStatus = "RESERVED";
 
-    this.updateHostName(hostName || '');
+    this.updateHostName(hostName || "");
     this.updateStatus(newStatus);
 
     return {
@@ -379,9 +388,9 @@ export class Slot {
         slotId: this.slotId,
         slotStatus: newStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -393,9 +402,10 @@ export class Slot {
    * @emits `CHECKED_IN`
    */
   public checkIn(): SlotCommand {
-    if (!this.canBeCheckedInTo()) throw new CheckInConditionsNotMetError(this.slotStatus);
+    if (!this.canBeCheckedInTo())
+      throw new CheckInConditionsNotMetError(this.slotStatus);
 
-    const newStatus = 'CHECKED_IN';
+    const newStatus = "CHECKED_IN";
     this.updateStatus(newStatus);
 
     return {
@@ -404,9 +414,9 @@ export class Slot {
         slotId: this.slotId,
         slotStatus: newStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -418,21 +428,22 @@ export class Slot {
    * @emits `CHECKED_OUT`
    */
   public checkOut(): SlotCommand {
-    if (!this.canBeCheckedOutOf()) throw new CheckOutConditionsNotMetError(this.slotStatus);
+    if (!this.canBeCheckedOutOf())
+      throw new CheckOutConditionsNotMetError(this.slotStatus);
 
-    const newStatus = 'OPEN';
+    const newStatus = "OPEN";
     this.updateStatus(newStatus);
     this.removeHostName();
 
     return {
       event: {
-        eventName: 'CHECKED_OUT', // Transient state
+        eventName: "CHECKED_OUT", // Transient state
         slotId: this.slotId,
         slotStatus: newStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -442,18 +453,18 @@ export class Slot {
    * @emits `OPENED`
    */
   public open(): SlotCommand {
-    const newStatus = 'OPEN';
+    const newStatus = "OPEN";
     this.updateStatus(newStatus);
 
     return {
       event: {
-        eventName: 'OPENED',
+        eventName: "OPENED",
         slotId: this.slotId,
         slotStatus: newStatus,
-        hostName: '',
-        startTime: this.getStartTime()
+        hostName: "",
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -463,7 +474,7 @@ export class Slot {
    * @emits `CLOSED`
    */
   public close(): SlotCommand {
-    const newStatus = 'CLOSED';
+    const newStatus = "CLOSED";
     this.updateStatus(newStatus);
 
     return {
@@ -472,9 +483,9 @@ export class Slot {
         slotId: this.slotId,
         slotStatus: newStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 
@@ -490,19 +501,19 @@ export class Slot {
   public unattend(): SlotCommand | void {
     if (!this.canBeUnattended()) return;
 
-    const newStatus = 'OPEN';
+    const newStatus = "OPEN";
     this.updateStatus(newStatus);
     this.removeHostName();
 
     return {
       event: {
-        eventName: 'UNATTENDED', // Transient state
+        eventName: "UNATTENDED", // Transient state
         slotId: this.slotId,
         slotStatus: newStatus,
         hostName: this.hostName,
-        startTime: this.getStartTime()
+        startTime: this.getStartTime(),
       },
-      newStatus
+      newStatus,
     };
   }
 }
@@ -515,6 +526,7 @@ export interface SlotCommand {
   newStatus: Status;
 }
 ````
+
 {% endcode %}
 
 There's a bunch of private and public methods here, with a slightly higher public method count than on the private side. You'll notice that there are a couple of patterns that keep repeating like those that return `SlotCommand` and those that check rules.
@@ -578,7 +590,7 @@ private make(input: SlotCreateInput): SlotDTO {
 
 ### Reconstitute from a DTO
 
-Now for one of the most important private methods: `fromDto()`. This will enable us to create a class representation (`Slot` entity) from a Data Transfer Object. It's nothing hard nor magical, just:
+Now for one of the most important private methods: `fromDto()`. This will enable us to create a class representation (`Slot` Entity) from a Data Transfer Object. It's nothing hard nor magical, just:
 
 ```typescript
 /**
@@ -620,13 +632,14 @@ public toDto(): SlotDTO {
 }
 ```
 
-The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` entity class.
+The fields act as a well-known interface/type (`SlotDTO`) and we can now trivially pass this to our persistence mechanism or elsewhere where we don't, or can't, use the actual `Slot` Entity class.
 
 ### Use case #1: Domain logic for checking if we can reserve and cancel
 
 Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's literally a check on the expected, valid `slotStatus`.
 
 {% code lineNumbers="true" %}
+
 ```typescript
 /**
  * @description Can this `Slot` be reserved?
@@ -636,6 +649,7 @@ private canBeReserved(): boolean {
   return true;
 }
 ```
+
 {% endcode %}
 
 Now that's some nice, basic logic right there! No need for enums or anything, we just need to check for an open status.
@@ -659,6 +673,7 @@ Nothing is blocking you to conduct much deeper checking, though that seems overb
 Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()` method when checking if we have any reservations that have expired their 10 minute grace period.
 
 {% code lineNumbers="true" %}
+
 ```typescript
  /**
  * @description Check if our 10 minute grace period has ended,
@@ -680,6 +695,7 @@ private getGracePeriodEndTime(startTime: string): string {
   return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
 }
 ```
+
 {% endcode %}
 
 The internal logic is here a tiny bit more elaborate than the super-simple ones from the last example. All the logic around this is neatly stored within the Entity and we are left with a clean, nice public interface to get our answer.
@@ -689,6 +705,7 @@ The internal logic is here a tiny bit more elaborate than the super-simple ones 
 Here's now an example of the actual reservation logic.
 
 {% code lineNumbers="true" %}
+
 ```typescript
 public reserve(hostName: string): SlotCommand {
   if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
@@ -710,6 +727,7 @@ public reserve(hostName: string): SlotCommand {
   };
 }
 ```
+
 {% endcode %}
 
 It will throw an error if it cannot be reserved, which is [cruder than how we could do it](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). Nevertheless this seems like a reasonable version 1 of our solution. Next, we will set a new status, update host name and status internally, and then return a `SlotCommand` which is a type of object that we can create an actual Domain Event from later. Note how, at this point, we have not persisted anything, just made sure that it's all valid, our object is in a regulated and valid state, and that we feed back the basis of our upcoming event for our integration purposes.

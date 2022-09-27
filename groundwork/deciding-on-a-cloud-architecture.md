@@ -12,10 +12,10 @@ Without being a one-sided advertisement I will still take a few moments to lay o
 
 Some of the well-known benefits of serverless include:
 
-* **Cost-efficiency**, as serverless services can "scale to zero" meaning they cost nothing if no one uses the resources.
-* **Less management, maintenance, and toil** since the cloud service provider handles the majority of these parts.
-* **Easier to focus on innovation** since the skills requirement for proper implementation is lower than doing the whole shebang on your own.
-* **Makes it easier to adopt modern architecture patterns** like event-driven architecture and microservices because you are essentially forced (well, it just makes a lot more sense) to use API gateways, event buses or topics, and short-lived functions to wire up your solution.
+- **Cost-efficiency**, as serverless services can "scale to zero" meaning they cost nothing if no one uses the resources.
+- **Less management, maintenance, and toil** since the cloud service provider handles the majority of these parts.
+- **Easier to focus on innovation** since the skills requirement for proper implementation is lower than doing the whole shebang on your own.
+- **Makes it easier to adopt modern architecture patterns** like event-driven architecture and microservices because you are essentially forced (well, it just makes a lot more sense) to use API gateways, event buses or topics, and short-lived functions to wire up your solution.
 
 {% hint style="warning" %}
 As always there are trade-offs. The most basic ones relate to serverless typically offering fewer configuration options, which _may_ be a deal-breaker in some scenarios, and that serverless products indeed become more "black-boxed" and tied to the particular vendor.
@@ -31,9 +31,9 @@ One of my favorite examples of unwanted complexity comes from Yan Cui when tryin
 
 In the spirit of serverless and purpose-oriented functions, the diagram of a serverless solution will much more likely be "[screaming architecture](https://blog.cleancoder.com/uncle-bob/2011/09/30/Screaming-Architecture.html)" than an old-school deployment diagram of some network and a virtual machine. A benefit of serverless is that **the diagram itself helps to actually outline what the logical functionality is**, since we can be more expressive and fine-grained with resource usage, for example:
 
-* Dedicated functions for unique business use-cases;
-* Logically separated databases for different information objects or entities;
-* Topics or event buses that are solely dedicated to handle the needs of individual functions.
+- Dedicated functions for unique business use-cases;
+- Logically separated databases for different information objects or Entities;
+- Topics or event buses that are solely dedicated to handle the needs of individual functions.
 
 Ergo, the quantity of cloud resources will indeed grow, but it can also (correctly used) be 100% truthful of what the system performs, rather than the classic 1-4 boxes of "magic providence" that _does all of it_.&#x20;
 
@@ -50,11 +50,11 @@ DynamoDB is not your grandfather's database, and it will maybe be challenging to
 
 Some excellent resources to read up on DynamoDB include:
 
-* [The DynamoDB Guide](https://www.dynamodbguide.com/what-is-dynamo-db)
-* [Single-table vs. multi-table design in Amazon DynamoDB](https://aws.amazon.com/blogs/database/single-table-vs-multi-table-design-in-amazon-dynamodb/)
-* [The What, Why, and When of Single-Table Design with DynamoDB](https://www.alexdebrie.com/posts/dynamodb-single-table/)
-* [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8)
-{% endhint %}
+- [The DynamoDB Guide](https://www.dynamodbguide.com/what-is-dynamo-db)
+- [Single-table vs. multi-table design in Amazon DynamoDB](https://aws.amazon.com/blogs/database/single-table-vs-multi-table-design-in-amazon-dynamodb/)
+- [The What, Why, and When of Single-Table Design with DynamoDB](https://www.alexdebrie.com/posts/dynamodb-single-table/)
+- [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8)
+  {% endhint %}
 
 ## Compute
 
@@ -62,7 +62,7 @@ Once again, looking at the high level requirements we want something that can ru
 
 The undisputed king of serverless compute platforms has been AWS [Lambda](https://aws.amazon.com/lambda/) for quite some years now—That's the same platform we will use here. It satisfies all the conditions mentioned above, and is possible to use in a number of languages/runtimes, including TypeScript.
 
-Other viable options could include some of the better-known container services, such as [ECS](https://aws.amazon.com/ecs/) or [Fargate](https://www.google.com/search?client=safari\&rls=en\&q=aws+fargate\&ie=UTF-8\&oe=UTF-8). These however require significantly more plumbing and configuration, plus requires some type of containerization actually happening. With Lambda, such work is kept at a minimal level, and using [Serverless Framework](https://www.serverless.com) we'll continue pushing down the work involved in for example packaging the application.
+Other viable options could include some of the better-known container services, such as [ECS](https://aws.amazon.com/ecs/) or [Fargate](https://www.google.com/search?client=safari&rls=en&q=aws+fargate&ie=UTF-8&oe=UTF-8). These however require significantly more plumbing and configuration, plus requires some type of containerization actually happening. With Lambda, such work is kept at a minimal level, and using [Serverless Framework](https://www.serverless.com) we'll continue pushing down the work involved in for example packaging the application.
 
 ## Eventing
 
@@ -108,18 +108,18 @@ Read more at [https://docs.aws.amazon.com/apigateway/latest/developerguide/http-
 
 Some of the additional features of the REST API (v1) vs the HTTP API (v2) includes:
 
-* AWS X-Ray tracing
-* API keys support and per-client throttling
-* Caching
-* Request validation
-* Edge-optimized endpoints
+- AWS X-Ray tracing
+- API keys support and per-client throttling
+- Caching
+- Request validation
+- Edge-optimized endpoints
 
 There are certainly benefits by going with the HTTP API as well, for example:
 
-* Much cheaper to run
-* They actually do support many (most?) features of v1
-* Includes exclusive support for JWT authorization directly on the Gateway (v1 has to use a Lambda authorizer to do the same)
-* Has exclusive support for certain integrations
+- Much cheaper to run
+- They actually do support many (most?) features of v1
+- Includes exclusive support for JWT authorization directly on the Gateway (v1 has to use a Lambda authorizer to do the same)
+- Has exclusive support for certain integrations
 
 From a non-functional requirements perspective, the items listed in the REST API benefits are things we absolutely want to use, and since price effectively is not a real concern at this small scale, that argument becomes moot.
 
@@ -129,16 +129,16 @@ As noted in the API section, there exists a few security aspects that we need to
 
 We don't want to double-down on security here, but we need to stay mindful of malicious usage. Ways we want to mitigate such usage is:
 
-* Limit scaling and provide a maximum provisioned surface for APIs etc so we cannot get "denial-by-wallet" attacks
-* Set permissions to least-privilege
-* Secure coding practices
-* Use authorization mechanisms, even something simple like an API key
-* Use CORS to restrain domains that may call the services
+- Limit scaling and provide a maximum provisioned surface for APIs etc so we cannot get "denial-by-wallet" attacks
+- Set permissions to least-privilege
+- Secure coding practices
+- Use authorization mechanisms, even something simple like an API key
+- Use CORS to restrain domains that may call the services
 
 {% hint style="info" %}
 For a light start on serverless and cloud security, see the following:
 
-* [10 Serverless security best practices](https://snyk.io/blog/10-serverless-security-best-practices/)
-* [Architecting Secure Serverless Applications](https://aws.amazon.com/blogs/architecture/architecting-secure-serverless-applications/)
-* [AWS re:Invent 2021 - Serverless security best practices](https://www.youtube.com/watch?v=nEaAuX4O9TU)
-{% endhint %}
+- [10 Serverless security best practices](https://snyk.io/blog/10-serverless-security-best-practices/)
+- [Architecting Secure Serverless Applications](https://aws.amazon.com/blogs/architecture/architecting-secure-serverless-applications/)
+- [AWS re:Invent 2021 - Serverless security best practices](https://www.youtube.com/watch?v=nEaAuX4O9TU)
+  {% endhint %}

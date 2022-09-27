@@ -28,11 +28,11 @@ Remember that the biggest enemy of DDD is the anemic domain model. Repositories 
 
 The primary place for Repositories is therefore (as Evans writes; 2013, p.148) in the middle of the object's lifecycle: persisting, loading, and reconstituting the data. The Repository acts as **the only way to retrieve data** and this must not be bypassed.
 
-The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the aggregate in question. However, I will now explain why that's _not the way_ I am dealing with it in our example code.
+The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the Aggregate in question. However, I will now explain why that's _not the way_ I am dealing with it in our example code.
 
 ## How repositories are used in the project
 
-Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than as being part of a domain, I do not want Repositories to have knowledge of the actual entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
+Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than as being part of a domain, I do not want Repositories to have knowledge of the actual Entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
 
 {% hint style="info" %}
 This model, as far as I know, therefore stays somewhat truer with Robert Martin and his Clean Architecture than with the classic DDD approach.
@@ -51,26 +51,30 @@ In the spirit of pragmatism the approach I am using is more relaxed, going with 
 First of all, let's see one of the use cases and understand where we are loading the Slot:
 
 {% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" lineNumbers="true" %}
+
 ```typescript
-import { Reservation } from '../../domain/aggregates/Reservation';
+import { Reservation } from "../../domain/aggregates/Reservation";
 
-import { createSlotLoaderService } from '../services/SlotLoaderService';
+import { createSlotLoaderService } from "../services/SlotLoaderService";
 
-import { Dependencies } from '../../interfaces/Dependencies';
-import { SlotId } from '../../interfaces/Slot';
+import { Dependencies } from "../../interfaces/Dependencies";
+import { SlotId } from "../../interfaces/Slot";
 
 /**
  * @description Use case to handle cancelling a slot.
  */
-export async function CancelSlotUseCase(dependencies: Dependencies, slotId: SlotId): Promise<void> {
+export async function CancelSlotUseCase(
+  dependencies: Dependencies,
+  slotId: SlotId
+): Promise<void> {
   const reservation = new Reservation(dependencies);
   const slotLoader = createSlotLoaderService(dependencies.repository);
   const slotDto = await slotLoader.loadSlot(slotId);
 
   await reservation.cancel(slotDto);
 }
-
 ```
+
 {% endcode %}
 
 {% hint style="success" %}
@@ -91,26 +95,27 @@ This same pattern is used for all similar use cases.
 Now for one of the actual repositories.
 
 {% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
+
 ```typescript
-import { randomUUID } from 'crypto';
+import { randomUUID } from "crypto";
 import {
   AttributeValue,
   DynamoDBClient,
   PutItemCommand,
   QueryCommand,
-  QueryCommandOutput
-} from '@aws-sdk/client-dynamodb';
+  QueryCommandOutput,
+} from "@aws-sdk/client-dynamodb";
 
-import { Repository } from '../../interfaces/Repository';
-import { SlotDTO, SlotId } from '../../interfaces/Slot';
-import { DynamoItem, DynamoItems } from '../../interfaces/DynamoDb';
-import { Event, EventDetail } from '../../interfaces/Event';
+import { Repository } from "../../interfaces/Repository";
+import { SlotDTO, SlotId } from "../../interfaces/Slot";
+import { DynamoItem, DynamoItems } from "../../interfaces/DynamoDb";
+import { Event, EventDetail } from "../../interfaces/Event";
 
-import { MissingEnvVarsError } from '../../application/errors/MissingEnvVarsError';
+import { MissingEnvVarsError } from "../../application/errors/MissingEnvVarsError";
 
-import { getCleanedItems } from '../utils/getCleanedItems';
+import { getCleanedItems } from "../utils/getCleanedItems";
 
-import testData from '../../../testdata/dynamodb/testData.json';
+import testData from "../../../testdata/dynamodb/testData.json";
 
 /**
  * @description Factory function to create a DynamoDB repository.
@@ -129,14 +134,14 @@ class DynamoDbRepository implements Repository {
   region: string;
 
   constructor() {
-    this.region = process.env.REGION || '';
-    this.tableName = process.env.TABLE_NAME || '';
+    this.region = process.env.REGION || "";
+    this.tableName = process.env.TABLE_NAME || "";
 
     if (!this.region || !this.tableName)
       throw new MissingEnvVarsError(
         JSON.stringify([
-          { key: 'REGION', value: process.env.REGION },
-          { key: 'TABLE_NAME', value: process.env.TABLE_NAME }
+          { key: "REGION", value: process.env.REGION },
+          { key: "TABLE_NAME", value: process.env.TABLE_NAME },
         ])
       );
 
@@ -159,20 +164,23 @@ class DynamoDbRepository implements Repository {
   public async loadSlot(slotId: SlotId): Promise<SlotDTO> {
     const command = {
       TableName: this.tableName,
-      KeyConditionExpression: 'itemType = :itemType AND id = :id',
+      KeyConditionExpression: "itemType = :itemType AND id = :id",
       ExpressionAttributeValues: {
-        ':itemType': { S: 'SLOT' },
-        ':id': { S: slotId }
+        ":itemType": { S: "SLOT" },
+        ":id": { S: slotId },
       },
-      ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
+      ProjectionExpression:
+        "id, hostName, timeSlot, slotStatus, createdAt, updatedAt",
     };
 
     const data: QueryCommandOutput | DynamoItems =
-      process.env.NODE_ENV === 'test'
+      process.env.NODE_ENV === "test"
         ? testData
         : await this.docClient.send(new QueryCommand(command));
     const items =
-      (data.Items?.map((item: Record<string, AttributeValue>) => item) as DynamoItem[]) || [];
+      (data.Items?.map(
+        (item: Record<string, AttributeValue>) => item
+      ) as DynamoItem[]) || [];
 
     return getCleanedItems(items)[0] as unknown as SlotDTO;
   }
@@ -183,19 +191,22 @@ class DynamoDbRepository implements Repository {
   public async loadSlots(): Promise<SlotDTO[]> {
     const command = {
       TableName: this.tableName,
-      KeyConditionExpression: 'itemType = :itemType',
+      KeyConditionExpression: "itemType = :itemType",
       ExpressionAttributeValues: {
-        ':itemType': { S: 'SLOT' }
+        ":itemType": { S: "SLOT" },
       },
-      ProjectionExpression: 'id, hostName, timeSlot, slotStatus, createdAt, updatedAt'
+      ProjectionExpression:
+        "id, hostName, timeSlot, slotStatus, createdAt, updatedAt",
     };
 
     const data: QueryCommandOutput | DynamoItems =
-      process.env.NODE_ENV === 'test'
+      process.env.NODE_ENV === "test"
         ? testData
         : await this.docClient.send(new QueryCommand(command));
     const items =
-      (data.Items?.map((item: Record<string, AttributeValue>) => item) as DynamoItem[]) || [];
+      (data.Items?.map(
+        (item: Record<string, AttributeValue>) => item
+      ) as DynamoItem[]) || [];
 
     return getCleanedItems(items);
   }
@@ -204,24 +215,26 @@ class DynamoDbRepository implements Repository {
    * @description Add (create/update) a slot in the source database.
    */
   public async updateSlot(slot: SlotDTO): Promise<void> {
-    const { slotId, hostName, timeSlot, slotStatus, createdAt, updatedAt } = slot;
+    const { slotId, hostName, timeSlot, slotStatus, createdAt, updatedAt } =
+      slot;
 
     const expiresAt = this.getExpiryTime();
     const command = {
       TableName: this.tableName,
       Item: {
-        itemType: { S: 'SLOT' },
+        itemType: { S: "SLOT" },
         id: { S: slotId },
-        hostName: { S: hostName || '' },
+        hostName: { S: hostName || "" },
         timeSlot: { S: JSON.stringify(timeSlot) },
         slotStatus: { S: slotStatus },
         createdAt: { S: createdAt },
         updatedAt: { S: updatedAt },
-        expiresAt: { N: expiresAt }
-      }
+        expiresAt: { N: expiresAt },
+      },
     };
 
-    if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
+    if (process.env.NODE_ENV !== "test")
+      await this.docClient.send(new PutItemCommand(command));
   }
 
   /**
@@ -229,24 +242,29 @@ class DynamoDbRepository implements Repository {
    */
   public async addEvent(event: Event): Promise<void> {
     const eventData = event.get();
-    const detail: EventDetail = JSON.parse(eventData['Detail']);
-    const data = typeof detail['data'] === 'string' ? JSON.parse(detail['data']) : detail['data'];
+    const detail: EventDetail = JSON.parse(eventData["Detail"]);
+    const data =
+      typeof detail["data"] === "string"
+        ? JSON.parse(detail["data"])
+        : detail["data"];
 
     const command = {
       TableName: this.tableName,
       Item: {
-        itemType: { S: 'EVENT' },
+        itemType: { S: "EVENT" },
         id: { S: randomUUID() },
-        eventTime: { S: detail['metadata']['timestamp'] },
-        eventType: { S: data['event'] },
-        event: { S: JSON.stringify(eventData) }
-      }
+        eventTime: { S: detail["metadata"]["timestamp"] },
+        eventType: { S: data["event"] },
+        event: { S: JSON.stringify(eventData) },
+      },
     };
 
-    if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
+    if (process.env.NODE_ENV !== "test")
+      await this.docClient.send(new PutItemCommand(command));
   }
 }
 ```
+
 {% endcode %}
 
 We `implement` the class based on a base class (abstraction), allowing us to make a dedicated local test variant as well.
@@ -262,7 +280,8 @@ Like anywhere else in the DDD world, avoid terms that are technological and do n
 Finally, while it may seem like a weird anti-pattern on line 142 with
 
 ```typescript
-if (process.env.NODE_ENV !== 'test') await this.docClient.send(new PutItemCommand(command));
+if (process.env.NODE_ENV !== "test")
+  await this.docClient.send(new PutItemCommand(command));
 ```
 
 this enables unit testing the majority of the "real" repository.&#x20;

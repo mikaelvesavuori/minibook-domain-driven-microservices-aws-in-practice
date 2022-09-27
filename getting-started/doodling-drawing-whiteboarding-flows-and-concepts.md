@@ -18,8 +18,8 @@ Making something good is not about being a genius, but being able to feel comfor
 
 I think it's a really valid concept to do such [spitballing](https://www.merriam-webster.com/dictionary/spitball)...
 
-* on **paper,** if you are **** alone, or
-* on a **whiteboard**, if you are with more people.
+- on **paper,** if you are \*\*\*\* alone, or
+- on a **whiteboard**, if you are with more people.
 
 {% hint style="info" %}
 While physical media may seem ancient to some it's much more versatile, it has no real formatting restrictions, and it enables thinking/writing/doodling that is less constrained than that enforced by digital options.
@@ -29,9 +29,9 @@ At this stage it's more about getting your mind used to the business case, any t
 
 When it's in the early stages I find that sometimes I need to remind folks (sometimes even myself) that these really _are just_ drafts or rough sketches and not a full-fledged way of building something.
 
-Personally I think this part is really fun—just don't let this part be a massive book end for the work you are doing but more like a creative exercise to start feeling the materials and substance of the work. As someone who knows DDD, I use this exercise as a way of also trying a first fit for various things I encounter in the project into the "tactical" concepts of DDD, such as entities and events. More on those later.
+Personally I think this part is really fun—just don't let this part be a massive book end for the work you are doing but more like a creative exercise to start feeling the materials and substance of the work. As someone who knows DDD, I use this exercise as a way of also trying a first fit for various things I encounter in the project into the "tactical" concepts of DDD, such as Entities and Domain Events. More on those later.
 
-![Picture of some of my first notes for this project.](../.gitbook/assets/IMG\_1940.jpeg)
+![Picture of some of my first notes for this project.](../.gitbook/assets/IMG_1940.jpeg)
 
 {% hint style="info" %}
 **Note**: As a part of my work with building this book and its coded implementation, this is the stage in which I really for the first time started to see what the division of services might be.

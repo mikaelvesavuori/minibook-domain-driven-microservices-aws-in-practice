@@ -71,7 +71,7 @@ Next up is `Strategic DDD`. This section captures many of the core concepts of t
 
 At this point, we may be rearing to go, but we'll first stop by the `Groundwork` section in which we will approach our cloud architecture and basic technical patterns. Since this isn't strictly related to the DDD parts of our implementation, we can instead zoom in on how to set up a cloud-native, serverless frame or boilerplate for our microservices that can be evolved with business logic and Clean Architecture patterns further down the line.
 
-With that part done, finally, we get to go knee-deep in detail in `Tactical DDD`. In this section we'll get to use the vital patterns that separate a decent application from a great one, seeing for example how we can write aggregates that make sense in microservices.
+With that part done, finally, we get to go knee-deep in detail in `Tactical DDD`. In this section we'll get to use the vital patterns that separate a decent application from a great one, seeing for example how we can write Aggregates that make sense in microservices.
 
 Throughout the book, I'll do my best to reference good materials, either online or in literature. The last section, `References and resources`, does what it sounds like: Providing you with a compilation of further research.&#x20;
 
