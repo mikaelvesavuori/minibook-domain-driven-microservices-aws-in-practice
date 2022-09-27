@@ -16,11 +16,11 @@ description: >-
 **Application services** are excellent for wrapping non-domain actions like retrieving data from external systems, while **domain services** extend the possibility of acting within the domain. A good example of **domain service** usage is when you need to orchestrate Entities or Aggregates, especially as in our example code we don't have higher-level Aggregates that can hold such logic.
 {% endhint %}
 
-Services: An overloaded and problematic term. Still, we need them. What did Eric Evans himself actually think of them?
+Services: An overloaded and problematic term. Still, we need them. What did Eric Evans himself actually write about them?
 
 > When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as a standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
 >
-> —Source: Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_ (p. 106)
+> —Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_ (p. 106)
 
 While we haven't gotten to Entities and Aggregates yet, it's safe to say that **Services** play in the next-highest league, metaphorically speaking.
 
@@ -30,17 +30,17 @@ In many projects, you might see services being used very broadly and liberally. 
 
 Using a more object-oriented approach we can start enforcing a hierarchy like the below:
 
-- Aggregate Root (if needed)
-- Aggregate (if needed)
-- Entity (if needed)
-- Domain Service
-- Application Service
-- Value Object
+* Aggregate Root (if needed)
+* Aggregate (if needed)
+* Entity (if needed)
+* Domain Service
+* Application Service
+* Value Object
 
 {% hint style="info" %}
 Some of the solutions in the example code are actually basic enough that they need no Entity or higher-level constructs to deal with them (not even services!).
 
-As said in the introduction, DDD is sometimes overkilling.
+As said in the introduction, DDD is sometimes overkilling it by a stretch and then some.
 {% endhint %}
 
 Let's read what Evans writes about layering our services:
@@ -59,21 +59,26 @@ The intuitive difference should be clear, but I've found that it may take a refa
 
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
-Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain Entities from external or internal (Repository) sources; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity). (See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/))
+Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain Entities from external or internal (Repository) sources; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity).
 
-The way I come to accept both existing is like this:
+{% hint style="info" %}
+See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/) for more on this.
+{% endhint %}
 
-- The use case is strictly equivalent to the first testable complete unit of code. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
-- You can still use application services within the use case as these operate on the same overall conceptual application level.
+The way I come to accept both co-existing is like this:
 
-The main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have done in other projects, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice, however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
+* The use case is strictly equivalent to the **first testable complete unit of code**. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
+* You can still use application services within the use case as these operate on the same overall conceptual application level and **do things, rather than orchestrate them**.
+
+The main takeaway is that we understand that use cases and Application Services function practically the same, and are positionally equal.
+
+You could, as I have done in other projects, use so-called "[use case interactors](https://stackoverflow.com/questions/59620102/what-does-use-case-and-interactor-mean-in-the-context-of-clean-architecture)" if you'd want to stay consistent with the terminology. In practice, however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
 
 ## An application service example
 
 The following is a concrete version of the `VerificationCodeService` used in the Reservation solution.
 
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
-
 ```typescript
 /**
  * @description The `OnlineVerificationCodeService` calls for an online service
@@ -107,7 +112,6 @@ class OnlineVerificationCodeService implements VerificationCodeService {
   }
 }
 ```
-
 {% endcode %}
 
 It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this is a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
@@ -118,10 +122,9 @@ It has a single public method, `getVerificationCode()`. Using it, one can call a
 
 Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple Aggregates, for example, otherwise, keep it simple and let it be part of the Aggregate itself.
 
-Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.&#x20;
+Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.
 
 {% code title="code/Reservation/SlotReservation/src/domain/services/ReservationService.ts" lineNumbers="true" %}
-
 ```typescript
 import { MikroLog } from "mikrolog";
 
@@ -300,12 +303,11 @@ export class ReservationService {
   }
 }
 ```
-
 {% endcode %}
 
-There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God_object) either, thank...God?
+There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God\_object) either, thank...God?
 
-First of all, the service, even just by glancing at the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.&#x20;
+First of all, the service, even just by glancing at the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.
 
 Most of the code handles roughly similar functionality. For a telling example of the orchestration you might sometimes need, look no further than `makeDailySlots()` on line 70: This is domain logic that would not make sense _inside_ the `Slot` but makes perfect sense here in the outer scope. That comment might not make sense yet, but it will after the next couple of pages.
 
@@ -315,7 +317,7 @@ When it gets constructed, it takes a number of dependencies to avoid creating it
 
 The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `ReservationService` less coupled to any infrastructural concerns.
 
-We also have several custom errors that may be thrown if conditions are not valid.&#x20;
+We also have several custom errors that may be thrown if conditions are not valid.
 
 ```typescript
 private repository: Repository;

@@ -1,5 +1,7 @@
 ---
-description: "Numero uno when it comes to patterns —\_repositories are well-established as ways to separate implementation from interface."
+description: >-
+  Numero uno when it comes to patterns—Repositories are well-established as ways
+  to separate implementation from interface.
 ---
 
 # Repositories
@@ -20,15 +22,15 @@ Good old Repositories! This is by my very unscientific gut feeling maybe the mos
 
 Let's start by addressing the need for a Repository. Somehow you will need to **retrieve or store the reference to an Aggregate or Entity or some other domain object**. Using the language of the domain, the Repository will be able to retrieve and return the data. The data, in turn, is typically an Aggregate or Entity which can be _reconstituted_ into its programmatic shape (Entity class, etc.) when you've got the data back.
 
-The bad side of being a well-known pattern is that this may have been what has led many traditional back-end developers to be "data-oriented" in their work; seemingly a typical child disease of having been in the "relational database school". As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules, etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
+The bad side of being a well-known pattern is that this may have been what has led many traditional back-end developers to be "anemically data-oriented" in their work; seemingly a typical child disease of having been in the hard-knock "relational database school". As I've previously written, being only structurally data-focused rather than also similarly obsessed about the expected behavior (logic, business rules, etc.) can quickly lead straight down the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) hole.
 
 {% hint style="danger" %}
-Remember that the biggest enemy of DDD is the anemic domain model. Repositories are therefore important in the technical sense to make object persistence work at all, but similarly important is the goal to make Repositories decoupled from any behavior-altering mannerisms: The Repository is not smart, your domain objects are. So refrain from making big exercises in data modeling here beyond but is absolutely required to make object retrieval work in the domain model.&#x20;
+Remember that the biggest enemy of DDD is the [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html). Repositories are therefore important in the technical sense to make object persistence work at all, but similarly important is the goal to make Repositories decoupled from any behavior-altering mannerisms: **The Repository is not smart**, your domain objects are! So refrain from making big exercises in data modeling here beyond but is absolutely required to make object retrieval work in the domain model.
 {% endhint %}
 
 The primary place for Repositories is, therefore (as Evans writes; 2013, p.148) in the middle of the object's lifecycle: persisting, loading, and reconstituting the data. The Repository acts as **the only way to retrieve data** and this must not be bypassed.
 
-The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the Aggregate in question. However, I will now explain why that's _, not the way_ I am dealing with it in our example code.
+The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the Aggregate in question. However, I will now explain why that's _not the way_ I am dealing with it in our example code.
 
 ## How repositories are used in the project
 
@@ -51,7 +53,6 @@ In the spirit of pragmatism, the approach I am using is more relaxed, going with
 First of all, let's see one of the use cases and understand where we are loading the Slot:
 
 {% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" lineNumbers="true" %}
-
 ```typescript
 import { Reservation } from "../../domain/aggregates/Reservation";
 
@@ -74,7 +75,6 @@ export async function CancelSlotUseCase(
   await reservation.cancel(slotDto);
 }
 ```
-
 {% endcode %}
 
 {% hint style="success" %}
@@ -85,17 +85,16 @@ You'll see that we use a Factory to vend a new `SlotLoaderService`, which we the
 
 ```typescript
 public async cancel(slotDto: SlotDTO): Promise<void> {
- const slot = new Slot().from(slotDto);
- // Rest of code...
+  const slot = new Slot().from(slotDto);
+  // Rest of code...
 }
 ```
 
 This same pattern is used for all similar use cases.
 
-Now for one of the actual repositories.
+Now for one of the actual Repositories.
 
 {% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
-
 ```typescript
 import { randomUUID } from "crypto";
 import {
@@ -264,7 +263,6 @@ class DynamoDbRepository implements Repository {
   }
 }
 ```
-
 {% endcode %}
 
 We `implement` the class based on a base class (abstraction), allowing us to make a dedicated local test variant as well.
@@ -274,17 +272,16 @@ The "big two" methods here are `updateSlot()` on line 101 and `addEvent()` on li
 Notice that both methods are "upsert" behaviors where we never create the same item twice but overwrite in place.
 
 {% hint style="success" %}
-Like anywhere else in the DDD world, avoid terms that are technological and do not carry semantic meaning. Avoid database-fixated words like `create`, `read` and `update`.&#x20;
+Like anywhere else in the DDD world, avoid terms that are technological and do not carry semantic meaning. Avoid database-fixated words like `create`, `read` and `update`.
 {% endhint %}
 
 Finally, while it may seem like a weird anti-pattern on line 142 with
 
 ```typescript
-if (process.env.NODE_ENV !== "test")
-  await this.docClient.send(new PutItemCommand(command));
+if (process.env.NODE_ENV !== "test") await this.docClient.send(new PutItemCommand(command));
 ```
 
-this enables unit testing of the majority of the "real" repository.&#x20;
+this actually enables unit testing of the majority of the "real" repository without adverse, uncontrolled side effects.
 
 {% hint style="info" %}
 Microsoft has a lot of good articles on microservices and DDD, for example [this article about repositories](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design).

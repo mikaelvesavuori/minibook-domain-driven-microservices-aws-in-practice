@@ -26,7 +26,7 @@ For the "truth" on the matter of Aggregates, we will look no further than to the
 
 > An Aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate because no outside object can ever see it out of the context of the root Entity.
 >
-> — Source: Eric Evans, _Domain Driven Design: Tackling Complexity in the Heart of Software_ (p. 126-127)
+> — Eric Evans, _Domain Driven Design: Tackling Complexity in the Heart of Software_ (p. 126-127)
 
 {% hint style="danger" %}
 The Aggregate is the most complex pattern, for sure. It is the one I myself have had to contend most with.
@@ -38,9 +38,9 @@ Get a coffee, you deserve it and don't sweat it all here and now. Read up and ev
 
 Revisiting our relations between Aggregates and Entities we see the fundamental items to understand include:
 
-- Aggregates are mostly just Entities with extra responsibilities; more on these in a moment. The opposite case is however not necessarily true.
-- Aggregates are the only objects that access and operate on Entities.
-- An Aggregate Root is an object that can access the root object (Entity) that itself may collect a group of Entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between Entities.
+* Aggregates are mostly just Entities with extra responsibilities; more on these in a moment. The opposite case is however not necessarily true.
+* Aggregates are the only objects that access and operate on Entities.
+* An Aggregate Root is an object that can access the root object (Entity) that itself may collect a group of Entities. The Aggregate Root concept becomes more important and pronounced when you have a rich domain with relations between Entities.
 
 The below conceptual diagram should give you an idea of how this might actually work.
 
@@ -48,11 +48,11 @@ The below conceptual diagram should give you an idea of how this might actually 
 
 Being an Aggregate means that you add a number of additional characteristics to the Entity's existential features:
 
-- **Consistency enforcement** is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
-- **Acts as a transaction boundary**: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
-- **Enforces the hierarchy of Entities**. Multiple Entities and/or Value Objects may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
-- The rule of thumb for referencing other Aggregates is that **any Entities that must be in a strongly consistent state should be within the same Aggregate boundary**. Anything else is some other Aggregate's job and maybe eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
-- **Domain events are emitted** to integrate with other systems (and Aggregates) whenever a transaction is completed.
+* **Consistency enforcement** is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
+* **Acts as a transaction boundary**: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
+* **Enforces the hierarchy of Entities**. Multiple Entities and/or Value Objects may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
+* The rule of thumb for referencing other Aggregates is that **any Entities that must be in a strongly consistent state should be within the same Aggregate boundary**. Anything else is some other Aggregate's job and maybe eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
+* **Domain events are emitted** to integrate with other systems (and Aggregates) whenever a transaction is completed.
 
 And as with other object types, **Aggregates use the ubiquitous language to reflect the domain model**.
 
@@ -63,10 +63,10 @@ See Vlad Khononov's _Learning Domain Driven Design: Aligning Software Architectu
 {% hint style="info" %}
 For more web links on this subject, see:
 
-- [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
-- [https://martinfowler.com/bliki/DDD_Aggregate.html](https://martinfowler.com/bliki/DDD_Aggregate.html)
-- [https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design_598034](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design_598034)
-  {% endhint %}
+* [https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/](https://www.jamesmichaelhickey.com/domain-driven-design-aggregates/)
+* [https://martinfowler.com/bliki/DDD\_Aggregate.html](https://martinfowler.com/bliki/DDD\_Aggregate.html)
+* [https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034](https://www.alibabacloud.com/blog/an-in-depth-understanding-of-aggregation-in-domain-driven-design\_598034)
+{% endhint %}
 
 ## Do we have Aggregates in the example project?
 
@@ -92,21 +92,21 @@ A _Transaction_ is the broad DDD term for committing something from start to (pe
 
 Recall how it's already been stated that the Aggregate Root (and Entities, in essence) serves as a [consistency boundary or transactional boundary](https://www.jamesmichaelhickey.com/consistency-boundary/). What that means in practice is that:
 
-- Anything that has to do with controlling that the data is correct (valid);
-- That the data gets persisted in the right way;
-- That any nested or clustered objects change together;
+* Anything that has to do with controlling that the data is correct (valid);
+* That the data gets persisted in the right way;
+* That any nested or clustered objects change together;
 
 is the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible while staying truthful to the business domain when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
 
 > Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal can be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
 >
-> — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 359
+> — Vaughn Vernon, Implementing Domain Driven Design (p. 359)
 
 Eventual consistency in practice means that we'll offload the change to some other system, rather than stay inside the same process and synchronously await the change. Or worse: have to keep all that logic in "our" solution. Vernon discussed the common question of when to use (and not to use) eventual consistency. Evans answered that someone else's job should always be deemed eventually consistent from "our" angle:
 
 > When examining the use case (or story), ask whether it's the job of the user executing the use case to make the data consistent. If it is, try to make it transactionally consistent, but only by adhering to the other rules of Aggregates. If it is another user's job, or the job of the system, allow it to be eventually consistent. That bit of wisdom not only provides a convenient tiebreaker, but it helps us gain a deeper understanding of the domain. It exposes the real system invariants: the ones that must be kept transactionally consistent.
 >
-> — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 367
+> — Vaughn Vernon, Implementing Domain Driven Design (p. 367)
 
 OK, so that sounds good and all but how does that actually work? Easy: Domain Events.
 
@@ -128,10 +128,10 @@ Let's look more at this later.
 
 Our code base for the Reservation solution has the following more substantial ingredients:
 
-- A number of use cases
-- A number of application services
-- The `Slot` Entity
-- The `ReservationService` Domain Service
+* A number of use cases
+* A number of application services
+* The `Slot` Entity
+* The `ReservationService` Domain Service
 
 {% hint style="info" %}
 We inspected the code already in the Services section. For brevity, I will avoid reproducing it here once again. Instead, we will look at selected sections.
@@ -159,7 +159,7 @@ The service is stateless and identity-less, so it can't be an Entity or Aggregat
 
 It's not an Entity because it doesn't handle anything concrete _on_ anything.
 
-I really want to avoid injecting Repositories or Domain Event Publishers into the `Slot` Entity/Aggregate, so something else has to abstract that. However, not even a Domain Layer _should_ access such things, but it's generally not seen as a capital offense. :sweat_smile:
+I really want to avoid injecting Repositories or Domain Event Publishers into the `Slot` Entity/Aggregate, so something else has to abstract that. However, not even a Domain Layer _should_ access such things, but it's generally not seen as a capital offense. :sweat\_smile:
 
 {% hint style="info" %}
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
@@ -226,12 +226,12 @@ The upper half is a loop to produce new Slots using the internal `makeSlot()` me
 
 For the bottom half we'll:
 
-- Loop through the Slots;
-- Return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in which we:
-- Update the injected Repository with the new Slot;
-- Produce a new `CreatedEvent` event with information on the new Slot;
-- Emit the event;
-- And finally, run the Promises.&#x20;
+* Loop through the Slots;
+* Return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) in which we:
+* Update the injected Repository with the new Slot;
+* Produce a new `CreatedEvent` event with information on the new Slot;
+* Emit the event;
+* And finally, run the Promises.
 
 That last entire section is where we actually enforce the transactional boundary and hand off to other's to do whatever they might need the event for.
 
