@@ -59,7 +59,7 @@ better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates 
 >
 > **The threshold upon which a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.**
 >
-> — *Learning Domain Driven Design* (Khononov 2021, p.224)
+> — _Learning Domain Driven Design_ (Khononov 2021, p.224)
 
 For me all of this spells out that use case-oriented APIs, rather than resource-based getter/setter APIs, are what we are aiming form. He also writes more on the actual sizing and boundaries:
 
@@ -67,7 +67,7 @@ For me all of this spells out that use case-oriented APIs, rather than resource-
 >
 > \[T]he relationship between microservices and bounded contexts is not symmetric. Although microservices are bounded contexts, not every bounded context is a microservice. Bounded contexts, on the other hand, denote the boundaries of the largest valid monolith. \[...]
 >
-> \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.&#x20;
+> \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.
 >
 > — _Learning Domain Driven Design_ (Khononov 2021, p.226-227)
 
@@ -102,13 +102,13 @@ I will use the broad word **service** to denote the actual code and extent of th
 
 The way I've found to best encapsulate microservices and bounded contexts is that a single Git repository handles a single bounded context which is defined in one configuration file. It may use any number of microservices (i.e. Lambda functions).
 
-| One...                                                                           | ...represents                                                                                                                                             |
-| -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <p>Git repository (classic, single-repo)<br>OR<br>Git repository (mono-repo)</p> | <p>All the code for a single <strong>service</strong><br><strong></strong><br><strong></strong>All the code for one or more <strong>services</strong></p> |
-| Configuration (such as `serverless.yml)`                                         | Definition for a single **service**                                                                                                                       |
-| Service                                                                          | <p>A single <strong>bounded context</strong> (typically)<br>OR<br>A single <strong>component</strong> of the bounded context</p>                          |
-| Microservice (such as a Lambda function)                                         | A single **use case**                                                                                                                                     |
-| API gateway                                                                      | The exposure point for the **microservices**                                                                                                              |
+| One...                                                                           | ...represents                                                                                                                    |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| <p>Git repository (classic, single-repo)<br>OR<br>Git repository (mono-repo)</p> | <p>All the code for a single <strong>service</strong><br><br>All the code for one or more <strong>services</strong></p>          |
+| Configuration (such as `serverless.yml)`                                         | Definition for a single **service**                                                                                              |
+| Service                                                                          | <p>A single <strong>bounded context</strong> (typically)<br>OR<br>A single <strong>component</strong> of the bounded context</p> |
+| Microservice (such as a Lambda function)                                         | A single **use case**                                                                                                            |
+| API gateway                                                                      | The exposure point for the **microservices**                                                                                     |
 
 {% hint style="info" %}
 This approach is valid as far as the bounded context truly is well-defined and self-contained without any excessive territorial encroachment on other contexts!
@@ -162,7 +162,7 @@ Now, the "red" ring—use cases—is next up!
 >
 > We _do_, however, expect that changes to the operation of the application _will_ affect the use-cases and therefore the software in this layer. If the details of a use-case change, then some code in this layer will certainly be affected.
 >
-> — [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+> — [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
 It should sound logical enough. If we look at a very, very basic example it should look like this:
 
@@ -212,7 +212,7 @@ If you have been around the block, maybe you feel one or more of the below:
 - "OK, this seems like just adding more chaff into the mix, doesn't it?"
 - "Isn't this a _Transaction Script_... WTH mate?"
 
-When it comes to the question of adding more (useless?) code and more layers of abstractions, rather we should see the benefits. Because we broke up the handler and its boilerplate from our business and use case, **the use case is the first meaningfully **_**testable**_** layer**. That is, the surface for our widest unit testing is the _use case_ as it effectively exercises the full flow and we can afford to be totally oblivious about anything in the handler itself. So, yes indeed, it does add a further layer but again we get something better back as a result for that minimal investment.
+When it comes to the question of adding more (useless?) code and more layers of abstractions, rather we should see the benefits. Because we broke up the handler and its boilerplate from our business and use case, **the use case is the first meaningfully \_testable**\_\*\* layer\*\*. That is, the surface for our widest unit testing is the _use case_ as it effectively exercises the full flow and we can afford to be totally oblivious about anything in the handler itself. So, yes indeed, it does add a further layer but again we get something better back as a result for that minimal investment.
 
 ### Transaction Script is your friend...if done well
 
@@ -262,4 +262,4 @@ Fortunately, though, all the services in Get-A-Room are pretty orthodox to clean
 
 The use case is the first meaningfully testable layer. You should prioritize tests for this layer (if you aren't already doing TDD or such). Testing here gives you _a lot_ of bang for the buck.
 
-Use cases are good examples of places where a well-working Transaction Script pattern can be used. I find it true that the less lines you have, the better the domain layer is functioning and the tighter you have been on understanding what your system should do.&#x20;
+Use cases are good examples of places where a well-working Transaction Script pattern can be used. I find it true that the less lines you have, the better the domain layer is functioning and the tighter you have been on understanding what your system should do.

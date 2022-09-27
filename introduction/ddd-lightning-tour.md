@@ -68,7 +68,7 @@ The better option is, thus, to do whatever it takes to create an amenable, low-t
 
 Domain Driven Design is not just something that makes you sound smart, but it's actually a very hands-on toolbox as well. I've reproduced one of Eric Evans' diagrams with colored bubbles to easier see where the tactical and strategic patterns reside. Green (top) is for tactical patterns, more concerning the implementation and code side, and the lilac (bottom) is for strategic ones that deal with the modeling, understanding, and integration of our domains.
 
-<figure><img src="../.gitbook/assets/DDD model.png" alt=""><figcaption><p>How the patterns match up, as presented in Eric Evans's book (2003) and re-drawn by myself.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/DDD model (1).png" alt=""><figcaption><p>How the patterns match up, as presented in Eric Evans's book (2003) and re-drawn by myself.</p></figcaption></figure>
 
 It may look overwhelmin but don't fear!
 
