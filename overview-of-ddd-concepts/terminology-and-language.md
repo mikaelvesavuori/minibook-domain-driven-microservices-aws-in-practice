@@ -32,11 +32,11 @@ As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.h
 
 Some important features to understand:
 
-* The Ubiquitous Language is the _de facto_ standard nomenclature, so other similar words and terms must be avoided.
-* The domain model and our subsequent implementations express the Ubiquitous Language.
-* The Ubiquitous Language evolves organically over time. As per above, this needs to be reflected similarly in the software artifacts.
-* Each domain will likely have its own Ubiquitous Language because of their respective meanings and semantics.
-* Ubiquitous "Languages" are not meant to be efficient. Neither are they shared (well, if that doesn't make sense and is actually the way it is).
+- The Ubiquitous Language is the _de facto_ standard nomenclature, so other similar words and terms must be avoided.
+- The domain model and our subsequent implementations express the Ubiquitous Language.
+- The Ubiquitous Language evolves organically over time. As per above, this needs to be reflected similarly in the software artifacts.
+- Each domain will likely have its own Ubiquitous Language because of their respective meanings and semantics.
+- Ubiquitous "Languages" are not meant to be efficient. Neither are they shared (well, if that doesn't make sense and is actually the way it is).
 
 ## Documenting the ubiquitous language
 
@@ -50,10 +50,10 @@ Remember that the ubiquitous language is dynamic and ever-changing. It needs to 
 
 Let's go back to our functional requirements and start sniffing out a language:
 
-* **Reserve** a single **room** in a single **facility** (your office) and your time zone.
-* **Reserve** the room in **slots** of 1 hour at the start of each hour.
-* Allow for the **cancellation** of **room reservations.**
-* Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be **cancelled** automatically.
+- **Reserve** a single **room** in a single **facility** (your office) and your time zone.
+- **Reserve** the room in **slots** of 1 hour at the start of each hour.
+- Allow for the **cancellation** of **room reservations.**
+- Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be **cancelled** automatically.
 
 With this, we have now collected `Reserve`, `Room`, `Slot`, `Facility`, `Cancellation`, `Room reservation`, `Checked-in`.
 
@@ -98,7 +98,6 @@ The Security domain has, also, only a single unique concept: The (verification) 
 
 In the reference implementation this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario this format is probably quickly exhausted as definitions may need to be richer and examplified. Note also how we ascribe term to specific domains.\
 
-
-![TODO](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
+![Describing in short our Ubiquitous Languages through the domain concepts](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
 
 In the next page we will see how EventStorming can be an additional or alternative approach to accumulating a domain model and language.

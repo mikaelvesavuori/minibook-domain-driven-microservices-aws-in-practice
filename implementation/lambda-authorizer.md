@@ -9,16 +9,18 @@ The Lambda authorizer is somewhat convoluted due to the particulars of how AWS' 
 Here's the code:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/authorizers/Authorizer.ts" lineNumbers="true" %}
+
 ```typescript
-import { APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyResult } from "aws-lambda";
 
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
-import { AuthorizationHeaderError } from '../../application/errors/AuthorizationHeaderError';
-import { InvalidVerificationCodeError } from '../../application/errors/InvalidVerificationCodeError';
-import { MissingSecurityApiEndpoint } from '../../application/errors/MissingSecurityApiEndpoint';
+import { AuthorizationHeaderError } from "../../application/errors/AuthorizationHeaderError";
+import { InvalidVerificationCodeError } from "../../application/errors/InvalidVerificationCodeError";
+import { MissingSecurityApiEndpoint } from "../../application/errors/MissingSecurityApiEndpoint";
 
-const SECURITY_API_ENDPOINT_VERIFY = process.env.SECURITY_API_ENDPOINT_VERIFY || '';
+const SECURITY_API_ENDPOINT_VERIFY =
+  process.env.SECURITY_API_ENDPOINT_VERIFY || "";
 
 /**
  * @description Authorizer that will check the `event.Authorization` header
@@ -27,24 +29,26 @@ const SECURITY_API_ENDPOINT_VERIFY = process.env.SECURITY_API_ENDPOINT_VERIFY ||
  *
  * @example `Authorization: b827bb85-7665-4c32-bb3c-25bca5d3cc48#abc123` header.
  */
-export async function handler(event: Record<string, any>): Promise<APIGatewayProxyResult> {
+export async function handler(
+  event: Record<string, any>
+): Promise<APIGatewayProxyResult> {
   try {
-    if (event.httpMethod === 'OPTIONS') return handleCors();
+    if (event.httpMethod === "OPTIONS") return handleCors();
     if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
     // Get required values
-    const header = event.headers['Authorization'];
-    const [slotId, verificationCode] = header.split('#');
+    const header = event.headers["Authorization"];
+    const [slotId, verificationCode] = header.split("#");
     if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
 
     // Verify code
     const isCodeValid = await validateCode(slotId, verificationCode);
     if (!isCodeValid) throw new InvalidVerificationCodeError();
 
-    return generatePolicy(verificationCode, 'Allow', event.methodArn, '');
+    return generatePolicy(verificationCode, "Allow", event.methodArn, "");
   } catch (error: any) {
     console.error(error.message);
-    return generatePolicy('failed', 'Deny', event.methodArn, {}); // TODO: Ensure this works if not same as in the OK one above
+    return generatePolicy("failed", "Deny", event.methodArn, {});
   }
 }
 
@@ -55,13 +59,13 @@ function handleCors() {
   return {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-      Vary: 'Origin'
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+      Vary: "Origin",
     },
-    body: JSON.stringify('OK')
+    body: JSON.stringify("OK"),
   } as APIGatewayProxyResult;
 }
 
@@ -76,26 +80,26 @@ const generatePolicy = (
 ) => {
   // @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
   const authResponse: any = {
-    principalId
+    principalId,
   };
 
   if (effect && resource) {
     const policyDocument = {
-      Version: '2012-10-17',
+      Version: "2012-10-17",
       Statement: [
         {
-          Action: 'execute-api:Invoke',
+          Action: "execute-api:Invoke",
           Effect: effect,
-          Resource: resource
-        }
-      ]
+          Resource: resource,
+        },
+      ],
     };
 
     authResponse.policyDocument = policyDocument;
   }
 
   authResponse.context = {
-    stringKey: JSON.stringify(data)
+    stringKey: JSON.stringify(data),
   };
 
   return authResponse;
@@ -104,13 +108,16 @@ const generatePolicy = (
 /**
  * @description Validate a code.
  */
-async function validateCode(slotId: string, verificationCode: string): Promise<boolean> {
+async function validateCode(
+  slotId: string,
+  verificationCode: string
+): Promise<boolean> {
   return await fetch(SECURITY_API_ENDPOINT_VERIFY, {
     body: JSON.stringify({
       slotId,
-      code: verificationCode
+      code: verificationCode,
     }),
-    method: 'POST'
+    method: "POST",
   })
     .then((response) => response.json())
     .then((result) => {
@@ -123,6 +130,7 @@ async function validateCode(slotId: string, verificationCode: string): Promise<b
     });
 }
 ```
+
 {% endcode %}
 
 Most of its contents are pure boilerplate that you can copy between projects to your heart's content.
@@ -133,8 +141,8 @@ The particulars in the handler are:
 if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
 // Get required values
-const header = event.headers['Authorization'];
-const [slotId, verificationCode] = header.split('#');
+const header = event.headers["Authorization"];
+const [slotId, verificationCode] = header.split("#");
 if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
 
 // Verify code
