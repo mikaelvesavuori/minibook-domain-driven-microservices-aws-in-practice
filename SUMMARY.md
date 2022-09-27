@@ -29,7 +29,7 @@
   * [Modules](tactical-ddd/modules/README.md)
     * [Domain driven Lambdas with a use case approach](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/README.md)
       * [Create slots](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/create-booking-slots.md)
-      * [List slots](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/list-slots.md)
+      * [Get slots](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/list-slots.md)
       * [Reserve a slot](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/book-a-slot.md)
       * [Check in](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/check-in.md)
       * [Check out](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/check-out.md)
