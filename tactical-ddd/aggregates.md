@@ -13,7 +13,7 @@ description: >-
 
 The **Aggregate** can be confusing. It has two common meanings.
 
-The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" or links other Entities in a logical whole. This entails that **Aggregates,** like Entities, each have their own unique identity. The highest-level Aggregate is called the **Aggregate Root**. There must be no way to access "deeper" Entities without passing the **Aggregate Root**, or whichever other construct is highest.
+The "correct" and orthodox one is that the **Aggregate** is simply an Entity that itself "owns" or links other Entities in a logical whole. This entails that **Aggregates,** like Entities, each has their own unique identity. The highest-level Aggregate is called the **Aggregate Root**. There must be no way to access "deeper" Entities without passing the **Aggregate Root**, or whichever other construct is highest.
 
 For the secondary, more colloquial meaning it can mean the actual "data object" that we are operating on. While not technically always correct, I find the **Aggregate** term slightly better than saying things like "I will access the X Entity through the API". At least for me, I find it better at expressing a data source, while Entity is more of a thing.
 
@@ -24,7 +24,7 @@ Moreover, the **Aggregate** acts as the _transaction boundary_ so it completely 
 
 For the "truth" on the matter of Aggregates, we will look no further than to the Big Blue Book:
 
-> An Aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate, because no outside object can ever see it out of the context of the root Entity.
+> An Aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes. Each Aggregate has a root and a boundary. The boundary defines what is inside the Aggregate. The root is a single, specific Entity contained in the Aggregate. The root is the only member of the Aggregate that outside objects are allowed to hold references to, although objects within the boundary may hold references to each other. Entities other than the root have local identities, but that identity needs to be distinguishable only within the Aggregate because no outside object can ever see it out of the context of the root Entity.
 >
 > — Source: Eric Evans, _Domain Driven Design: Tackling Complexity in the Heart of Software_ (p. 126-127)
 
@@ -33,7 +33,7 @@ The Aggregate is the most complex pattern, for sure. It is the one I myself have
 
 I hope to get across the fundamentals here, but let it be known that _a lot_ of paper has been printed around various ways to think about them, referencing other Aggregate Roots, data modeling, efficient persistence, and so on.
 
-Get a coffee, you deserve it, and don't sweat it all here and now. Read up and evolve when you have gotten your [sea legs](https://www.marineinsight.com/life-at-sea/what-does-the-term-get-your-sea-legs-means/).
+Get a coffee, you deserve it and don't sweat it all here and now. Read up and evolve when you have gotten your [sea legs](https://www.marineinsight.com/life-at-sea/what-does-the-term-get-your-sea-legs-means/).
 {% endhint %}
 
 Revisiting our relations between Aggregates and Entities we see the fundamental items to understand include:
@@ -51,7 +51,7 @@ Being an Aggregate means that you add a number of additional characteristics to 
 - **Consistency enforcement** is Job #1 for the Aggregate. It has to ensure changes are correct and consistent.
 - **Acts as a transaction boundary**: Aggregates use their own business/domain logic to modify data. You must not use more than a single Aggregate instance per transaction.
 - **Enforces the hierarchy of Entities**. Multiple Entities and/or Value Objects may be part of the same transaction, and updating them must always be done as a shared transaction only _after verification_ of rules and checks.
-- The rule of thumb for referencing other Aggregates is that **any Entities that must be in strongly consistent state should be within the same Aggregate boundary**. Anything else is some other Aggregate's job and may be eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
+- The rule of thumb for referencing other Aggregates is that **any Entities that must be in a strongly consistent state should be within the same Aggregate boundary**. Anything else is some other Aggregate's job and maybe eventually consistent. Work to minimize Aggregate boundaries to the smallest, logically possible ones.
 - **Domain events are emitted** to integrate with other systems (and Aggregates) whenever a transaction is completed.
 
 And as with other object types, **Aggregates use the ubiquitous language to reflect the domain model**.
@@ -74,7 +74,7 @@ Yes and no.
 
 No, because there is no high-level object of that variety that is containing multiple Entities or similar objects. We only have the "flat" Entity named `Slot`.
 
-Yes, because our only Entity for the above reason automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, and especially not if there is no need for such a concept in a basic domain model like the one in our example project.
+Yes, because our only Entity for the above reason automatically becomes the Aggregate Root. For practical reasons, we might not want to use that term all the time when we work, especially not if there is no need for such a concept in a basic domain model like the one in our example project.
 
 We will see later in this section how I am handling this case in the project.
 
@@ -96,7 +96,7 @@ Recall how it's already been stated that the Aggregate Root (and Entities, in es
 - That the data gets persisted in the right way;
 - That any nested or clustered objects change together;
 
-is the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible, while staying truthful to the business domain, when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
+is the responsibility of the respective Aggregate. Anything outside the direct responsibility of the Aggregate is someone else's work. You should attempt to shed as much load as possible while staying truthful to the business domain when you decide what work is on the shoulders of an Aggregate. Vernon also writes on that issue:
 
 > Just because you are given a use case that calls for maintaining consistency in a single transaction doesn't mean you should do that. Often, in such cases, the business goal can be achieved with eventual consistency between Aggregates. The team should critically examine the use cases and challenge their assumptions, especially when following them as written would lead to unwieldy designs.
 >
@@ -104,7 +104,7 @@ is the responsibility of the respective Aggregate. Anything outside the direct r
 
 Eventual consistency in practice means that we'll offload the change to some other system, rather than stay inside the same process and synchronously await the change. Or worse: have to keep all that logic in "our" solution. Vernon discussed the common question of when to use (and not to use) eventual consistency. Evans answered that someone else's job should always be deemed eventually consistent from "our" angle:
 
-> When examining the use case (or story), ask whether it's the job of the user executing the use case to make the data consistent. If it is, try to make it transactionally consistent, but only by adhering to the other rules of Aggregates. If it is another user's job, or the job of the system, allow it to be eventually consistent. That bit of wisdom not only provides a convenient tie breaker, but it helps us gain a deeper understanding of the domain. It exposes the real system invariants: the ones that must be kept transactionally consistent.
+> When examining the use case (or story), ask whether it's the job of the user executing the use case to make the data consistent. If it is, try to make it transactionally consistent, but only by adhering to the other rules of Aggregates. If it is another user's job, or the job of the system, allow it to be eventually consistent. That bit of wisdom not only provides a convenient tiebreaker, but it helps us gain a deeper understanding of the domain. It exposes the real system invariants: the ones that must be kept transactionally consistent.
 >
 > — Source: Vaughn Vernon, Implementing Domain Driven Design, p. 367
 
@@ -114,13 +114,13 @@ OK, so that sounds good and all but how does that actually work? Easy: Domain Ev
 
 We haven't discussed Domain Events in detail yet, as these will come up in an upcoming section, but the way in which the Aggregate informs the rest of the landscape is through events, specifically in the DDD context, Domain Events.
 
-A Domain Event is, in short, an event (or message) pushed to some asynchrononous messaging technology where consumers can subscribe to new events unfolding. We give events their own identity, in effect transforming them from just a blob with some data into a fully-fleshed Domain Event that "speaks" our domain's language. By using them we can stitch together interactions across many systems in our landscape without foregoing any of the rich vocabulary we have created through DDD and EventStorming.
+A Domain Event is, in short, an event (or message) pushed to some asynchronous messaging technology where consumers can subscribe to new events unfolding. We give events their own identity, in effect transforming them from just a blob with some data into a fully-fleshed Domain Event that "speaks" our domain's language. By using them we can stitch together interactions across many systems in our landscape without foregoing any of the rich vocabularies we have created through DDD and EventStorming.
 
-Only Aggregates must emit events since they enforce business rules. In practice this should be done post-fact as a result of an operation, for example like:
+Only Aggregates must emit events since they enforce business rules. In practice this should be done post-fact as a result of an operation, for example:
 
 1. User makes a request to our system/service (“Aggregate”)
-2. Our system instantiates a class for our Aggregate and fulfils the operation (if valid)
-3. Our system emits an event to notify that the operation has occurred
+2. Our system instantiates a class for our Aggregate and fulfills the operation (if valid)
+3. Our system emits an event to notify us that the operation has occurred
 
 Let's look more at this later.
 
@@ -134,7 +134,7 @@ Our code base for the Reservation solution has the following more substantial in
 - The `ReservationService` Domain Service
 
 {% hint style="info" %}
-We inspected the code already in the Services section. For brevity, I will avoid reproducing it here once again. Instead we will look at selected sections.
+We inspected the code already in the Services section. For brevity, I will avoid reproducing it here once again. Instead, we will look at selected sections.
 
 The code itself is located at `code/Reservation/SlotReservation/src/domain/services/ReservationService.ts` if you want to see the full source.
 {% endhint %}
@@ -149,7 +149,7 @@ In typical DDD fashion we would not want to move the persistence concern (even w
 
 Secondly, there is a lot of wiring that needs to be done. By placing all of that into a stateless, separate class rather than in the functionally oriented use cases we can avoid having to rewrite a lot of code.
 
-At the end of the day it is not about being orthodox but by being clear and domain-oriented in our code. I am sure Evans and Vernon and others might find any number of details to complain about, but the way _it actually is_ implemented is hopefully clear enough; this is the real goal, not dogmatism.
+At the end of the day, it is not about being orthodox but being clear and domain-oriented in our code. I am sure Evans and Vernon and others might find any number of details to complain about, but the way _it actually is_ implemented is hopefully clear enough; this is the real goal, not dogmatism.
 
 ### Why is this a Domain Service and not an Aggregate?
 
@@ -165,15 +165,15 @@ I really want to avoid injecting Repositories or Domain Event Publishers into th
 Here's an example of a Stack Overflow answer that also makes the point that it's acceptable to inject a Repository into a Domain Service: [https://softwareengineering.stackexchange.com/a/330435](https://softwareengineering.stackexchange.com/a/330435).
 {% endhint %}
 
-It _does act_ like an Aggregate as it functions as the "entry point" to the `Slot` Entity that we actually operate on and persist. We also send the Domain Events from here: it therefore acts is the transaction boundary.
+It _does act_ like an Aggregate as it functions as the "entry point" to the `Slot` Entity that we actually operate on and persist. We also send the Domain Events from here: it, therefore, acts as the transaction boundary.
 
-And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with considered and deliberate design which after all is the real goal.
+And that's how we ended up in this compromise. Don't let DDD become dogma. Be humble and realistic and if it makes sense to you and you can explain the reasoning, at the very least we are dealing with a considered and deliberate design which after all is the real goal.
 
 ## Examples from our project
 
 ### Use case #1: Make daily slots
 
-The first publicly accessible use case is for making the daily slots. This one is also one of the longer ones as it has to deal with more setup than the other ones. It is run once per day, no more.
+The first publicly accessible use case is for making daily slots. This one is also one of the longer ones as it has to deal with more setups than the other ones. It is run once per day, no more.
 
 ```typescript
 /**
@@ -184,41 +184,41 @@ The first publicly accessible use case is for making the daily slots. This one i
  * @see https://time.is/Z
  */
 public async makeDailySlots(): Promise<void> {
-  const slots: SlotDTO[] = [];
+ const slots: SlotDTO[] = [];
 
-  const timeSlot = new TimeSlot();
-  const currentTime = this.getCurrentTime();
-  const numberHours = 10;
-  const startHour = 8;
+ const timeSlot = new TimeSlot();
+ const currentTime = this.getCurrentTime();
+ const numberHours = 10;
+ const startHour = 8;
 
-  for (let slotCount = 0; slotCount < numberHours; slotCount++) {
-    const hour = startHour + slotCount;
-    const { startTime, endTime } = timeSlot.startingAt(hour);
-    const newSlot = this.makeSlot({ currentTime, startTime, endTime });
-    slots.push(newSlot);
-  }
+ for (let slotCount = 0; slotCount < numberHours; slotCount++) {
+ const hour = startHour + slotCount;
+ const { startTime, endTime } = timeSlot.startingAt(hour);
+ const newSlot = this.makeSlot({ currentTime, startTime, endTime });
+ slots.push(newSlot);
+ }
 
-  const addSlots = slots.map(async (slot: SlotDTO) => {
-    await this.repository.updateSlot(slot);
+ const addSlots = slots.map(async (slot: SlotDTO) => {
+ await this.repository.updateSlot(slot);
 
-    const { slotId, hostName, slotStatus, timeSlot } = slot;
+ const { slotId, hostName, slotStatus, timeSlot } = slot;
 
-    const event = new CreatedEvent({
-      event: {
-        eventName: 'CREATED', // Transient state
-        slotId,
-        slotStatus,
-        hostName,
-        startTime: timeSlot.startTime
-      },
-      eventBusName: this.domainBusName,
-      metadataConfig: this.metadataConfig
-    });
+ const event = new CreatedEvent({
+ event: {
+ eventName: 'CREATED', // Transient state
+ slotId,
+ slotStatus,
+ hostName,
+ startTime: timeSlot.startTime
+ },
+ eventBusName: this.domainBusName,
+ metadataConfig: this.metadataConfig
+ });
 
-    await this.emitEvents(event);
-  });
+ await this.emitEvents(event);
+ });
 
-  await Promise.all(addSlots);
+ await Promise.all(addSlots);
 }
 ```
 
@@ -228,12 +228,12 @@ For the bottom half we'll:
 
 - Loop through the Slots;
 - Return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in which we:
-  - Update the injected Repository with the new Slot;
-  - Produce a new `CreatedEvent` event with information on the new Slot;
-  - Emit the event;
-- And finally run the Promises.&#x20;
+- Update the injected Repository with the new Slot;
+- Produce a new `CreatedEvent` event with information on the new Slot;
+- Emit the event;
+- And finally, run the Promises.&#x20;
 
-That last entire section is where we actually enforce the transactional boundary and hand-off to other's to do whatever they might need the event for.
+That last entire section is where we actually enforce the transactional boundary and hand off to other's to do whatever they might need the event for.
 
 ### Use case #2: Check in
 
@@ -248,27 +248,27 @@ The rest of the use cases have a format that resembles the one we look at here, 
  * @emits `CHECKED_IN`
  */
 public async checkIn(slotId: SlotId): Promise<void> {
-  const slot = await this.loadSlot(slotId);
-  const { slotStatus, hostName, timeSlot } = slot;
-  const { startTime } = timeSlot;
-  if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
+ const slot = await this.loadSlot(slotId);
+ const { slotStatus, hostName, timeSlot } = slot;
+ const { startTime } = timeSlot;
+ if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
 
-  const newStatus = 'CHECKED_IN';
-  await this.updateSlot(slot, newStatus);
+ const newStatus = 'CHECKED_IN';
+ await this.updateSlot(slot, newStatus);
 
-  const event = new CheckedInEvent({
-    event: {
-      eventName: newStatus,
-      slotId,
-      slotStatus: newStatus,
-      hostName,
-      startTime
-    },
-    eventBusName: this.domainBusName,
-    metadataConfig: this.metadataConfig
-  });
+ const event = new CheckedInEvent({
+ event: {
+ eventName: newStatus,
+ slotId,
+ slotStatus: newStatus,
+ hostName,
+ startTime
+ },
+ eventBusName: this.domainBusName,
+ metadataConfig: this.metadataConfig
+ });
 
-  await this.emitEvents(event);
+ await this.emitEvents(event);
 }
 ```
 
@@ -289,50 +289,50 @@ Reserving a Slot is similar to the above case, but we need to do more this time,
  * @emits `RESERVED`
  */
 public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
-  this.validateInputData(slotInput, true);
-  const { slotId, hostName } = slotInput;
+ this.validateInputData(slotInput, true);
+ const { slotId, hostName } = slotInput;
 
-  const slot = await this.loadSlot(slotId);
-  const { slotStatus, timeSlot } = slot;
-  const { startTime } = timeSlot;
-  if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
+ const slot = await this.loadSlot(slotId);
+ const { slotStatus, timeSlot } = slot;
+ const { startTime } = timeSlot;
+ if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
 
-  // We do the verification code stuff before committing to the transaction
-  const verificationCode = await this.getVerificationCode(slotId);
-  if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
+ // We do the verification code stuff before committing to the transaction
+ const verificationCode = await this.getVerificationCode(slotId);
+ if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
 
-  const newStatus = 'RESERVED';
+ const newStatus = 'RESERVED';
 
-  await this.updateSlot(
-    {
-      ...slot,
-      hostName: hostName || ''
-    },
-    newStatus
-  );
+ await this.updateSlot(
+ {
+ ...slot,
+ hostName: hostName || ''
+ },
+ newStatus
+ );
 
-  const event = new ReservedEvent({
-    event: {
-      eventName: newStatus,
-      slotId,
-      slotStatus: newStatus,
-      hostName,
-      startTime
-    },
-    eventBusName: this.domainBusName,
-    metadataConfig: this.metadataConfig
-  });
+ const event = new ReservedEvent({
+ event: {
+ eventName: newStatus,
+ slotId,
+ slotStatus: newStatus,
+ hostName,
+ startTime
+ },
+ eventBusName: this.domainBusName,
+ metadataConfig: this.metadataConfig
+ });
 
-  await this.emitEvents(event);
+ await this.emitEvents(event);
 
-  return {
-    code: verificationCode
-  };
+ return {
+ code: verificationCode
+ };
 }
 ```
 
 Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do.
 
-Next, we load the slot data for the requested slot, destructure the data for use, verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
+Next, we load the slot data for the requested slot, destructure the data for use, and verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
 
-Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check in.
+Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check-in.

@@ -9,14 +9,14 @@ description: Events make your distributed services world "go round, round, round
 {% hint style="success" %}
 **TL;DR**
 
-When we say **Events** we in practice always refer to Domain Events. They are a way of decoupling parts of your solution or landscape, while expressing what is going on in the terms of the ubiquitous language. **Events** can be used with any technology and DDD has no opinion on that side of things.
+When we say **Events** we in practice always refer to Domain Events. They are a way of decoupling parts of your solution or landscape while expressing what is going on in the terms of ubiquitous language. **Events** can be used with any technology and DDD has no opinion on that side of things.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>(Domain) Events reside in the Domain layer.</p></figcaption></figure>
 
 _Domain Events_ indicate **significant occurrences that have occurred in the domain** and need to be reported to other stakeholders belonging to the domain. Aggregates are responsible for publishing events, though we saw how in our example project it is the Domain Service wrapping the `Entity` that actually does that work for reasons mentioned in that section. Domain Events drive transactions and can make commands to other systems.
 
-At a high level, events and event-driven architecture means that we can—and should—decouple systems from each other. This enables us to practically build and sustain an intentional architecture, as promoted by Domain Driven Design, Clean Architecture and most serious software engineering principles today.
+At a high level, events and event-driven architecture mean that we can—and should—decouple systems from each other. This enables us to practically build and sustain an intentional architecture, as promoted by Domain Driven Design, Clean Architecture, and most serious software engineering principles today.
 
 See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation) for visual clarification:
 
@@ -24,7 +24,7 @@ See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/
 
 ![Handling multiple actions per domain.](../.gitbook/assets/aggregate-domain-event-handlers.png)
 
-As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in scope of our domain may subscribe to.
+As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in the scope of our domain may subscribe to.
 
 {% hint style="info" %}
 See more at:
@@ -73,10 +73,10 @@ Note that such work around naming is often more art than science.
 
 It's wise to store a history of all events that have occurred. This makes it possible to "play back" the history of a system—well, Aggregate to be exact—and is a foundational component of the [CQRS (Command Query Responsibility Segregation) pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs).
 
-Personally I find full-on CQRS to be _a lot_ to deal with, and modern cloud architectures can mitigate and improve some of the conditions in which original CQRS evolved from. I would however highly advise to:
+Personally, I find full-on CQRS to be _a lot_ to deal with, and modern cloud architectures can mitigate and improve some of the conditions from which original CQRS evolved. I would however highly advise you to:
 
 - Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
-- Use an event store store to persist all events when you emit Domain Events.
+- Use an event store to persist all events when you emit Domain Events.
 
 The solution used here is manual and is done completely in code, on behalf of the Domain Service (that stands in for the Aggregate orchestration), doing this type of transactional dance (in the case of the Reservation solution)
 
@@ -85,12 +85,12 @@ The solution used here is manual and is done completely in code, on behalf of th
 - Emit the Domain Event
 
 {% hint style="info" %}
-AWS natives will maybe point to a more elegant solution being using DynamoDB streams as an outbox pattern, which could definitely work. I am 50/50 on which I like the most, because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
+AWS natives will maybe point to a more elegant solution using DynamoDB streams as an outbox pattern, which could definitely work. I am 50/50 which I like the most because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
 {% endhint %}
 
 ## Resiliency
 
-The code base uses a trivial handwavy way to set up a Dead Letter Queue (often just abbreviated as DLQ). A full implementation would for example implement a Lambda function that just re-emits the event on the appropriate bus. This could theoretically become mined territory since we want to keep a tight ship regarding who can emit what event to which bus. In this case we can only use a single Lambda to do that work and it must not contain any business functionality—only re-emit the exact same event!
+The code base uses a trivial handwavy way to set up a Dead Letter Queue (often just abbreviated as DLQ). A full implementation would for example implement a Lambda function that just re-emits the event on the appropriate bus. This could theoretically become mined territory since we want to keep a tight ship regarding who can emit what event to which bus. In this case, we can only use a single Lambda to do that work and it must not contain any business functionality—only re-emit the exact same event!
 
 Further, note that there are differences for DLQs based on which service you are setting them up for, i.e. a Lambda DLQ will be useful when a Lambda function does not respond, but you will still need a separate EventBridge DLQ to guard against failures when a system tries to put something on the EventBridge bus.&#x20;
 
@@ -108,9 +108,9 @@ See the following for more information:
 
 ## Emitting events
 
-At this point it should be relatively clear that Domain Events are important and that they should be named well and be persisted. But what are they?
+At this point, it should be relatively clear that Domain Events are important and that they should be named well and persisted. But what are they?
 
-In the example project we use AWS EventBridge, which similarly to other such services, takes in an object as the event payload. There's more to it, but more or less you'll get to stick in whatever object you want (with some size restrictions etc.).
+In the example project, we use AWS EventBridge, which similarly to other such services, takes in an object as the event payload. There's more to it, but more or less you'll get to stick in whatever object you want (with some size restrictions, etc.).
 
 To work with Domain Events in a controlled manner we'll however need more than just an odd JSON blob.
 
@@ -178,7 +178,7 @@ class EventBridgeEmitter implements EventEmitter {
 
 {% endcode %}
 
-We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons, so that we can use a local mock rather than the full-blown EventBridge client.
+We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons so that we can use a local mock rather than the full-blown EventBridge client.
 
 ### Domain event publisher service
 
@@ -517,7 +517,7 @@ export class ClosedEvent extends EmittableEvent {
 {% endcode %}
 
 {% hint style="warning" %}
-Admittedly the event structure (despite our decoupling of the emitter itself) is tied to EventBridge that is acceptable as we are actually only using EventBridge in our project. If we would support truly different emitters we would perhaps need to add further abstractions on the event shape. In the context of this project we can accept that as a trivia item.
+Admittedly the event structure (despite our decoupling of the emitter itself) is tied to EventBridge which is acceptable as we are actually only using EventBridge in our project. If we would support truly different emitters we would perhaps need to add further abstractions on the event shape. In the context of this project, we can accept that as a trivia item.
 {% endhint %}
 
 ### Metadata
@@ -530,7 +530,7 @@ Very basic, dumb implementation to match the event name to a recased version.
 
 ### DTO
 
-First we make the EventDTO. This has the overall shape we actually require.
+First, we make the EventDTO. This has the overall shape we actually require.
 
 ### Make method
 
@@ -542,7 +542,7 @@ In order to use the class (remember, data _and_ behavior!) rather than a dumb pl
 
 ### Get analytics method
 
-Just as the regular `get()` method, the `getAnalyticsVariant()` method returns a representation of the event. The reasons we want to have this as a specific method is:
+Just as the regular `get()` method, the `getAnalyticsVariant()` method returns a representation of the event. The reasons we want to have this as a specific method are:
 
 - The analytics event bus is not the same as the regular one
 - We want to redact the (potentially sensitive) ID

@@ -21,7 +21,7 @@ Every **Entity** has a unique identity. We use **Entities** to wedge in domain l
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Entities reside in the Domain layer.</p></figcaption></figure>
 
-Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
+Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _is not the same thing_.
 
 {% hint style="info" %}
 **Beware of snake oil salesmen**
@@ -37,11 +37,11 @@ Our example `BookClubMember` will most likely involve both **data** (such as ide
 
 Entities are persisted (saved, loaded) with a Repository in the shape of a Data Transfer Object. Before using them in your code, you "turn them into" DTOs or into Entities. DTOs must never be directly mutated.
 
-**Let's make it all ultra clear**: An Entity is an _object_. Most often we represent these as classes. Because a class can contain data we can logically manipulate that data. The way we manipulate the data is through methods on the Entity class that correspond to our common (ubiquitous) language; We don't let anyone directly manipulate the data on the Entity instance. We can save a representation of the Entity's data (state) with a Repository and we can load back the data and reconstitute it into a valid Entity instance when needed. All of that would happen in the same Bounded Context, in our case, in the same solution (in turn consisting of Lambda functions).
+**Let's make it all ultra clear**: An Entity is an _object_. Most often we represent these as classes. Because a class can contain data we can logically manipulate that data. The way we manipulate the data is through methods on the Entity class that corresponds to our common (ubiquitous) language; We don't let anyone directly manipulate the data on the Entity instance. We can save a representation of the Entity's data (state) with a Repository and we can load back the data and reconstitute it into a valid Entity instance when needed. All of that would happen in the same Bounded Context, in our case, in the same solution (in turn consisting of Lambda functions).
 
 ## Splitting data and behavior leads to unmaintainable code
 
-In the world of traditional back-end engineering you might find something like the below diagram: A service that interacts with several data sources. Because all of these are distinct and separated we have no good idea of who owns, and may change, what source. In the bottom we have the faint contours of other services, too.
+In the world of traditional back-end engineering, you might find something like the below diagram: A service that interacts with several data sources. Because all of these are distinct and separated we have no good idea of who owns and may change, what source. At the bottom we have the faint contours of other services, too.
 
 It's not uncommon that we for example:
 
@@ -52,11 +52,11 @@ Either case will be poor in different ways.
 
 <figure><img src="../.gitbook/assets/example-classic-integrations.png" alt=""><figcaption><p>Conceptual diagram of tangled integrations where separation of data and behavior leads to uncertainty of who can mutate data in which ways.</p></figcaption></figure>
 
-While in theory we have decoupling here, in essence we also have created an even bigger problem: An **anemic domain model**.
+While in theory we have decoupling here, in essence, we also have created an even bigger problem: An **anemic domain model**.
 
 ### The "anemic domain model"
 
-The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be [CRUDdy](https://verraes.net/2013/04/crud-is-an-anti-pattern/) as they allow for direct mutations through public getters and setters. It can quickly becomes hard to understand all the places in a codebase in which the data is manipulated, and how it was done.
+The [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html) is one that represents objects as shells, or husks, of their true capabilities. They will often be [CRUDdy](https://verraes.net/2013/04/crud-is-an-anti-pattern/) as they allow for direct mutations through public getters and setters. It can quickly become hard to understand all the places in a codebase in which the data is manipulated, and how it was done.
 
 {% hint style="warning" %}
 **Good code does more than just compile**
@@ -72,7 +72,7 @@ All this _is_ measurable, once you have access to the code and not just raving t
 The anemic type of objects will maybe _do the job_, but they will become liabilities too. They do not shield the objects from misuse, nor do they express the common language as succinctly.
 {% endhint %}
 
-The opposite of all of this, no surprises, is the "rich domain model"—really no more than a bit of opinionated ideas on top of your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
+The opposite of all of this, no surprise, is the "rich domain model"—really no more than a few opinionated ideas on top of your classic object-oriented programming. While that may not technically be the full truth, in our abbreviated version of DDD and the universe, then that explanation is good enough.
 
 ## Rich domain models
 
@@ -82,7 +82,7 @@ Compared to their anemic brethren, rich domain models (typically Entities and Ag
 
 **A rich model, in the context of our code, is expressive**. It will use a noun (such as a `Book`), rather than a semantic abstraction (say `BookProcessManagerFactory`) and allows us to act on it. Typically this is verb-based — for example `book.recommend()` to correlate with the actual business terms. As we've seen many times in this book, we want this to explain 1:1 in our common or ubiquitous language what we are doing.
 
-In the below diagram (note that the use case isn't the same as in the last diagram!) you can see how a single `Slot` Entity (since it's the only one, it gets "promoted" to Aggregate Root; more on this in the next section) is the surface that contains all the data and behavior required to create the slot for a room reservation. It also handles the `TimeSlot` Value Object as part of the overall Slot. Any changes to the Slot gets pushed as a Domain Event, so that we can inform other Aggregates or the rest of the technical landscape of ongoing changes.
+In the below diagram (note that the use case isn't the same as in the last diagram!) you can see how a single `Slot` Entity (since it's the only one, it gets "promoted" to Aggregate Root; more on this in the next section) is the surface that contains all the data and behavior required to create the slot for a room reservation. It also handles the `TimeSlot` Value Object as part of the overall Slot. Any changes to the Slot gets pushed as a Domain Event so that we can inform other Aggregates or the rest of the technical landscape of ongoing changes.
 
 <figure><img src="../.gitbook/assets/aggregates-basic.png" alt=""><figcaption><p>Diagram for how user interactions to the Slot ensure the complete transactional boundary for any data it holds.</p></figcaption></figure>
 
@@ -96,8 +96,8 @@ To actually be to have an always-valid domain model, what would you need to keep
 
 > - Your domain model should be valid at all times.
 > - For that, do the following:
->   - Make the boundary of your domain model explicit.
->   - Validate all external requests before they cross that boundary.
+> - Make the boundary of your domain model explicit.
+> - Validate all external requests before they cross that boundary.
 > - Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
 > - You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
 >
@@ -113,9 +113,9 @@ In plain English, by having moved all the actual domain logic and validations an
 
 Before we go to the code, let's revisit some highlights.
 
-- Entities are objects that have unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
-- Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to an POJO/POCO/JSON object.
-- Entities typically use verbs to express its commands—its public interface.
+- Entities are objects that have a unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
+- Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to a POJO/POCO/JSON object.
+- Entities typically use verbs to express their commands—its public interface.
 - We use the ubiquitous language to name these actions and anything else to do with the Entity.
 - Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
 
@@ -145,8 +145,8 @@ import { ReservationConditionsNotMetError } from "../../application/errors/Reser
  * @example You can create it at once:
  * ```
  * const slot = new Slot({
- *   startTime: "2022-07-29T12:00:00.000Z",
- *   endTime: "2022-07-29T13:00:00.000Z"
+ * startTime: "2022-07-29T12:00:00.000Z",
+ * endTime: "2022-07-29T13:00:00.000Z"
  * });
  * ```
  *
@@ -548,17 +548,17 @@ private createdAt: string;
 private updatedAt: string;
 
 constructor(input?: SlotCreateInput) {
-  this.slotId = '';
-  this.hostName = '';
-  this.timeSlot = {
-    startTime: '',
-    endTime: ''
-  };
-  this.slotStatus = 'OPEN';
-  this.createdAt = '';
-  this.updatedAt = '';
+ this.slotId = '';
+ this.hostName = '';
+ this.timeSlot = {
+ startTime: '',
+ endTime: ''
+ };
+ this.slotStatus = 'OPEN';
+ this.createdAt = '';
+ this.updatedAt = '';
 
-  if (input) this.make(input);
+ if (input) this.make(input);
 }
 ```
 
@@ -571,20 +571,20 @@ When constructed, if we lack input, we will assume an almost barren state. We've
  * @description Create a valid, starting-state ("open") invariant of the Slot.
  */
 private make(input: SlotCreateInput): SlotDTO {
-  const { startTime, endTime } = input;
-  const currentTime = this.getCurrentTime();
+ const { startTime, endTime } = input;
+ const currentTime = this.getCurrentTime();
 
-  this.slotId = randomUUID().toString();
-  this.hostName = '';
-  this.timeSlot = {
-    startTime,
-    endTime
-  };
-  this.slotStatus = 'OPEN';
-  this.createdAt = currentTime;
-  this.updatedAt = currentTime;
+ this.slotId = randomUUID().toString();
+ this.hostName = '';
+ this.timeSlot = {
+ startTime,
+ endTime
+ };
+ this.slotStatus = 'OPEN';
+ this.createdAt = currentTime;
+ this.updatedAt = currentTime;
 
-  return this.toDto();
+ return this.toDto();
 }
 ```
 
@@ -597,14 +597,14 @@ Now for one of the most important private methods: `fromDto()`. This will enable
  * @description Reconstitute a Slot from a Data Transfer Object.
  */
 public fromDto(input: SlotDTO): Slot {
-  this.slotId = input['slotId'];
-  this.hostName = input['hostName'];
-  this.timeSlot = input['timeSlot'];
-  this.slotStatus = input['slotStatus'];
-  this.createdAt = input['createdAt'];
-  this.updatedAt = input['updatedAt'];
+ this.slotId = input['slotId'];
+ this.hostName = input['hostName'];
+ this.timeSlot = input['timeSlot'];
+ this.slotStatus = input['slotStatus'];
+ this.createdAt = input['createdAt'];
+ this.updatedAt = input['updatedAt'];
 
-  return this;
+ return this;
 }
 ```
 
@@ -621,14 +621,14 @@ There is no way for us to transport a class across systems, so we will have to r
  * @description Return data as Data Transfer Object.
  */
 public toDto(): SlotDTO {
-  return {
-    slotId: this.slotId,
-    hostName: this.hostName,
-    timeSlot: this.timeSlot,
-    slotStatus: this.slotStatus,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt
-  };
+ return {
+ slotId: this.slotId,
+ hostName: this.hostName,
+ timeSlot: this.timeSlot,
+ slotStatus: this.slotStatus,
+ createdAt: this.createdAt,
+ updatedAt: this.updatedAt
+ };
 }
 ```
 
@@ -645,8 +645,8 @@ Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's lite
  * @description Can this `Slot` be reserved?
  */
 private canBeReserved(): boolean {
-  if (this.slotStatus !== 'OPEN') return false;
-  return true;
+ if (this.slotStatus !== 'OPEN') return false;
+ return true;
 }
 ```
 
@@ -659,18 +659,18 @@ Now that's some nice, basic logic right there! No need for enums or anything, we
  * @description Can this `Slot` be cancelled?
  */
 private canBeCancelled(): boolean {
-  if (this.slotStatus !== 'RESERVED') return false;
-  return true;
+ if (this.slotStatus !== 'RESERVED') return false;
+ return true;
 }
 ```
 
-Same goes for the cancellation check, we need to know if we are reserved or not. Both, as seen, return boolean results which makes it into a simple-to-understand and expressive check.
+The same goes for the cancellation check, we need to know if we are reserved or not. Both, as seen, return boolean results which makes it a simple-to-understand and expressive check.
 
 Nothing is blocking you to conduct much deeper checking, though that seems overboard in our example code.
 
 ### Use case #2: Is the grace period over?
 
-Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()` method when checking if we have any reservations that have expired their 10 minute grace period.
+Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()` method when checking if we have any reservations that have expired their 10-minute grace period.
 
 {% code lineNumbers="true" %}
 
@@ -680,8 +680,8 @@ Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()
  * in which case we want to open the slot again.
  */
 public isGracePeriodOver(): boolean {
-  if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
-  return false;
+ if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
+ return false;
 }
 
 /**
@@ -689,10 +689,10 @@ public isGracePeriodOver(): boolean {
  * slot is deemed unattended and returns to open state.
  */
 private getGracePeriodEndTime(startTime: string): string {
-  const minutes = 10;
-  const msPerMinute = 60 * 1000;
+ const minutes = 10;
+ const msPerMinute = 60 * 1000;
 
-  return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
+ return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
 }
 ```
 
@@ -708,26 +708,26 @@ Here's now an example of the actual reservation logic.
 
 ```typescript
 public reserve(hostName: string): SlotCommand {
-  if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
+ if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
 
-  const newStatus = 'RESERVED';
+ const newStatus = 'RESERVED';
 
-  this.updateHostName(hostName || '');
-  this.updateStatus(newStatus);
+ this.updateHostName(hostName || '');
+ this.updateStatus(newStatus);
 
-  return {
-    event: {
-      eventName: newStatus,
-      slotId: this.slotId,
-      slotStatus: newStatus,
-      hostName: this.hostName,
-      startTime: this.getStartTime()
-    },
-    newStatus
-  };
+ return {
+ event: {
+ eventName: newStatus,
+ slotId: this.slotId,
+ slotStatus: newStatus,
+ hostName: this.hostName,
+ startTime: this.getStartTime()
+ },
+ newStatus
+ };
 }
 ```
 
 {% endcode %}
 
-It will throw an error if it cannot be reserved, which is [cruder than how we could do it](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). Nevertheless this seems like a reasonable version 1 of our solution. Next, we will set a new status, update host name and status internally, and then return a `SlotCommand` which is a type of object that we can create an actual Domain Event from later. Note how, at this point, we have not persisted anything, just made sure that it's all valid, our object is in a regulated and valid state, and that we feed back the basis of our upcoming event for our integration purposes.
+It will throw an error if it cannot be reserved, which is [cruder than how we could do it](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). Nevertheless, this seems like a reasonable version 1 of our solution. Next, we will set a new status, update the host name and status internally, and then return a `SlotCommand` which is a type of object that we can create an actual Domain Event from later. Note how, at this point, we have not persisted anything, just made sure that it's all valid, our object is in a regulated and valid state, and that we feed back the basis of our upcoming event for our integration purposes.

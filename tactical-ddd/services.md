@@ -18,7 +18,7 @@ description: >-
 
 Services: An overloaded and problematic term. Still, we need them. What did Eric Evans himself actually think of them?
 
-> When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
+> When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as a standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
 >
 > —Source: Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_ (p. 106)
 
@@ -26,7 +26,7 @@ While we haven't gotten to Entities and Aggregates yet, it's safe to say that **
 
 ## Services in the DDD hierarchy
 
-In many projects you might see services being used very broadly and liberally. This is similar to how in many Node/JS/TS projects you will find tons of helpers, utilities or other functionally-oriented code. Unwittingly, this way of structuring code will introduce a flattening of hierarchies: Everything is on the same plane, meaning it's hard to understand how pieces fit together and what operates in _which_ way on _what_.
+In many projects, you might see services being used very broadly and liberally. This is similar to how in many Node/JS/TS projects you will find tons of helpers, utilities, or other functionally-oriented code. Unwittingly, this way of structuring code will introduce a flattening of hierarchies: Everything is on the same plane, meaning it's hard to understand how pieces fit together and what operates in _which_ way on _what_.
 
 Using a more object-oriented approach we can start enforcing a hierarchy like the below:
 
@@ -40,16 +40,16 @@ Using a more object-oriented approach we can start enforcing a hierarchy like th
 {% hint style="info" %}
 Some of the solutions in the example code are actually basic enough that they need no Entity or higher-level constructs to deal with them (not even services!).
 
-As said in the introduction, DDD is sometimes overkill.
+As said in the introduction, DDD is sometimes overkilling.
 {% endhint %}
 
 Let's read what Evans writes about layering our services:
 
-> **Application Layer**: Defines the jobs the software is supposed to do and directs the expressive domain objects to work out problems. The tasks this layer is responsible for are meaningful to the business or necessary for interaction with the application layers of other systems. This layer is kept thin. It does not contain business rules or knowledge, but only coordinates tasks and delegates work to collaborations of domain objects in the next layer down. It does not have state reflecting the business situation, but it can have state that reflects the progress of a task for the user or the program.
+> **Application Layer**: Defines the jobs the software is supposed to do and directs the expressive domain objects to work out problems. The tasks this layer is responsible for are meaningful to the business or necessary for interaction with the application layers of other systems. This layer is kept thin. It does not contain business rules or knowledge, but only coordinates tasks and delegates work to collaborations of domain objects in the next layer down. It does not have a state reflecting the business situation, but it can have a state that reflects the progress of a task for the user or the program.
 >
 > **Domain Layer**: Responsible for representing concepts of the business, information about the business situation, and business rules. State that reflects the business situation is controlled and used here, even though the technical details of storing it are delegated to the infrastructure. This layer is the heart of business software.
 >
-> — Source: Eric Evans (via [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html))
+> — Source: Eric Evans (via [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html))
 
 The intuitive difference should be clear, but I've found that it may take a refactoring or two to find the best balance, especially when balancing Domain Services and Aggregates.
 
@@ -66,7 +66,7 @@ The way I come to accept both existing is like this:
 - The use case is strictly equivalent to the first testable complete unit of code. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
 - You can still use application services within the use case as these operate on the same overall conceptual application level.
 
-The main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have done in other projects, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
+The main takeaway is that we understand that use cases and application services function practically the same, and are positionally equal. You can, as I have done in other projects, use so-called "use case interactors" if you'd want to stay consistent with the terminology. In practice, however, I've actually only had to use such interactors (or if you'd rather: application services) in my most complex project, [Figmagic](https://github.com/mikaelvesavuori/figmagic). I've just never had to work on anything else that requires the abstraction, so don't go expecting that you need it for everything either.
 
 ## An application service example
 
@@ -76,7 +76,7 @@ The following is a concrete version of the `VerificationCodeService` used in the
 
 ```typescript
 /**
- * @description The `OnlineVerificationCodeService` calls an online service
+ * @description The `OnlineVerificationCodeService` calls for an online service
  * to retrieve and passes back a verification code.
  */
 class OnlineVerificationCodeService implements VerificationCodeService {
@@ -110,13 +110,13 @@ class OnlineVerificationCodeService implements VerificationCodeService {
 
 {% endcode %}
 
-It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this as a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
+It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this is a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
 
 ## Domain Services
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Domain Services reside in the Domain layer.</p></figcaption></figure>
 
-Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple Aggregates for example, otherwise keep it simple and let it be part of the Aggregate itself.
+Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple Aggregates, for example, otherwise, keep it simple and let it be part of the Aggregate itself.
 
 Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.&#x20;
 
@@ -305,13 +305,13 @@ export class ReservationService {
 
 There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God_object) either, thank...God?
 
-First of all, the service, even just by glancing the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.&#x20;
+First of all, the service, even just by glancing at the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.&#x20;
 
 Most of the code handles roughly similar functionality. For a telling example of the orchestration you might sometimes need, look no further than `makeDailySlots()` on line 70: This is domain logic that would not make sense _inside_ the `Slot` but makes perfect sense here in the outer scope. That comment might not make sense yet, but it will after the next couple of pages.
 
 ### Constructor
 
-When it gets constructed, it takes a number of dependencies to avoid creating its own imports and links to infrastructural objects. We make properties of the class `private`, and if we can, also `readonly`. In this case it's no problem to do so. For methods that are called in the use cases they are made public, else they are private to discourage calling internal functionality from an unwitting outside party.
+When it gets constructed, it takes a number of dependencies to avoid creating its own imports and links to infrastructural objects. We make properties of the class `private`, and if we can, also `readonly`. In this case, it's no problem to do so. For methods that are called in the use cases they are made public, or else they are private to discourage calling internal functionality from an unwitting outside party.
 
 The constructor had to evolve through a few iterations and it ultimately ended up taking in quite a bit of dependencies and configuration; all in all a good thing since it makes the `ReservationService` less coupled to any infrastructural concerns.
 
@@ -327,27 +327,27 @@ private domainBusName: string;
 private securityApiEndpoint: string;
 
 constructor(dependencies: Dependencies) {
-  if (!dependencies.repository || !dependencies.eventEmitter)
-    throw new MissingDependenciesError();
-  const { repository, eventEmitter, metadataConfig } = dependencies;
+ if (!dependencies.repository || !dependencies.eventEmitter)
+ throw new MissingDependenciesError();
+ const { repository, eventEmitter, metadataConfig } = dependencies;
 
-  this.repository = repository;
-  this.eventEmitter = eventEmitter;
-  this.metadataConfig = metadataConfig;
-  this.logger = MikroLog.start();
+ this.repository = repository;
+ this.eventEmitter = eventEmitter;
+ this.metadataConfig = metadataConfig;
+ this.logger = MikroLog.start();
 
-  this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
-  this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
-  this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
+ this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
+ this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
+ this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
 
-  if (!this.analyticsBusName || !this.domainBusName)
-    throw new MissingEnvVarsError(
-      JSON.stringify([
-        { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
-        { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
-      ])
-    );
-  if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
+ if (!this.analyticsBusName || !this.domainBusName)
+ throw new MissingEnvVarsError(
+ JSON.stringify([
+ { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
+ { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
+ ])
+ );
+ if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
 }
 ```
 
@@ -357,15 +357,15 @@ Let's look closer at a use case-oriented method, like `cancel()`. That one looks
 
 ```typescript
 public async cancel(slotDto: SlotDTO): Promise<void> {
-  const slot = new Slot().fromDto(slotDto);
-  const { event, newStatus } = slot.cancel();
+ const slot = new Slot().fromDto(slotDto);
+ const { event, newStatus } = slot.cancel();
 
-  const cancelEvent = new CancelledEvent({
-    event,
-    metadataConfig: this.metadataConfig
-  });
+ const cancelEvent = new CancelledEvent({
+ event,
+ metadataConfig: this.metadataConfig
+ });
 
-  await this.transact(slot.toDto(), cancelEvent, newStatus);
+ await this.transact(slot.toDto(), cancelEvent, newStatus);
 }
 ```
 
@@ -373,20 +373,20 @@ The method takes in the Data Transfer Object representation of the `Slot`. We re
 
 Given that nothing broke we can construct the `CancelledEvent` with the local metadata configuration and the event object we receive from the `Slot` itself.
 
-Finally it's time to run the domain service's `transact()` method that wraps transactional boilerplate:
+Finally, it's time to run the domain service's `transact()` method that wraps the transactional boilerplate:
 
 ```typescript
 private async transact(slotDto: SlotDTO, event: Event, newStatus: Status) {
-  await this.repository
-    .updateSlot(slotDto)
-    .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
-  await this.repository.addEvent(event);
-  await this.domainEventPublisher.publish(event);
+ await this.repository
+ .updateSlot(slotDto)
+ .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
+ await this.repository.addEvent(event);
+ await this.domainEventPublisher.publish(event);
 }
 ```
 
 The `domainEventPublisher` will be discussed in the Events section.
 
 {% hint style="success" %}
-It might have been even nicer, though more work, to inject some type of service rather than the repository but at some point we can just be "normal people" and accept the compromise of (in)directly using the repository in the domain layer.
+It might have been even nicer, though more work, to inject some type of service rather than the repository but at some point, we can just be "normal people" and accept the compromise of (in)directly using the repository in the domain layer.
 {% endhint %}

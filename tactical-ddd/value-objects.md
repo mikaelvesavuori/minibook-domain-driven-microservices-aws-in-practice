@@ -18,7 +18,7 @@ description: >-
 
 Value objects are a Godsend.
 
-**Value objects are defined by attributes, not by identity**. This makes them great for cases where you want to provide a "vending machine" for non-trivial objects, such as in our case, a `TimeSlot`. The `TimeSlot` itself has no identity, but it does have unique values in non-unique keys/attributes. Because this type of object needs to **always be correctly constructed**, we can delegate the responsibility into (for example) a class that creates such TimeSlots. You don't pass around Value Objects that much, nor update them. Instead you instantiate new ones—they are 100% replacable and interchangeable, after all!
+**Value objects are defined by attributes, not by identity**. This makes them great for cases where you want to provide a "vending machine" for non-trivial objects, such as in our case, a `TimeSlot`. The `TimeSlot` itself has no identity, but it does have unique values in non-unique keys/attributes. Because this type of object needs to **always be correctly constructed**, we can delegate the responsibility into (for example) a class that creates such TimeSlots. You don't pass around Value Objects that much, nor update them. Instead, you instantiate new ones—they are 100% replaceable and interchangeable, after all!
 
 This pattern is effective in refactoring, such as when wanting to cut down on [primitive obsession](https://refactoring.guru/smells/primitive-obsession).
 

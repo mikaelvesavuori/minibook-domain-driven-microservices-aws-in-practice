@@ -10,13 +10,11 @@ A bit of a misunderstood gold nugget, which gets a more nuanced use in a DDD con
 
 Example:
 
-{% code title="code/Reservation/SlotReservation/src/interfaces/Slot.ts" lineNumbers="true" %}
-
 ```typescript
 const myExampleSlotDto = {
- startTime: "10:00",
- host: "Mikael"
-
+  startTime: "10:00",
+  host: "Mikael",
+};
 ```
 
 {% endcode %}
