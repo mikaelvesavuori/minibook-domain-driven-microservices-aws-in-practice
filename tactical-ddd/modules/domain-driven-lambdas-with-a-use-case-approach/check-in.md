@@ -2,7 +2,7 @@
 
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 3.png" alt=""><figcaption><p>Checking in means we have to use all four services.</p></figcaption></figure>
 
-TODO
+To check in, we first need to verify and authorize the calling user, so no one else goes checking in to the room that you've waited so long for. You'll see this in the `authorizer` block. While the implementation of the authorizer itself is rudimentary, just having anything here makes the solution as a whole better.
 
 {% code title="code/Reservation/Reservation/serverless.yml" %}
 ```yaml
@@ -24,8 +24,9 @@ CheckIn:
 ```
 {% endcode %}
 
-TODO
+In the use case code we will load the Slot DTO and pass it to the respective method.
 
+{% code title="code/Reservation/Reservation/src/application/usecases/CheckInUseCase.ts" %}
 ```typescript
 export async function CheckInUseCase(dependencies: Dependencies, slotId: SlotId) {
   const slotLoader = createSlotLoaderService(dependencies.repository);
@@ -35,5 +36,4 @@ export async function CheckInUseCase(dependencies: Dependencies, slotId: SlotId)
   await reservationService.checkIn(slotDto);
 }
 ```
-
-TODO
+{% endcode %}

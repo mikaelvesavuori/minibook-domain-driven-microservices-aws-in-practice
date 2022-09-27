@@ -11,9 +11,9 @@ OpenSlot:
     description: Open a slot
     events:
        # You can activate this to allow for HTTP-based calls
-      - http:
-          method: POST
-          path: /OpenSlot
+      #- http:
+      #    method: POST
+      #    path: /OpenSlot
       - eventBridge:
           eventBus: ${self:custom.config.domainBusName} # Create new EventBridge bus
           pattern:
@@ -31,6 +31,7 @@ OpenSlot:
 
 TODO
 
+{% code title="code/Reservation/Reservation/src/application/usecases/OpenSlotUseCase.ts" %}
 ```typescript
 export async function OpenSlotUseCase(dependencies: Dependencies, slotId: SlotId) {
   const slotLoader = createSlotLoaderService(dependencies.repository);
@@ -40,5 +41,6 @@ export async function OpenSlotUseCase(dependencies: Dependencies, slotId: SlotId
   await reservationService.open(slotDto);
 }
 ```
+{% endcode %}
 
 TODO

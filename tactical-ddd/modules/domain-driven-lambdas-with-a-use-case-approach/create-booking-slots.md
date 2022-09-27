@@ -15,15 +15,16 @@ CreateSlots:
     description: Create new slots
     events:
       # You can activate this to allow for HTTP-based calls
-      - http:
-          method: GET
-          path: /CreateSlots
+      #- http:
+      #    method: GET
+      #    path: /CreateSlots
       - schedule: cron(0 5 ? * MON-FRI *)
 ```
 {% endcode %}
 
 The use case itself doesn't do much other than defer to the `ReservationService` to create the slots.
 
+{% code title="code/Reservation/Reservation/src/application/usecases/CreateSlotsUseCase.ts" %}
 ```typescript
 export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<string[]> {
   const reservationService = new ReservationService(dependencies);
@@ -31,6 +32,7 @@ export async function CreateSlotsUseCase(dependencies: Dependencies): Promise<st
   return await reservationService.makeDailySlots();
 }
 ```
+{% endcode %}
 
 ## Updating the Display projection
 
