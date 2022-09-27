@@ -1,8 +1,10 @@
 # Cancel a slot
 
-<figure><img src="../../../.gitbook/assets/Get-A-Room Solution 5.png" alt=""><figcaption><p>Friday:</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/Get-A-Room Solution 5.png" alt=""><figcaption><p>We will now move into the territory of event-based side effects (and it's not a horror film!)</p></figcaption></figure>
 
-TODO
+Cancelling a slot is fun! Doing so means we have to do "event-based side effects" like opening it again, as a response to its cancellation.
+
+To cancel anything, we first need to verify and authorize the calling user, so no one else goes cancelling your room that you've waited so long for. You'll see this in the `authorizer` block. While the implementation of the authorizer itself is rudimentary, just having anything here makes the solution as a whole better. Once again, we also have API request validation active.
 
 {% code title="code/Reservation/Reservation/serverless.yml" %}
 ```yaml
@@ -24,8 +26,9 @@ CancelSlot:
 ```
 {% endcode %}
 
-TODO
+In our use case, we will use a convenience service, rather than the Repository directly, to load the required Slot as a Data Transfer Object from the persistence layer.
 
+{% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" %}
 ```typescript
 export async function CancelSlotUseCase(dependencies: Dependencies, slotId: SlotId): Promise<void> {
   const slotLoader = createSlotLoaderService(dependencies.repository);
@@ -35,5 +38,6 @@ export async function CancelSlotUseCase(dependencies: Dependencies, slotId: Slot
   await reservationService.cancel(slotDto);
 }
 ```
+{% endcode %}
 
-TODO
+The pattern should be quite familiar by now.
