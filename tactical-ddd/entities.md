@@ -546,17 +546,17 @@ private createdAt: string;
 private updatedAt: string;
 
 constructor(input?: SlotCreateInput) {
- this.slotId = '';
- this.hostName = '';
- this.timeSlot = {
-   startTime: '',
-   endTime: ''
- };
- this.slotStatus = 'OPEN';
- this.createdAt = '';
- this.updatedAt = '';
+  this.slotId = '';
+  this.hostName = '';
+  this.timeSlot = {
+    startTime: '',
+    endTime: ''
+  };
+  this.slotStatus = 'OPEN';
+  this.createdAt = '';
+  this.updatedAt = '';
 
- if (input) this.make(input);
+  if (input) this.make(input);
 }
 ```
 
@@ -569,20 +569,20 @@ When constructed, if we lack input, we will assume an almost barren state. We've
  * @description Create a valid, starting-state ("open") invariant of the Slot.
  */
 private make(input: SlotCreateInput): SlotDTO {
- const { startTime, endTime } = input;
- const currentTime = this.getCurrentTime();
+  const { startTime, endTime } = input;
+  const currentTime = this.getCurrentTime();
 
- this.slotId = randomUUID().toString();
- this.hostName = '';
- this.timeSlot = {
-   startTime,
-   endTime
- };
- this.slotStatus = 'OPEN';
- this.createdAt = currentTime;
- this.updatedAt = currentTime;
+  this.slotId = randomUUID().toString();
+  this.hostName = '';
+  this.timeSlot = {
+    startTime,
+    endTime
+  };
+  this.slotStatus = 'OPEN';
+  this.createdAt = currentTime;
+  this.updatedAt = currentTime;
 
- return this.toDto();
+  return this.toDto();
 }
 ```
 
@@ -595,14 +595,14 @@ Now for one of the most important private methods: `fromDto()`. This will enable
  * @description Reconstitute a Slot from a Data Transfer Object.
  */
 public fromDto(input: SlotDTO): Slot {
- this.slotId = input['slotId'];
- this.hostName = input['hostName'];
- this.timeSlot = input['timeSlot'];
- this.slotStatus = input['slotStatus'];
- this.createdAt = input['createdAt'];
- this.updatedAt = input['updatedAt'];
+  this.slotId = input['slotId'];
+  this.hostName = input['hostName'];
+  this.timeSlot = input['timeSlot'];
+  this.slotStatus = input['slotStatus'];
+  this.createdAt = input['createdAt'];
+  this.updatedAt = input['updatedAt'];
 
- return this;
+  return this;
 }
 ```
 
@@ -619,14 +619,14 @@ There is no way for us to transport a class across systems, so we will have to r
  * @description Return data as Data Transfer Object.
  */
 public toDto(): SlotDTO {
- return {
-   slotId: this.slotId,
-   hostName: this.hostName,
-   timeSlot: this.timeSlot,
-   slotStatus: this.slotStatus,
-   createdAt: this.createdAt,
-   updatedAt: this.updatedAt
- };
+  return {
+    slotId: this.slotId,
+    hostName: this.hostName,
+    timeSlot: this.timeSlot,
+    slotStatus: this.slotStatus,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
 }
 ```
 
@@ -642,8 +642,8 @@ Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's lite
  * @description Can this `Slot` be reserved?
  */
 private canBeReserved(): boolean {
- if (this.slotStatus !== 'OPEN') return false;
- return true;
+  if (this.slotStatus !== 'OPEN') return false;
+  return true;
 }
 ```
 {% endcode %}
@@ -655,8 +655,8 @@ Now that's some nice, basic logic right there! No need for enums or anything, we
  * @description Can this `Slot` be cancelled?
  */
 private canBeCancelled(): boolean {
- if (this.slotStatus !== 'RESERVED') return false;
- return true;
+  if (this.slotStatus !== 'RESERVED') return false;
+  return true;
 }
 ```
 
@@ -675,8 +675,8 @@ Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()
  * in which case we want to open the slot again.
  */
 public isGracePeriodOver(): boolean {
- if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
- return false;
+  if (this.getCurrentTime() > this.getGracePeriodEndTime(this.timeSlot.startTime)) return true;
+  return false;
 }
 
 /**
@@ -684,10 +684,10 @@ public isGracePeriodOver(): boolean {
  * slot is deemed unattended and returns to open state.
  */
 private getGracePeriodEndTime(startTime: string): string {
- const minutes = 10;
- const msPerMinute = 60 * 1000;
+  const minutes = 10;
+  const msPerMinute = 60 * 1000;
 
- return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
+  return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
 }
 ```
 {% endcode %}
@@ -700,24 +700,31 @@ Here's now an example of the actual reservation logic.
 
 {% code lineNumbers="true" %}
 ```typescript
+/**
+ * @description Updates a Slot to be in `RESERVED` invariant state.
+ *
+ * Can only be performed in `OPEN` state.
+ *
+ * @emits `RESERVED`
+ */
 public reserve(hostName: string): SlotCommand {
- if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
+  if (!this.canBeReserved()) throw new ReservationConditionsNotMetError(this.slotStatus);
 
- const newStatus = 'RESERVED';
+  const newStatus = 'RESERVED';
 
- this.updateHostName(hostName || '');
- this.updateStatus(newStatus);
+  this.updateHostName(hostName || '');
+  this.updateStatus(newStatus);
 
- return {
-   event: {
-     eventName: newStatus,
-     slotId: this.slotId,
-     slotStatus: newStatus,
-     hostName: this.hostName,
-     startTime: this.getStartTime()
-   },
-   newStatus
- };
+  return {
+    event: {
+      eventName: newStatus,
+      slotId: this.slotId,
+      slotStatus: newStatus,
+      hostName: this.hostName,
+      startTime: this.getStartTime()
+    },
+    newStatus
+  };
 }
 ```
 {% endcode %}

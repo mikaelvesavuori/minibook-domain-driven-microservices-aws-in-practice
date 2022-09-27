@@ -183,42 +183,41 @@ The first publicly accessible use case is for making daily slots. This one is al
  *
  * @see https://time.is/Z
  */
-public async makeDailySlots(): Promise<void> {
- const slots: SlotDTO[] = [];
+public async makeDailySlots(): Promise<string[]> {
+  const slots: SlotDTO[] = [];
 
- const timeSlot = new TimeSlot();
- const currentTime = this.getCurrentTime();
- const numberHours = 10;
- const startHour = 8;
+  const startHour = 6; // Zulu time (GMT) -> 08:00 in CEST
+  const numberHours = 10;
 
- for (let slotCount = 0; slotCount < numberHours; slotCount++) {
- const hour = startHour + slotCount;
- const { startTime, endTime } = timeSlot.startingAt(hour);
- const newSlot = this.makeSlot({ currentTime, startTime, endTime });
- slots.push(newSlot);
- }
+  for (let slotCount = 0; slotCount < numberHours; slotCount++) {
+    const hour = startHour + slotCount;
+    const timeSlot = new TimeSlot().startingAt(hour);
+    const slot = new Slot(timeSlot.get());
+    slots.push(slot.toDto());
+  }
 
- const addSlots = slots.map(async (slot: SlotDTO) => {
- await this.repository.updateSlot(slot);
+  const dailySlots = slots.map(async (slotDto: SlotDTO) => {
+    const slot = new Slot().fromDto(slotDto);
+    const { slotId, hostName, slotStatus, timeSlot } = slot.toDto();
 
- const { slotId, hostName, slotStatus, timeSlot } = slot;
+    const createdEvent = new CreatedEvent({
+      event: {
+        eventName: 'CREATED', // Transient state
+        slotId,
+        slotStatus,
+        hostName,
+        startTime: timeSlot.startTime
+      },
+      metadataConfig: this.metadataConfig
+    });
 
- const event = new CreatedEvent({
- event: {
- eventName: 'CREATED', // Transient state
- slotId,
- slotStatus,
- hostName,
- startTime: timeSlot.startTime
- },
- eventBusName: this.domainBusName,
- metadataConfig: this.metadataConfig
- });
+    await this.transact(slot.toDto(), createdEvent, slotStatus);
+  });
 
- await this.emitEvents(event);
- });
+  await Promise.all(dailySlots);
 
- await Promise.all(addSlots);
+  const slotIds = slots.map((slot: SlotDTO) => slot.slotId);
+  return slotIds;
 }
 ```
 
@@ -241,38 +240,24 @@ The rest of the use cases have a format that resembles the one we look at here, 
 
 ```typescript
 /**
- * @description Updates a Slot to be in `CHECKED_IN` invariant state.
- *
- * Can only be performed in `RESERVED` state.
- *
- * @emits `CHECKED_IN`
+ * @description Check in to a slot.
  */
-public async checkIn(slotId: SlotId): Promise<void> {
- const slot = await this.loadSlot(slotId);
- const { slotStatus, hostName, timeSlot } = slot;
- const { startTime } = timeSlot;
- if (slotStatus !== 'RESERVED') throw new CheckInConditionsNotMetError(slotStatus);
+public async checkIn(slotDto: SlotDTO): Promise<void> {
+  const slot = new Slot().fromDto(slotDto);
+  const { event, newStatus } = slot.checkIn();
 
- const newStatus = 'CHECKED_IN';
- await this.updateSlot(slot, newStatus);
+  const checkInEvent = new CheckedInEvent({
+    event,
+    metadataConfig: this.metadataConfig
+  });
 
- const event = new CheckedInEvent({
- event: {
- eventName: newStatus,
- slotId,
- slotStatus: newStatus,
- hostName,
- startTime
- },
- eventBusName: this.domainBusName,
- metadataConfig: this.metadataConfig
- });
-
- await this.emitEvents(event);
+  await this.transact(slot.toDto(), checkInEvent, newStatus);
 }
 ```
 
-We load a Slot based on the ID we have received, destructure some fields, verify that we have the correct slot status (it must be `RESERVED` to work), and then call our private `updateSlot()` method with the slot data and new status. When that's done it's time to make the correct event (here, the `CheckedInEvent`) and emit that with our private `emitEvents()` method.
+We load a Slot based on the ID we have received.
+
+Inside of the Slot Entity, we will destructure some fields, verify that we have the correct slot status (it must be `RESERVED` to work), and then call our private `updateSlot()` method with the slot data and new status. When that's done it's time to make the correct event (here, the `CheckedInEvent`) and emit that with our private `emitEvents()` method.
 
 All in all, we have ensured the state satisfies our business needs, the new invariant is correctly shaped, made the update, and informed our domain of the change via an event.
 
@@ -282,57 +267,33 @@ Reserving a Slot is similar to the above case, but we need to do more this time,
 
 ```typescript
 /**
- * @description Updates a Slot to be in `RESERVED` invariant state.
- *
- * Can only be performed in `OPEN` state.
- *
- * @emits `RESERVED`
+ * @description Reserve a slot.
  */
-public async reserve(slotInput: SlotInput): Promise<ReserveOutput> {
- this.validateInputData(slotInput, true);
- const { slotId, hostName } = slotInput;
+public async reserve(
+  slotDto: SlotDTO,
+  hostName: string,
+  verificationCodeService: VerificationCodeService
+): Promise<ReserveOutput> {
+  const slot = new Slot().fromDto(slotDto);
+  const { event, newStatus } = slot.reserve(hostName);
 
- const slot = await this.loadSlot(slotId);
- const { slotStatus, timeSlot } = slot;
- const { startTime } = timeSlot;
- if (slotStatus !== 'OPEN') throw new ReservationConditionsNotMetError(slotStatus);
+  const verificationCode = await verificationCodeService.getVerificationCode(slotDto.slotId);
 
- // We do the verification code stuff before committing to the transaction
- const verificationCode = await this.getVerificationCode(slotId);
- if (!verificationCode) throw new FailedGettingVerificationCodeError('Bad status received!');
+  const reserveEvent = new ReservedEvent({
+    event,
+    metadataConfig: this.metadataConfig
+  });
 
- const newStatus = 'RESERVED';
+  await this.transact(slot.toDto(), reserveEvent, newStatus);
 
- await this.updateSlot(
- {
- ...slot,
- hostName: hostName || ''
- },
- newStatus
- );
-
- const event = new ReservedEvent({
- event: {
- eventName: newStatus,
- slotId,
- slotStatus: newStatus,
- hostName,
- startTime
- },
- eventBusName: this.domainBusName,
- metadataConfig: this.metadataConfig
- });
-
- await this.emitEvents(event);
-
- return {
- code: verificationCode
- };
+  return {
+    code: verificationCode
+  };
 }
 ```
 
-Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do.
+Because this one has to take in a user's input data it becomes very important that we validate the input and sanitize it. That becomes the first thing we do when the DTO is constructed in the Entity.
 
-Next, we load the slot data for the requested slot, destructure the data for use, and verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
+Next, in the Entity (not seen here) we load the slot data for the requested slot, destructure the data for use, and verify that the slot status is correct or else we throw an error. Then we get a verification code using a private method that will get it from an external service in another (sub)domain. If something goes awry, we throw an error.
 
 Now it's just the home stretch: Update the slot with the correct shape and data, build a `ReservedEvent` and emit it to our domain. Finally, return the `ReserveOutput` object with the verification code we received so that the user can jot it down and use it when the time comes to check-in.

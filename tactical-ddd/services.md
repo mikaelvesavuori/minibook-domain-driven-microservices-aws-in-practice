@@ -30,12 +30,12 @@ In many projects, you might see services being used very broadly and liberally. 
 
 Using a more object-oriented approach we can start enforcing a hierarchy like the below:
 
-- Aggregate Root (if needed)
-- Aggregate (if needed)
-- Entity (if needed)
-- Domain Service
-- Application Service
-- Value Object
+* Aggregate Root (if needed)
+* Aggregate (if needed)
+* Entity (if needed)
+* Domain Service
+* Application Service
+* Value Object
 
 {% hint style="info" %}
 Some of the solutions in the example code are actually basic enough that they need no Entity or higher-level constructs to deal with them (not even services!).
@@ -59,7 +59,7 @@ The intuitive difference should be clear, but I've found that it may take a refa
 
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
-Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain Entities from external or internal (Repository) sources; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
+Use cases, like application services, contain no domain-specific business logic; can be used to fetch other domain Entities from external or internal (Repository) sources; may pass off control to Aggregates or Domain Services to execute domain logic; have low [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic\_complexity).
 
 {% hint style="info" %}
 See [https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/](https://khalilstemmler.com/articles/software-design-architecture/domain-driven-design-vs-clean-architecture/) for more on this.
@@ -67,8 +67,8 @@ See [https://khalilstemmler.com/articles/software-design-architecture/domain-dri
 
 The way I come to accept both co-existing is like this:
 
-- The use case is strictly equivalent to the **first testable complete unit of code**. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
-- You can still use application services within the use case as these operate on the same overall conceptual application level and **do things, rather than orchestrate them**.
+* The use case is strictly equivalent to the **first testable complete unit of code**. This is where we separate the Lambda infrastructure from the real code itself. This need does not in any way counter the application service notion.
+* You can still use application services within the use case as these operate on the same overall conceptual application level and **do things, rather than orchestrate them**.
 
 The main takeaway is that we understand that use cases and Application Services function practically the same, and are positionally equal.
 
@@ -79,7 +79,6 @@ You could, as I have done in other projects, use so-called "[use case interactor
 The following is a concrete version of the `VerificationCodeService` used in the Reservation solution.
 
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
-
 ```typescript
 /**
  * @description The `OnlineVerificationCodeService` calls for an online service
@@ -113,7 +112,6 @@ class OnlineVerificationCodeService implements VerificationCodeService {
   }
 }
 ```
-
 {% endcode %}
 
 It has a single public method, `getVerificationCode()`. Using it, one can call an external endpoint and get the implied verification code. Because this is a straightforward and integration-oriented concern, and as we evidently can see there is no business logic here, it's safe to uncontroversially say that—indeed—we are dealing with an application service here.
@@ -127,7 +125,6 @@ Domain services encapsulate, as expected, domain logic — you'll therefore want
 Next up we are going to check out one of the most important and longest classes in the entire codebase: The `ReservationService`.
 
 {% code title="code/Reservation/SlotReservation/src/domain/services/ReservationService.ts" lineNumbers="true" %}
-
 ```typescript
 import { MikroLog } from "mikrolog";
 
@@ -306,10 +303,9 @@ export class ReservationService {
   }
 }
 ```
-
 {% endcode %}
 
-There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God_object) either, thank...God?
+There's a lot happening there, but it's not quite a [God class](https://en.wikipedia.org/wiki/God\_object) either, thank...God?
 
 First of all, the service, even just by glancing at the method names, is clearly handling domain-specific concerns, such as `unattend()`, `cancel()`, and `makeDailySlots()`.
 
@@ -324,36 +320,20 @@ The constructor had to evolve through a few iterations and it ultimately ended u
 We also have several custom errors that may be thrown if conditions are not valid.
 
 ```typescript
-private repository: Repository;
-private eventEmitter: EventEmitter;
-private metadataConfig: MetadataConfigInput;
-private logger: MikroLog;
-private analyticsBusName: string;
-private domainBusName: string;
-private securityApiEndpoint: string;
+private readonly repository: Repository;
+private readonly metadataConfig: MetadataConfigInput;
+private readonly domainEventPublisher: DomainEventPublisherService;
+private readonly logger: MikroLog;
 
 constructor(dependencies: Dependencies) {
- if (!dependencies.repository || !dependencies.eventEmitter)
- throw new MissingDependenciesError();
- const { repository, eventEmitter, metadataConfig } = dependencies;
+  if (!dependencies.repository || !dependencies.domainEventPublisher)
+    throw new MissingDependenciesError();
+  const { repository, domainEventPublisher, metadataConfig } = dependencies;
 
- this.repository = repository;
- this.eventEmitter = eventEmitter;
- this.metadataConfig = metadataConfig;
- this.logger = MikroLog.start();
-
- this.analyticsBusName = process.env.ANALYTICS_BUS_NAME || '';
- this.domainBusName = process.env.DOMAIN_BUS_NAME || '';
- this.securityApiEndpoint = process.env.SECURITY_API_ENDPOINT_GENERATE || '';
-
- if (!this.analyticsBusName || !this.domainBusName)
- throw new MissingEnvVarsError(
- JSON.stringify([
- { key: 'DOMAIN_BUS_NAME', value: process.env.DOMAIN_BUS_NAME },
- { key: 'ANALYTICS_BUS_NAME', value: process.env.ANALYTICS_BUS_NAME }
- ])
- );
- if (!this.securityApiEndpoint) throw new MissingSecurityApiEndpoint();
+  this.repository = repository;
+  this.metadataConfig = metadataConfig;
+  this.domainEventPublisher = domainEventPublisher;
+  this.logger = MikroLog.start();
 }
 ```
 
@@ -363,15 +343,15 @@ Let's look closer at a use case-oriented method, like `cancel()`. That one looks
 
 ```typescript
 public async cancel(slotDto: SlotDTO): Promise<void> {
- const slot = new Slot().fromDto(slotDto);
- const { event, newStatus } = slot.cancel();
+  const slot = new Slot().fromDto(slotDto);
+  const { event, newStatus } = slot.cancel();
 
- const cancelEvent = new CancelledEvent({
- event,
- metadataConfig: this.metadataConfig
- });
+  const cancelEvent = new CancelledEvent({
+    event,
+    metadataConfig: this.metadataConfig
+  });
 
- await this.transact(slot.toDto(), cancelEvent, newStatus);
+  await this.transact(slot.toDto(), cancelEvent, newStatus);
 }
 ```
 
@@ -383,11 +363,11 @@ Finally, it's time to run the domain service's `transact()` method that wraps th
 
 ```typescript
 private async transact(slotDto: SlotDTO, event: Event, newStatus: Status) {
- await this.repository
- .updateSlot(slotDto)
- .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
- await this.repository.addEvent(event);
- await this.domainEventPublisher.publish(event);
+  await this.repository
+    .updateSlot(slotDto)
+    .then(() => this.logger.log(`Updated status of '${slotDto.slotId}' to '${newStatus}'`));
+  await this.repository.addEvent(event);
+  await this.domainEventPublisher.publish(event);
 }
 ```
 
