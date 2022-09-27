@@ -9,16 +9,18 @@ The Lambda authorizer is somewhat convoluted due to the particulars of how AWS' 
 Here's the code:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/authorizers/Authorizer.ts" lineNumbers="true" %}
+
 ```typescript
-import { APIGatewayProxyResult, AuthResponse } from 'aws-lambda';
+import { APIGatewayProxyResult, AuthResponse } from "aws-lambda";
 
-import fetch, { Response } from 'node-fetch';
+import fetch, { Response } from "node-fetch";
 
-import { AuthorizationHeaderError } from '../../application/errors/AuthorizationHeaderError';
-import { InvalidVerificationCodeError } from '../../application/errors/InvalidVerificationCodeError';
-import { MissingSecurityApiEndpoint } from '../../application/errors/MissingSecurityApiEndpoint';
+import { AuthorizationHeaderError } from "../../application/errors/AuthorizationHeaderError";
+import { InvalidVerificationCodeError } from "../../application/errors/InvalidVerificationCodeError";
+import { MissingSecurityApiEndpoint } from "../../application/errors/MissingSecurityApiEndpoint";
 
-const SECURITY_API_ENDPOINT_VERIFY = process.env.SECURITY_API_ENDPOINT_VERIFY || '';
+const SECURITY_API_ENDPOINT_VERIFY =
+  process.env.SECURITY_API_ENDPOINT_VERIFY || "";
 
 /**
  * @description Authorizer that will check the `event.Authorization` header
@@ -30,7 +32,7 @@ const SECURITY_API_ENDPOINT_VERIFY = process.env.SECURITY_API_ENDPOINT_VERIFY ||
 export async function handler(event: EventInput): Promise<AuthResponse> {
   try {
     // @ts-ignore
-    if (event.httpMethod === 'OPTIONS') return handleCors();
+    if (event.httpMethod === "OPTIONS") return handleCors();
     if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
     const { slotId, verificationCode } = getValues(event);
@@ -40,12 +42,12 @@ export async function handler(event: EventInput): Promise<AuthResponse> {
     const isCodeValid = await validateCode(slotId, verificationCode);
     if (!isCodeValid) throw new InvalidVerificationCodeError();
 
-    return generatePolicy(verificationCode, 'Allow', event.methodArn, '');
+    return generatePolicy(verificationCode, "Allow", event.methodArn, "");
   } catch (error: any) {
     console.error(error.message);
     const { slotId } = getValues(event);
-    const id = slotId ? slotId : 'UNKNOWN';
-    return generatePolicy(id, 'Deny', event.methodArn, {}); // TODO: Ensure this works if not same as in the OK one above
+    const id = slotId ? slotId : "UNKNOWN";
+    return generatePolicy(id, "Deny", event.methodArn, {});
   }
 }
 
@@ -53,11 +55,11 @@ export async function handler(event: EventInput): Promise<AuthResponse> {
  * @description Get required values
  */
 function getValues(event: EventInput) {
-  const header = event.headers['Authorization'] || '';
-  const [slotId, verificationCode] = header.split('#');
+  const header = event.headers["Authorization"] || "";
+  const [slotId, verificationCode] = header.split("#");
   return {
     slotId,
-    verificationCode
+    verificationCode,
   };
 }
 
@@ -68,13 +70,13 @@ function handleCors() {
   return {
     statusCode: 200,
     headers: {
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-      Vary: 'Origin'
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+      Vary: "Origin",
     },
-    body: JSON.stringify('OK')
+    body: JSON.stringify("OK"),
   } as APIGatewayProxyResult;
 }
 
@@ -91,31 +93,34 @@ const generatePolicy = (
   return {
     principalId,
     context: {
-      stringKey: JSON.stringify(data)
+      stringKey: JSON.stringify(data),
     },
     policyDocument: {
-      Version: '2012-10-17',
+      Version: "2012-10-17",
       Statement: [
         {
-          Action: 'execute-api:Invoke',
+          Action: "execute-api:Invoke",
           Effect: effect,
-          Resource: resource
-        }
-      ]
-    }
+          Resource: resource,
+        },
+      ],
+    },
   };
 };
 
 /**
  * @description Validate a code.
  */
-async function validateCode(slotId: string, verificationCode: string): Promise<boolean> {
+async function validateCode(
+  slotId: string,
+  verificationCode: string
+): Promise<boolean> {
   return await fetch(SECURITY_API_ENDPOINT_VERIFY, {
     body: JSON.stringify({
       slotId,
-      code: verificationCode
+      code: verificationCode,
     }),
-    method: 'POST'
+    method: "POST",
   })
     .then((response: Response) => response.json())
     .then((result: boolean) => {
@@ -134,11 +139,11 @@ async function validateCode(slotId: string, verificationCode: string): Promise<b
  */
 type EventInput = {
   headers: Record<string, string>;
-  httpMethod: 'GET' | 'POST' | 'PATCH' | 'OPTIONS';
+  httpMethod: "GET" | "POST" | "PATCH" | "OPTIONS";
   methodArn: string;
 };
-
 ```
+
 {% endcode %}
 
 Most of its contents are pure boilerplate that you can copy between projects to your heart's content.
@@ -146,7 +151,7 @@ Most of its contents are pure boilerplate that you can copy between projects to 
 The particulars in the handler are:
 
 ```typescript
-if (event.httpMethod === 'OPTIONS') return handleCors();
+if (event.httpMethod === "OPTIONS") return handleCors();
 
 if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
@@ -157,7 +162,7 @@ if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
 const isCodeValid = await validateCode(slotId, verificationCode);
 if (!isCodeValid) throw new InvalidVerificationCodeError();
 
-return generatePolicy(verificationCode, 'Allow', event.methodArn, '');
+return generatePolicy(verificationCode, "Allow", event.methodArn, "");
 ```
 
 First of all, if this is a call from a source where CORS might be an issue we handle that case. Next, we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll know it's a configuration issue and nothing else.

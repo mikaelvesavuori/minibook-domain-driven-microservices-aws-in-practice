@@ -11,28 +11,28 @@ To understand microservices is to be aware of the "prior art", namely Service Or
 {% hint style="info" %}
 Read more at:
 
-* [https://en.wikipedia.org/wiki/Service-oriented\_architecture](https://en.wikipedia.org/wiki/Service-oriented\_architecture)
-* [https://www.ibm.com/cloud/blog/soa-vs-microservices](https://www.ibm.com/cloud/blog/soa-vs-microservices)
-{% endhint %}
+- [https://en.wikipedia.org/wiki/Service-oriented_architecture](https://en.wikipedia.org/wiki/Service-oriented_architecture)
+- [https://www.ibm.com/cloud/blog/soa-vs-microservices](https://www.ibm.com/cloud/blog/soa-vs-microservices)
+  {% endhint %}
 
 Microservices have grown in popularity as they, among other things, make it easier to build and represent distributed scenarios than building monoliths. As stated by [Amundsen, Nadareishvili, Mitra, and McLarty](https://www.oreilly.com/library/view/microservice-architecture/9781491956328/) and referenced at [O'Reilly](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/), microservices are:
 
-> * Small in size
-> * Messaging enabled
-> * Bounded by contexts
-> * Autonomously developed
-> * Independently deployable
-> * Decentralized
-> * Built and released with automated processes
+> - Small in size
+> - Messaging enabled
+> - Bounded by contexts
+> - Autonomously developed
+> - Independently deployable
+> - Decentralized
+> - Built and released with automated processes
 >
 > — [Mac Slocum: Microservices: A quick and simple definition](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/)
 
 {% hint style="info" %}
 For more reading, see for example:
 
-* [https://martinfowler.com/articles/microservices.html](https://martinfowler.com/articles/microservices.html)
-* [https://samnewman.io/books/building\_microservices\_2nd\_edition/](https://samnewman.io/books/building\_microservices\_2nd\_edition/)
-{% endhint %}
+- [https://martinfowler.com/articles/microservices.html](https://martinfowler.com/articles/microservices.html)
+- [https://samnewman.io/books/building_microservices_2nd_edition/](https://samnewman.io/books/building_microservices_2nd_edition/)
+  {% endhint %}
 
 Microservices (with their above qualities) make it easier to _express, as technical artifacts, the business domain language_.
 
@@ -48,8 +48,8 @@ I am writing another book for events that will go deeper on this subject.
 
 What's worth keeping in mind is that there is little that is "new" with this way compared to traditional service-to-service communication. Ideally, we would have:
 
-* Documentation for the API and events (using a modern schema format like [AsyncAPI](https://www.asyncapi.com))
-* Microservice discovery catalog (like [Catalogist](https://github.com/mikaelvesavuori/catalogist) or [Port](https://www.getport.io))
+- Documentation for the API and events (using a modern schema format like [AsyncAPI](https://www.asyncapi.com))
+- Microservice discovery catalog (like [Catalogist](https://github.com/mikaelvesavuori/catalogist) or [Port](https://www.getport.io))
 
 Using the strategic and tactical patterns of DDD we can do the intellectual, as well as technical, labor required to set our path.
 
@@ -59,11 +59,11 @@ So if DDD is \~20 years old, isn't that ancient and archaic by today's standards
 
 This is a very valid question. However, without going on a philosophical detour, we need to remember that some things in computing and technology change frequently, while others do not. Consider the following:
 
-* [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.goodreads.com/book/show/85009.Design\_Patterns) (Gamma, Johnson, Vlissides, Helm) was written in 1994.
-* [The Pragmatic Programmer: From Journeyman to Master](https://www.goodreads.com/book/show/4099.The\_Pragmatic\_Programmer) (Hunt, Thomas) was written in 1999.
-* [Refactoring: Improving the Design of Existing Code](https://www.goodreads.com/book/show/44936.Refactoring) (Fowler) was written in 1999.
-* [Patterns of Enterprise Application Architecture](https://www.goodreads.com/book/show/70156.Patterns\_of\_Enterprise\_Application\_Architecture) (Fowler, Rice, Foemmel, Hieatt, Mee, Stafford) was written in 2002.
-* [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.goodreads.com/book/show/3735293-clean-code) (Martin) was written in 2008.
+- [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.goodreads.com/book/show/85009.Design_Patterns) (Gamma, Johnson, Vlissides, Helm) was written in 1994.
+- [The Pragmatic Programmer: From Journeyman to Master](https://www.goodreads.com/book/show/4099.The_Pragmatic_Programmer) (Hunt, Thomas) was written in 1999.
+- [Refactoring: Improving the Design of Existing Code](https://www.goodreads.com/book/show/44936.Refactoring) (Fowler) was written in 1999.
+- [Patterns of Enterprise Application Architecture](https://www.goodreads.com/book/show/70156.Patterns_of_Enterprise_Application_Architecture) (Fowler, Rice, Foemmel, Hieatt, Mee, Stafford) was written in 2002.
+- [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.goodreads.com/book/show/3735293-clean-code) (Martin) was written in 2008.
 
 {% hint style="info" %}
 For more examples (including books going as far back as the 1970s!) see [https://softwareengineering.stackexchange.com/questions/124630/is-there-an-expiration-date-for-well-regarded-but-old-books-on-programming](https://softwareengineering.stackexchange.com/questions/124630/is-there-an-expiration-date-for-well-regarded-but-old-books-on-programming)
@@ -71,7 +71,7 @@ For more examples (including books going as far back as the 1970s!) see [https:/
 
 Principles and broad patterns simply don't age as much as (most) languages and pretty much anything that is only implementation-oriented. It's safe to say that DDD and its patterns have survived many changes in technology without losing its relevance—though absolutely there are other approaches to DDD popping up.
 
-The bigger issue with DDD and related terms are that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is\_domain\_driven\_design\_still\_the\_recommended/)":
+The bigger issue with DDD and related terms are that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is_domain_driven_design_still_the_recommended/)":
 
 > **Well what is in the original DDD book is not what tends to be written about or used in practice**. The book is about how to successfully and repeatedly implement plumbing to support a complex problem domain object model. It advocates that standard plumbing so you can _concentrate_ on object modeling the problem domain.
 >
@@ -103,10 +103,6 @@ This point is raised in at least Evans' book, Vernon's book, and [_Learning Doma
 
 Their point, and mine, is typically that trivial and/or CRUD-oriented systems are good examples of when there is no meaningful reason to pursue the route of DDD. Based on the fact that a lot more software than we sometimes want to accept is just trivial "getting and setting" of basic data, this point should carry across powerfully over a rather wide swath of software engineering projects.
 
-{% hint style="info" %}
-You can find deeper, but often somewhat similar, lines of thought presented in the serious literature around DDD, but for an online version see for example this one. (TODO)
-{% endhint %}
-
 There are ways to make DDD more manageable and I am satisfied with the coded solution we will work on as being representative of such a "lighter-weight" path.
 
 ### "Microservices might be complicating things?"
@@ -118,13 +114,13 @@ Microservices have, like every architectural decision and architecture style, th
 {% hint style="info" %}
 Read more about related concerns at:
 
-* [https://en.wikipedia.org/wiki/Architecture\_tradeoff\_analysis\_method](https://en.wikipedia.org/wiki/Architecture\_tradeoff\_analysis\_method)
-* [https://en.wikipedia.org/wiki/Non-functional\_requirement](https://en.wikipedia.org/wiki/Non-functional\_requirement)
-* [https://jasonformat.com/application-holotypes/](https://jasonformat.com/application-holotypes/)
-* [https://continuousarchitecture.com/continuous-architecture-principles/](https://continuousarchitecture.com/continuous-architecture-principles/)
-{% endhint %}
+- [https://en.wikipedia.org/wiki/Architecture_tradeoff_analysis_method](https://en.wikipedia.org/wiki/Architecture_tradeoff_analysis_method)
+- [https://en.wikipedia.org/wiki/Non-functional_requirement](https://en.wikipedia.org/wiki/Non-functional_requirement)
+- [https://jasonformat.com/application-holotypes/](https://jasonformat.com/application-holotypes/)
+- [https://continuousarchitecture.com/continuous-architecture-principles/](https://continuousarchitecture.com/continuous-architecture-principles/)
+  {% endhint %}
 
-One of the most obvious and significant negative sides of microservices is that their relative autonomy means that you get a linear amount of extraneous "surface area" for each new service: Starting perhaps with the same CI pipes, same scaffolding, same interfaces, and so on. These might be duplicated, or worse, contain tiny differences between them. At the same time, there are ways to handle this (like loading several repos into an IDE workspace, "poor man's mono repo style") or simply accept that each service is truly decoupled from the others. :person\_shrugging:
+One of the most obvious and significant negative sides of microservices is that their relative autonomy means that you get a linear amount of extraneous "surface area" for each new service: Starting perhaps with the same CI pipes, same scaffolding, same interfaces, and so on. These might be duplicated, or worse, contain tiny differences between them. At the same time, there are ways to handle this (like loading several repos into an IDE workspace, "poor man's mono repo style") or simply accept that each service is truly decoupled from the others. :person_shrugging:
 
 Similar to the previous point (on DDD sometimes being "too much") it's sometimes a better proposition to make a monolith, or to at least bundle applications/systems in a coarser fashion. There is nothing controversial about that. However, by doing so you also discard the quality attributes of microservices (independence, scalability, likely more natural representation of bounded contexts, etc.).
 

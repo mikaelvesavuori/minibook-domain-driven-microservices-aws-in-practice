@@ -7,7 +7,7 @@ coverY: 0
 
 # 👋 Introduction
 
-This online mini-book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven\_design) (DDD) to a room-booking application using a microservices pattern that we will build on [Amazon Web Services (AWS)](https://aws.amazon.com).
+This online book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) (DDD) to a room-booking application using a microservices pattern that we will build on [Amazon Web Services (AWS)](https://aws.amazon.com).
 
 {% hint style="info" %}
 The application, consisting of four distinct services divided into three domains, is provided in a reference shape and throughout the book we will refer to this example.
@@ -17,7 +17,7 @@ The application, consisting of four distinct services divided into three domains
 
 **Microservice architecture** is a software architecture style that emphasizes _small, well-defined, loosely coupled services that interact together_ over singular, monolithic applications. Technologies like Kubernetes and serverless functions have accelerated the uptake of this style, as it may be hard and potentially expensive in older, non-cloud computing paradigms. Microservices are a good fit with our technology stack as well as helping us enforce clearer boundaries between system components as per DDD.
 
-There is, to be frank, nothing extravagantly special in terms of reasons for choosing **Amazon Web Services**. While the services and their particulars are certainly unique to AWS, there is nothing in the overall architecture that cannot be ported over to Azure, Google Cloud Platform, or other clouds. The specific path we will be taking is centered on [serverless technologies](https://en.wikipedia.org/wiki/Serverless\_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). The AWS platform provides excellent paths for us to build and run the application in this manner.
+There is, to be frank, nothing extravagantly special in terms of reasons for choosing **Amazon Web Services**. While the services and their particulars are certainly unique to AWS, there is nothing in the overall architecture that cannot be ported over to Azure, Google Cloud Platform, or other clouds. The specific path we will be taking is centered on [serverless technologies](https://en.wikipedia.org/wiki/Serverless_computing) and a [cloud-native way of thinking](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition). The AWS platform provides excellent paths for us to build and run the application in this manner.
 
 Throughout the book, several other concepts and methodologies will be introduced to further extend the approach and implementation details of our project.
 
@@ -27,7 +27,7 @@ The project will demonstrate rich and powerful patterns—binding together serve
 
 After having read this book—and coded alongside the provided project, if you want—you will have a **hands-on feeling of how a project can go from a scenario (an "ask") to something that represents a well-structured, domain-oriented application**.
 
-Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the _OG_, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain\_Driven\_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
+Just like [Vaughn Vernon's _Implementing Domain-Driven Design_](https://www.goodreads.com/book/show/15756865-implementing-domain-driven-design) (2013) drove the _OG_, [Eric Evans's _Domain-Driven Design: Tackling Complexity in the Heart of Software_](https://www.goodreads.com/book/show/179133.Domain_Driven_Design) (2003), to an even more practical level, my intent here is to maximize that kind of push towards an honest-to-God practical reference example. You will be presented with lightweight descriptions of most of the core concepts while fast-tracking (and back-tracking) all the steps I did myself to create our demo application.
 
 I will also of course share resources and references throughout in case you are interested to go deeper into any particular aspect we are touching on.
 
@@ -49,9 +49,9 @@ The project itself won't be perfect either. There are always things to improve (
 
 I am writing this for several intended audiences:
 
-* **The curious software developer**: Being an open book on the internet, I assume there are throngs of software developers out there who might be interested in learning what is taught here, if not by me, then at least the themes addressed here.
-* **Colleagues**: Because we talk a lot about these things and since nothing beats actually showing what we mean.
-* **Myself**: As a way to learn more and hone my didactic, communicative, and technical skills.
+- **The curious software developer**: Being an open book on the internet, I assume there are throngs of software developers out there who might be interested in learning what is taught here, if not by me, then at least the themes addressed here.
+- **Colleagues**: Because we talk a lot about these things and since nothing beats actually showing what we mean.
+- **Myself**: As a way to learn more and hone my didactic, communicative, and technical skills.
 
 ## Assumptions
 
@@ -83,34 +83,34 @@ First and foremost of the learning goals is of course to make you understand how
 
 You will be able to practically address questions like:
 
-* **How to do strategic DDD** by defining a domain model, outlining bounded contexts, making context maps, specifying a ubiquitous language and more
-* A **basic understanding of mapping Bounded Contexts and subdomains** into a serverless microservice implementation
-* **Deciding on the type of relationship and integrations between domains and contexts**, including Published Language, Anti-Corruption Layer, Shared Kernel, Open Host Service, Customer/Supplier, Conformist, and Partnership
-* **Implementing tactical DDD** with Value Objects, Entities, Aggregates, (application and domain) Services, Factories, Repositories, and Domain Events
-* Ease and improve on DDD with a **module structure inspired by Clean Architecture**
-* **Understand modern ways to work with events** using AWS EventBridge
-* **Persisting data with Repositories and Aggregates**, and handling cross-context transactions
+- **How to do strategic DDD** by defining a domain model, outlining bounded contexts, making context maps, specifying a ubiquitous language and more
+- A **basic understanding of mapping Bounded Contexts and subdomains** into a serverless microservice implementation
+- **Deciding on the type of relationship and integrations between domains and contexts**, including Published Language, Anti-Corruption Layer, Shared Kernel, Open Host Service, Customer/Supplier, Conformist, and Partnership
+- **Implementing tactical DDD** with Value Objects, Entities, Aggregates, (application and domain) Services, Factories, Repositories, and Domain Events
+- Ease and improve on DDD with a **module structure inspired by Clean Architecture**
+- **Understand modern ways to work with events** using AWS EventBridge
+- **Persisting data with Repositories and Aggregates**, and handling cross-context transactions
 
 ### Understanding problems in common solutions
 
 You will understand how trivial or simplistic implementations can be harmful:
 
-* Distributed monoliths
-* Every function being its own bounded context (too large...)
-* Microservices that are completely disassociated from contexts (too chatty...)
-* Self-implementing an API Gateway (_can_ be useful, but is most probably not)
-* Unclear APIs, contracts, and events
-* Single points of failure and not understanding the "Fallacies of Distributed Computing"
+- Distributed monoliths
+- Every function being its own bounded context (too large...)
+- Microservices that are completely disassociated from contexts (too chatty...)
+- Self-implementing an API Gateway (_can_ be useful, but is most probably not)
+- Unclear APIs, contracts, and events
+- Single points of failure and not understanding the "Fallacies of Distributed Computing"
 
 ## Note about the reality of writing about something while doing the work at the same time
 
 This is just a short disclaimer to be super-real about the fact that it is somewhat challenging to (on one's own):
 
-* Concoct (out of thin air) a business case regarding a, to be honest, fictional need;
-* Lay out a workshop and learning plan,
-* Build the system according to the best of my abilities...
-* ...while still doing it (literally) by the book I am writing...
-* ...and then to live to write about all of that!
+- Concoct (out of thin air) a business case regarding a, to be honest, fictional need;
+- Lay out a workshop and learning plan,
+- Build the system according to the best of my abilities...
+- ...while still doing it (literally) by the book I am writing...
+- ...and then to live to write about all of that!
 
 Doing all of the parts means that I also get more or less "perfect information", which is never the case in real life. We never know all there is to know and how best to approach it.
 
