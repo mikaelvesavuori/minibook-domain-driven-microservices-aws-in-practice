@@ -2,7 +2,7 @@
 
 <figure><img src="../../../.gitbook/assets/Get-A-Room Solution 5.png" alt=""><figcaption><p>The slot opening happens in <code>9d</code> and <code>11</code>.</p></figcaption></figure>
 
-TODO
+Opening a slot is an intended side effect of cancelling the slot. You will see in the diagram at `9d` and `11` where the `OpenSlot` Lambda gets triggered. This is also clearly outlined in the configuration file:
 
 {% code title="code/Reservation/Reservation/serverless.yml" %}
 ```yaml
@@ -29,7 +29,7 @@ OpenSlot:
 ```
 {% endcode %}
 
-TODO
+And still another boring, but functional use case with no surprises.
 
 {% code title="code/Reservation/Reservation/src/application/usecases/OpenSlotUseCase.ts" %}
 ```typescript
@@ -42,5 +42,3 @@ export async function OpenSlotUseCase(dependencies: Dependencies, slotId: SlotId
 }
 ```
 {% endcode %}
-
-TODO
