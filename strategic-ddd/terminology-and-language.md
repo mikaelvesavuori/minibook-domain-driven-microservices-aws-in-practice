@@ -12,11 +12,11 @@ The core term in DDD is something that for us non-native English speakers is kin
 
 Words are the core of DDD because they, as philosopher Ludwig Wittgenstein once wrote, shape the limits of the world for us:
 
-> The limits of my language stand for the limits of my world. The limits of my language are the limits of my mind. All I know is what I have words for.
+> **The limits of my language stand for the limits of my world**. The limits of my language are the limits of my mind. All I know is what I have words for.
 >
 > — Ludwig Wittgenstein, "Tractatus Logico-Philosophicus" (1921)
 
-Without the words to serve our purposes, our implementation will always suffer from such a lack. It is more efficient to discuss and collaborate and build a common shared "worldview" that can later be manifested, than haphazardly building and failing with something that does not match the actual needs because too little grounding was done.
+Without the words to serve our purposes, our implementations will always suffer from this lack. It is more efficient to discuss and collaborate and build a common shared "worldview" that can later be manifested, than haphazardly building and failing with something that does not match the actual needs because too little grounding was done.
 
 It's not hard to find memes on how product managers, clients, and developers in a range of ways end up screwing each other over, or how software bellyflops into a completely detached state from the realities of the actual business needs. Of course, no one _wanted_ to actually end up in that situation, yet they did. I have been part of such failures, and I am sure you have been too.
 
@@ -32,28 +32,28 @@ As quoted by [Martin Fowler](https://martinfowler.com/bliki/UbiquitousLanguage.h
 
 Some important features to understand:
 
-- The Ubiquitous Language is the _de facto_ standard nomenclature, so other similar words and terms must be avoided.
-- The domain model and our subsequent implementations express the Ubiquitous Language.
-- The Ubiquitous Language evolves organically over time. As per above, this needs to be reflected similarly in the software artifacts.
-- Each domain will likely have its own Ubiquitous Language because of their respective meanings and semantics.
-- Ubiquitous "Languages" are not meant to be efficient. Neither are they shared (well, if that doesn't make sense and is actually the way it is).
+* The Ubiquitous Language is the _de facto_ standard nomenclature, so other similar words and terms must be avoided.
+* The domain model and our subsequent implementations express the Ubiquitous Language.
+* The Ubiquitous Language evolves organically over time. As per above, this needs to be reflected similarly in the software artifacts.
+* Each domain will likely have its own Ubiquitous Language because of their respective meanings and semantics.
+* Ubiquitous "Languages" are not meant to be efficient. Neither are they shared (well, if that doesn't make sense and is actually the way it is).
 
 ## Documenting the ubiquitous language
 
-You can use whatever default means you have of documents, as long as it's common knowledge that this information is authoritative and co-owned and accessible to all who need to be able to see/edit it.
+You can use whatever default means you have concerning documenting, as long as it's common knowledge that this information is authoritative and co-owned and accessible to all who need to be able to see/edit it.
 
 {% hint style="info" %}
-Remember that the ubiquitous language is dynamic and ever-changing. It needs to be able to evolve, and we have to be receptive to that. As the language changes, we must similarly assure that the implementation stays intact and semantically aligned. Effectively any language change will be a technical change.
+Remember that the ubiquitous language is dynamic and ever-changing. It needs to be able to evolve, and we have to be receptive to that. As the language changes, we must similarly assure that the implementation stays intact and semantically aligned. Effectively any language change will also be a technical change.
 {% endhint %}
 
 ### Starting to understand the core domain language
 
 Let's go back to our functional requirements and start sniffing out a language:
 
-- **Reserve** a single **room** in a single **facility** (your office) and your time zone.
-- **Reserve** the room in **slots** of 1 hour at the start of each hour.
-- Allow for the **cancellation** of **room reservations.**
-- Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be **canceled** automatically.
+* **Reserve** a single **room** in a single **facility** (your office) and your time zone.
+* **Reserve** the room in **slots** of 1 hour at the start of each hour.
+* Allow for the **cancellation** of **room reservations.**
+* Allow for rooms that are not **checked-in** within 10 minutes of their starting time to be **canceled** automatically.
 
 With this, we have now collected `Reserve`, `Room`, `Slot`, `Facility`, `Cancellation`, `Room reservation`, and `Checked-in`.
 
@@ -67,14 +67,16 @@ In our case, we could, at least after workshopping around the intended flows, se
 
 We can start cleaning the language a bit.
 
-`Room reservation` sounds too verbose—we can cut this to just `Reservation` as these are always logically related only to `Room`s and their (time) `Slots.
+`Room reservation` sounds too verbose—we can cut this to just `Reservation` as these are always logically related only to `Room`s and their (time) \`Slots.
+
+Because we only work with a single Facility, we can cut that out too.
 
 | Concept      | Type  |
 | ------------ | ----- |
 | Reserve      | Verb  |
 | Room         | Noun  |
 | Slot         | Noun  |
-| Facility     | Noun  |
+| ~~Facility~~ | Noun  |
 | Cancellation | Noun  |
 | Reservation  | Noun  |
 | Check in     | Verb  |
@@ -96,8 +98,8 @@ The Security domain has, also, only a single unique concept: The (verification) 
 
 ## Delivery
 
-In the reference implementation, this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario, this format is probably quickly exhausted as definitions may need to be richer and exemplified. Note also how we ascribe the term to specific domains.\
+In the reference implementation, this is simply shared as a separate diagram using a basic visual style where each term is described in a short sentence. In a real-life scenario, this format is probably quickly exhausted as definitions may need to be richer and exemplified. Note also how we ascribe each term to specific domains.
 
 ![Describing, in short, our Ubiquitous Languages through the domain concepts](<../.gitbook/assets/Get-A-Room Ubiquitous Language.png>)
 
-On the next page, we will see how EventStorming can be an additional or alternative approach to accumulating a domain model and language.
+Having this glossary or Ubiquitous Language always ready at hand will be a major benefit, from onboarding to understanding if there are any issues stemming from conceptual misalignment.
