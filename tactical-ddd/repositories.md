@@ -32,7 +32,7 @@ The primary place for Repositories is, therefore (as Evans writes; 2013, p.148) 
 
 The typical "by-the-book" way is to use one Repository per higher concept or Aggregate, say, `ReservationRepository` and `SlotRepository`, which would often mean we would need unique Repositories per object. Logically speaking this makes sense as the repository will have to be uniquely implemented based on the specific needs of the Aggregate in question. However, I will now explain why that's _not the way_ I am dealing with it in our example code.
 
-## How repositories are used in the project
+## How Repositories are used in the project
 
 Because I am choosing to understand and implement Repositories as an infrastructural feature, rather than as being part of a domain, I do not want Repositories to have knowledge of the actual Entity classes (such as `Slot`) so I do not return the class instance, but the Data Transfer Object that the Aggregate (`Reservation`) can reconstitute itself.
 
@@ -53,6 +53,7 @@ In the spirit of pragmatism, the approach I am using is more relaxed, going with
 First of all, let's see one of the use cases and understand where we are loading the Slot:
 
 {% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" lineNumbers="true" %}
+
 ```typescript
 import { Reservation } from "../../domain/aggregates/Reservation";
 
@@ -75,6 +76,7 @@ export async function CancelSlotUseCase(
   await reservation.cancel(slotDto);
 }
 ```
+
 {% endcode %}
 
 {% hint style="success" %}
@@ -95,6 +97,7 @@ This same pattern is used for all similar use cases.
 Now for one of the actual Repositories.
 
 {% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
+
 ```typescript
 import { randomUUID } from "crypto";
 import {
@@ -263,6 +266,7 @@ class DynamoDbRepository implements Repository {
   }
 }
 ```
+
 {% endcode %}
 
 We `implement` the class based on a base class (abstraction), allowing us to make a dedicated local test variant as well.
@@ -278,11 +282,12 @@ Like anywhere else in the DDD world, avoid terms that are technological and do n
 Finally, while it may seem like a weird anti-pattern on line 142 with
 
 ```typescript
-if (process.env.NODE_ENV !== "test") await this.docClient.send(new PutItemCommand(command));
+if (process.env.NODE_ENV !== "test")
+  await this.docClient.send(new PutItemCommand(command));
 ```
 
 this actually enables unit testing of the majority of the "real" repository without adverse, uncontrolled side effects.
 
 {% hint style="info" %}
-Microsoft has a lot of good articles on microservices and DDD, for example [this article about repositories](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design).
+Microsoft has a lot of good articles on microservices and DDD, for example [this article about Repositories](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design).
 {% endhint %}

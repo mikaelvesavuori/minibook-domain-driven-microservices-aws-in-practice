@@ -59,7 +59,7 @@ better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates 
 >
 > **The threshold upon which a system can be decomposed into microservices is defined by the use cases of the system that the microservices are a part of.**
 >
-> — Source: _Learning Domain Driven Design_ (Khononov 2021, p.224)
+> — *Learning Domain Driven Design* (Khononov 2021, p.224)
 
 For me all of this spells out that use case-oriented APIs, rather than resource-based getter/setter APIs, are what we are aiming form. He also writes more on the actual sizing and boundaries:
 
@@ -69,7 +69,7 @@ For me all of this spells out that use case-oriented APIs, rather than resource-
 >
 > \[I]f the system is not decomposed into proper bounded contexts or is decomposed past the microservices threshold, it will result in a big ball of mud or a distributed big ball of mud, respectively.&#x20;
 >
-> — Source: _Learning Domain Driven Design_ (Khononov 2021, p.226-227)
+> — _Learning Domain Driven Design_ (Khononov 2021, p.226-227)
 
 Finally, when it comes to heuristics he writes that:
 
@@ -77,7 +77,7 @@ Finally, when it comes to heuristics he writes that:
 >
 > Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
 >
-> — Source: Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
+> — Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
 
 In our case we will see that we did not have to fully follow this advice, however I do see it being a powerful way of closing the loop between:
 
@@ -162,7 +162,7 @@ Now, the "red" ring—use cases—is next up!
 >
 > We _do_, however, expect that changes to the operation of the application _will_ affect the use-cases and therefore the software in this layer. If the details of a use-case change, then some code in this layer will certainly be affected.
 >
-> — Source: [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+> — [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
 It should sound logical enough. If we look at a very, very basic example it should look like this:
 
@@ -222,7 +222,7 @@ Now, let's consider first Martin Fowler's words on the Transaction Script patter
 >
 > A Transaction Script organizes all this logic primarily as a single procedure, making calls directly to the database or through a thin database wrapper. Each transaction will have its own Transaction Script, although common subtasks can be broken into subprocedures.
 >
-> — Source: [https://martinfowler.com/eaaCatalog/transactionScript.html](https://martinfowler.com/eaaCatalog/transactionScript.html)
+> — [https://martinfowler.com/eaaCatalog/transactionScript.html](https://martinfowler.com/eaaCatalog/transactionScript.html)
 
 The gist I am trying to tell is that the use case itself should act essentially as a readable, easy-to-follow orchestration of the use case's mechanics. A key difference is that between a novice programmer and a seasoned one, the use case itself must not touch the details, concretions or infrastructure. Instead (as we see) we trust that our commands on abstractions work as intended:
 

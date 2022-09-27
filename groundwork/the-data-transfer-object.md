@@ -29,7 +29,7 @@ It might be worthwhile to consider some of the obvious problems of POJOs (Plain 
 
 > The **Anemic domain model** is a programming [Anti-pattern](https://en.wikipedia.org/wiki/Anti-pattern) where the [domain objects](https://en.wikipedia.org/wiki/Domain_objects) contain little or no [business logic](https://en.wikipedia.org/wiki/Business_logic) like validations, calculations, rules, and so forth. The business logic is thus baked into the architecture of the program itself, making refactoring and maintenance more difficult and time-consuming.
 >
-> — Source: [https://en.wikipedia.org/wiki/Anemic_domain_model](https://en.wikipedia.org/wiki/Anemic_domain_model)
+> — [https://en.wikipedia.org/wiki/Anemic_domain_model](https://en.wikipedia.org/wiki/Anemic_domain_model)
 
 Let's look at that a bit more in the words of Martin Fowler:
 
@@ -39,7 +39,7 @@ Let's look at that a bit more in the words of Martin Fowler:
 >
 > Now object-oriented purism is all very well, but I realize that I need more fundamental arguments against this anemia. In essence, the problem with anemic domain models is that they incur all of the costs of a domain model, without yielding any of the benefits. The primary cost is the awkwardness of mapping to a database, which typically results in a whole layer of O/R mapping.
 >
-> — Source: [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html)
+> — [https://martinfowler.com/bliki/AnemicDomainModel.html](https://martinfowler.com/bliki/AnemicDomainModel.html)
 
 TODO
 

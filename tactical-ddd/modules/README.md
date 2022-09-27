@@ -33,7 +33,7 @@ With all this said, though, the Module pattern itself is not descended from DDD;
 In terms of ontology, **a Module can be a namespace or a package, depending on the language** that you are using. For our example code, using TypeScript, [there do exist mechanisms to handle this](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html), but they are not completely idiomatic to how the language is typically used. Instead, we will have to do this only at the file and folder level. Generally, it does make sense that we should also see the structure and folders as a related effect of our Modules. Therefore Modules are not simply only a technical matter, but a logical matter.
 
 {% hint style="info" %}
-See for example [this article by DigitalOcean for more on how the Module pattern works](https://www.digitalocean.com/community/conceptual\_articles/module-design-pattern-in-javascript) in JavaScript/TypeScript.
+See for example [this article by DigitalOcean for more on how the Module pattern works](https://www.digitalocean.com/community/conceptual_articles/module-design-pattern-in-javascript) in JavaScript/TypeScript.
 {% endhint %}
 
 Much of DDD wisdom and attempts at concretely structuring files in a DDD-leaning sense will address why one of the most basic tactical things we can implement is packaging by Module (or features) rather than by layers. You'll perhaps already have experience seeing how many trivial or common projects will use the layered, format-based approach, segmenting folders into their respective types (especially common in front-end projects) or using vague, non-descriptive categories such as `helpers`. This makes it very hard to understand how objects and functions relate and what their respective hierarchies are. It also becomes hard to discern the domain logic from the overall structure, the Module names, and their usage. All that becomes much easier with Modules.
@@ -54,15 +54,15 @@ There are several examples out in the wild that aim to present various individua
 
 Reasons I don't necessarily like some of the other examples out there, include:
 
-* Overbearing amount of boilerplate and folders.
-* Typically oriented toward monolithic use cases or indistinct deployment models.
-* Related to the above: Over-modularization, where I believe microservices themselves should be the first module boundary.
-* Use of decorators; is something that is not standardized in TypeScript (Vandenkam 2021, p. 197-198).
-* Use of inversion of control (IoC) libraries and dependency injection (DI) containers/libraries rather than using the language features provided, or simply using regular object-oriented programming. These needs can be handled without external library dependencies by using higher-order functions or passing in dependencies in a functional way.
-* Intricate uses of more complex ideas like monads (such as `Either` and `Left`/`Right`) which adds a higher threshold than necessary for people to start getting value from tactical DDD.
+- Overbearing amount of boilerplate and folders.
+- Typically oriented toward monolithic use cases or indistinct deployment models.
+- Related to the above: Over-modularization, where I believe microservices themselves should be the first module boundary.
+- Use of decorators; is something that is not standardized in TypeScript (Vandenkam 2021, p. 197-198).
+- Use of inversion of control (IoC) libraries and dependency injection (DI) containers/libraries rather than using the language features provided, or simply using regular object-oriented programming. These needs can be handled without external library dependencies by using higher-order functions or passing in dependencies in a functional way.
+- Intricate uses of more complex ideas like monads (such as `Either` and `Left`/`Right`) which adds a higher threshold than necessary for people to start getting value from tactical DDD.
 
 {% hint style="info" %}
-All of these concerns are addressed and  "taken care of" in the example code that goes with this book.
+All of these concerns are addressed and "taken care of" in the example code that goes with this book.
 {% endhint %}
 
 Taking DDD and CA together, we get a pretty powerful toolbox. You should understand that many examples are based on monolithic applications, something I personally very rarely work on. The example here addresses a microservice perspective. The bounded context itself is the main feature, so to speak.
@@ -79,16 +79,16 @@ In our case, the principal module structure for code is:
 
 ### Reservation (core subdomain)
 
-* `code/Reservation/Reservation:` The reservation solution and Bounded Context (core subdomain)
-* `code/Reservation/Display:` The display solution and Bounded Context (supporting subdomain)
+- `code/Reservation/Reservation:` The reservation solution and Bounded Context (core subdomain)
+- `code/Reservation/Display:` The display solution and Bounded Context (supporting subdomain)
 
 ### Analytics (generic subdomain)
 
-* `code/Analytics/Analytics`: The analytics solution and Bounded Context
+- `code/Analytics/Analytics`: The analytics solution and Bounded Context
 
 ### Security (supporting subdomain)
 
-* `code/VerificationCode/VerificationCode:` The verification code solution and Bounded Context
+- `code/VerificationCode/VerificationCode:` The verification code solution and Bounded Context
 
 Here we've almost completely nailed the 1:1 relationship between Bounded Context and subdomain, as well as have a top-level modularization of solutions/code into these.
 
@@ -103,9 +103,9 @@ https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](..
 
 I find it the most immediately effective and neat variant of these, as it:
 
-* Introduces very little in terms of novel concepts;
-* Is almost directly compatible with how DDD envisions structure in the software realm;
-* Powerfully exploits the _dependency rule_ for well-working and testable software.
+- Introduces very little in terms of novel concepts;
+- Is almost directly compatible with how DDD envisions structure in the software realm;
+- Powerfully exploits the _dependency rule_ for well-working and testable software.
 
 Robert Martin writes about the _dependency rule_ like this:
 
@@ -121,10 +121,10 @@ The intention with all of these ideas for how to structure an application is all
 
 Let's at least look at the levels and some examples of what would into them.
 
-* **Entities**: "Business objects of the application"
-* **Use cases**: "Use cases orchestrate the flow of data to and from the Entities, and direct those Entities to use their enterprise wide business rules to achieve the goals of the use case"
-* **Interface adapters**: "A set of adapters that convert data from the format most convenient for the use cases and Entities, to the format most convenient for some external agency such as the Database or the Web"
-* **Frameworks and Drivers**: "Where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm"
+- **Entities**: "Business objects of the application"
+- **Use cases**: "Use cases orchestrate the flow of data to and from the Entities, and direct those Entities to use their enterprise wide business rules to achieve the goals of the use case"
+- **Interface adapters**: "A set of adapters that convert data from the format most convenient for the use cases and Entities, to the format most convenient for some external agency such as the Database or the Web"
+- **Frameworks and Drivers**: "Where all the details go. The Web is a detail. The database is a detail. We keep these things on the outside where they can do little harm"
 
 Ultimately: **The farther in something is, the less likely it is to change. Any inner layers must not depend on the outer layers.**
 
@@ -147,7 +147,7 @@ Or in tabular form with the actual folder names too:
 You will notice that here adapters are part of the infrastructure layer rather than being on their own.
 {% endhint %}
 
-If we use a tool like [Madge](https://github.com/pahen/madge) to generate a diagram of the code, we should be able to see the same [acyclic flow ](https://en.wikipedia.org/wiki/Directed\_acyclic\_graph)that we want (given that we actually also write the code in the "clean" way!). Below is an example of the `Reservation` solution.
+If we use a tool like [Madge](https://github.com/pahen/madge) to generate a diagram of the code, we should be able to see the same [acyclic flow ](https://en.wikipedia.org/wiki/Directed_acyclic_graph)that we want (given that we actually also write the code in the "clean" way!). Below is an example of the `Reservation` solution.
 
 <figure><img src="../../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
 
@@ -161,7 +161,7 @@ Now, this I am happy with!
 
 #### Infrastructure
 
-The "grown up" way to think about infrastructure is that they are generic functions, classes, and objects that help set up non-domain-related functionality. Good examples of this include repositories, very generic utility functions, Lambda event handlers (the outer layer), and anything else that has no (or very little) unique value in the specific context.
+The "grown up" way to think about infrastructure is that they are generic functions, classes, and objects that help set up non-domain-related functionality. Good examples of this include Repositories, very generic utility functions, Lambda event handlers (the outer layer), and anything else that has no (or very little) unique value in the specific context.
 
 I've been totally happy with not using Clean Architecture's "frameworks and drivers" nomenclature here but keeping it very flat and simple instead. Those terms didn't really stick with me or become communicated very well. It's fine that frameworks and drivers are _part_ of the infrastructure, but I've personally abandoned packaging under that name.
 
@@ -183,6 +183,6 @@ Now for the crème de la crème, the secret sauce, and [the figurative room wher
 
 Bonus time: `Interfaces` is an additional folder that I tend to keep at the root—it just collects the types and interfaces. The reason I set this as a root-level item is so that we can effectively do things like:
 
-* Exclude the folder when rendering dependencies
-* Put them in the least nested and separate part of the overall structure, as practically every file will have to use some interface or another
-* Get them out of the way while still actually putting these in their own place
+- Exclude the folder when rendering dependencies
+- Put them in the least nested and separate part of the overall structure, as practically every file will have to use some interface or another
+- Get them out of the way while still actually putting these in their own place
