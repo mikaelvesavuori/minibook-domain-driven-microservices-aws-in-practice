@@ -11,10 +11,10 @@ The "strategic" half of DDD deals as expected with those concerns that are more 
 
 In this part we will focus on:
 
-* Documenting our **ubiquitous language** (terminology, naming...)
-* Drawing out the boundaries of our contexts (systems or applications...)
-* Defining the relations between contexts
+- Documenting our **ubiquitous language** (terminology, naming...)
+- Drawing out the boundaries of our contexts (systems or applications...)
+- Defining the relations between contexts
 
 This isn't technical work per se, but it dramatically eases the technical work we will do later.
 
-It's as easy as: No strategic DDD = no DDD. Let's get to work!
+It's as easy as "No strategic DDD = no DDD". Let's get to work!
