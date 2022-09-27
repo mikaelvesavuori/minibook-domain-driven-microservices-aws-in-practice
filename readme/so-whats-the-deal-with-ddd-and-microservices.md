@@ -104,7 +104,7 @@ This point is raised in at least Evans' book, Vernon's book, and [_Learning Doma
 Their point, and mine, is typically that trivial and/or CRUD-oriented systems are good examples of when there is no meaningful reason to pursue the route of DDD. Based on the fact that a lot more software than we sometimes want to accept is just trivial "getting and setting" of basic data, this point should carry across powerfully over a rather wide swath of software engineering projects.
 
 {% hint style="info" %}
-You can find deeper, but often somewhat similar, lines of thought being presented in the serious literature around DDD, but for an online version see for example this one. (TODO)
+You can find deeper, but often somewhat similar, lines of thought being presented in the serious literature around DDD. That's one of the reasons that good books (and resources) will always talk about the model _and_ the code or implementation.
 {% endhint %}
 
 There are ways to make DDD more managable and I am satisfied with the coded solution we will work on as being representative of such a "lighter-weight" path.
