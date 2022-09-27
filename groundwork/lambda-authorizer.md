@@ -24,7 +24,7 @@ const SECURITY_API_ENDPOINT_VERIFY =
 
 /**
  * @description Authorizer that will check the `event.Authorization` header
- * for a slot ID (separated by a pound sign, or "hash tag") and a verification code
+ * for a slot ID (separated by a pound sign, or "hashtag") and a verification code
  * and validate it against the Security API.
  *
  * @example `Authorization: b827bb85-7665-4c32-bb3c-25bca5d3cc48#abc123` header.
@@ -150,8 +150,8 @@ const isCodeValid = await validateCode(slotId, verificationCode);
 if (!isCodeValid) throw new InvalidVerificationCodeError();
 ```
 
-First of all we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll now it's a configuration issue and nothing else.
+First of all, we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll know it's a configuration issue and nothing else.
 
-Then we see how the implementation expects an `Authorization` header to have a specific format with `{SLOT_ID}#{VERIFICATION_CODE}`. Therefore we'll split by the hash, check the presence of them, and throw an error if either is missing.
+Then we see how the implementation expects an `Authorization` header to have a specific format with `{SLOT_ID}#{VERIFICATION_CODE}`. Therefore we'll split by the hash, check their presence of them, and throw an error if either is missing.
 
 The actual validation then is nothing more than calling the endpoint that has been configured. If it is incorrect we return an error indicating this. If all is good, then we'll hit the positive branch of `generatePolicy()`.
