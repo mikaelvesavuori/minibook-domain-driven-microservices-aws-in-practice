@@ -52,10 +52,10 @@ I will now step through some of the iterations I went through to come to terms w
 {% hint style="info" %}
 Consider using some good templates if you are so inclined:
 
-- [https://miro.com/miroverse/the-bounded-context-canvas/](https://miro.com/miroverse/the-bounded-context-canvas/)
-- [https://github.com/ddd-crew/context-mapping](https://github.com/ddd-crew/context-mapping)
-- [https://contextmapper.org](https://contextmapper.org)
-  {% endhint %}
+* [https://miro.com/miroverse/the-bounded-context-canvas/](https://miro.com/miroverse/the-bounded-context-canvas/)
+* [https://github.com/ddd-crew/context-mapping](https://github.com/ddd-crew/context-mapping)
+* [https://contextmapper.org](https://contextmapper.org)
+{% endhint %}
 
 ### First attempt: Overall orientation
 
@@ -77,9 +77,9 @@ As per DDD best practices, we want to have as close alignment as possible betwee
 
 With the addition of subdomains, we have now clarified their relative importance and set the maximum outer boundaries.
 
-- Reservation is the core domain, which we will invest more heavily in
-- Security is a supporting subdomain, and we accept that we need to do our own work here for it to be useful in our application
-- Analytics is ideally shipped to a commercial-off-the-shelf product or something similar; in Get-A-Room we set up a bare minimum custom implementation
+* Reservation is the core domain, which we will invest more heavily in
+* Security is a supporting subdomain, and we accept that we need to do our own work here for it to be useful in our application
+* Analytics is ideally shipped to a commercial-off-the-shelf product or something similar; in Get-A-Room we set up a bare minimum custom implementation
 
 ## Context maps and relationships
 
@@ -89,11 +89,11 @@ For some informative light reading on this subject, see [https://medium.com/inge
 
 In terms of integrations, it should be clear that these somehow need to interact with each other. But how?
 
-- The Reservation context has a `Customer-Supplier relationship` with Display, meaning it supplies data in a way that is easy to represent. In this exact case, it's very close to the original format as it's not that complex.
-- Reservation as a whole has a `Conformist relationship` with the Analytics context. This entails that the Analytics service/context dictates how they want data integrated.
-- The Reservation context and the VerificationCode context have a `Published language relationship` which is a somewhat convoluted way of expressing that the security side will present a documented API to use.
+* The Reservation context has a `Customer-Supplier relationship` with Display, meaning it supplies data in a way that is easy to represent. In this exact case, it's very close to the original format as it's not that complex.
+* Reservation as a whole has a `Conformist relationship` with the Analytics context. This entails that the Analytics service/context dictates how they want data integrated.
+* The Reservation context and the VerificationCode context have a `Published language relationship` which is a somewhat convoluted way of expressing that the security side will present a documented API to use.
 
-![Expressing the Relationships in a complete Context Map.](<../.gitbook/assets/Get-A-Room Context Map.png>)
+![Expressing the Relationships in a complete Context Map.](<../.gitbook/assets/Get-A-Room Context Map (2).png>)
 
 ## In summary
 

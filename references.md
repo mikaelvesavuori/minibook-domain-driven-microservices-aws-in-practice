@@ -4,7 +4,7 @@ description: >-
   it all the way here.
 ---
 
-# References and resources
+# 🏫 References and resources
 
 <figure><img src=".gitbook/assets/undraw_deconstructed_alud (1).png" alt=""><figcaption></figcaption></figure>
 
