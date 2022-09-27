@@ -42,7 +42,7 @@ The domain can be thought of as the principal subject or material of the project
 
 > \[...] a sphere of knowledge, influence, or activity. The subject area to which the user applies a program is the domain of the software.
 >
-> — [https://domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf](https://domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)
+> — [Eric Evans: Domain-Driven Design Reference: Definitions and Pattern Summaries](https://domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)
 
 It should be somewhat clear in most circumstances what the implicit domain boundaries are. DDD eschews implicit boundaries and is particular on boundaries being collaboratively and explicitly defined.
 
@@ -56,7 +56,7 @@ There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge_Luis_Borges) q
 
 > “In this empire, the art of cartography was taken to such a peak of perfection that the map of a single province took up an entire city and the map of the empire, an entire province. **In time, these oversize maps outlived their usefulness and the college of cartographers drew a map of the empire equal in format to the empire itself, coinciding with it point by point**. The following generations, less obsessed with the study of cartography, decided that this overblown map was useless and somewhat impiously abandoned it to the tender mercies of the sun and seasons. There are still some remains of this map in the western desert, though in very poor shape, the abode of beasts and beggars. No other traces of the geographical disciplines are to be seen throughout the land.”\
 > \
-> — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A_Universal_History_of_Infamy), 1946 (from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
+> — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A_Universal_History_of_Infamy) (1946; from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
 
 Besides being the nightmare of enterprise architects and surveyors, **grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail**. That's where the very human ability to abstract complex knowledge into models comes in. DDD taps into this quality while being completely open to the ways in which a group might do it.
 

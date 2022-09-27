@@ -12,7 +12,7 @@ In software architecture, there is the idea (or _strategy_, even) of "[the last 
 >
 > With traditional software architectures, decisions were made very early in the project. In order to design an evolutionary architecture, it is beneficial to delay a decision until the LRM. This lessens the possibility that a premature decision will be made. Decisions that are made too early are very risky because they may end up being incorrect and then they will result in costly rework.
 >
-> — "Software Architect's Handbook" by Joseph Ingeno
+> — "Software Architect's Handbook" (Joseph Ingeno)
 
 When we talk about software boilerplate, and certainly in the space of doing serverless Node projects, there does indeed exist quite an urgent need to write and set up some degree of boilerplate.
 

@@ -77,7 +77,7 @@ Finally, when it comes to heuristics he writes that:
 >
 > Aligning microservices with subdomains is a safe heuristic that produces optimal solutions for the majority of microservices. That said, there will be cases where other boundaries will be more efficient.
 >
-> — Vlad Khononov, _Learning Domain Driven Design_ (p.228-229)
+> — _Learning Domain Driven Design_ (Khononov 2021, p.228-229)
 
 In our case we will see that we did not have to fully follow this advice, however I do see it being a powerful way of closing the loop between:
 
@@ -222,7 +222,7 @@ Now, let's consider first Martin Fowler's words on the Transaction Script patter
 >
 > A Transaction Script organizes all this logic primarily as a single procedure, making calls directly to the database or through a thin database wrapper. Each transaction will have its own Transaction Script, although common subtasks can be broken into subprocedures.
 >
-> — [https://martinfowler.com/eaaCatalog/transactionScript.html](https://martinfowler.com/eaaCatalog/transactionScript.html)
+> — [Martin Fowler/Thoughworks: Transaction Script](https://martinfowler.com/eaaCatalog/transactionScript.html)
 
 The gist I am trying to tell is that the use case itself should act essentially as a readable, easy-to-follow orchestration of the use case's mechanics. A key difference is that between a novice programmer and a seasoned one, the use case itself must not touch the details, concretions or infrastructure. Instead (as we see) we trust that our commands on abstractions work as intended:
 

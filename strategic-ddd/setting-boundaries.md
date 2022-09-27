@@ -52,10 +52,10 @@ I will now step through some of the iterations I went through to come to terms w
 {% hint style="info" %}
 Consider using some good templates if you are so inclined:
 
-* [https://miro.com/miroverse/the-bounded-context-canvas/](https://miro.com/miroverse/the-bounded-context-canvas/)
-* [https://github.com/ddd-crew/context-mapping](https://github.com/ddd-crew/context-mapping)
-* [https://contextmapper.org](https://contextmapper.org)
-{% endhint %}
+- [https://miro.com/miroverse/the-bounded-context-canvas/](https://miro.com/miroverse/the-bounded-context-canvas/)
+- [https://github.com/ddd-crew/context-mapping](https://github.com/ddd-crew/context-mapping)
+- [https://contextmapper.org](https://contextmapper.org)
+  {% endhint %}
 
 ### First attempt: Overall orientation
 
@@ -69,7 +69,7 @@ This should not be too controversial, I think.
 
 > One confusion that Evans sometimes notices in teams is differentiating between bounded contexts and subdomains. In an ideal world, they coincide, but in reality, they are often misaligned. He uses an example of a bank structured around cash accounts and credit cards. These two subdomains in the banking domain are also bounded contexts. After reorganizing the business around business accounts and personal accounts, there are now two other subdomains, but the bounded contexts stay the same, which means they are now misaligned with the new subdomains. This often results in two teams having to work in the same bounded contexts with an increased risk of ending up with a big ball of mud.
 >
-> — [https://www.infoq.com/news/2019/06/bounded-context-eric-evans/](https://www.infoq.com/news/2019/06/bounded-context-eric-evans/)
+> — [Jan Stenberg: Defining Bounded Contexts — Eric Evans at DDD Europe](https://www.infoq.com/news/2019/06/bounded-context-eric-evans/)
 
 As per DDD best practices, we want to have as close alignment as possible between subdomains and Bounded Contexts. Still, because we put Reservation and Display in the same (core) subdomain, that one gets a little fatter. Once again, this is acceptable given that Display will serve as essentially just a read-replica of the Reservation context.
 
@@ -77,9 +77,9 @@ As per DDD best practices, we want to have as close alignment as possible betwee
 
 With the addition of subdomains, we have now clarified their relative importance and set the maximum outer boundaries.
 
-* Reservation is the core domain, which we will invest more heavily in
-* Security is a supporting subdomain, and we accept that we need to do our own work here for it to be useful in our application
-* Analytics is ideally shipped to a commercial-off-the-shelf product or something similar; in Get-A-Room we set up a bare minimum custom implementation
+- Reservation is the core domain, which we will invest more heavily in
+- Security is a supporting subdomain, and we accept that we need to do our own work here for it to be useful in our application
+- Analytics is ideally shipped to a commercial-off-the-shelf product or something similar; in Get-A-Room we set up a bare minimum custom implementation
 
 ## Context maps and relationships
 
@@ -89,9 +89,9 @@ For some informative light reading on this subject, see [https://medium.com/inge
 
 In terms of integrations, it should be clear that these somehow need to interact with each other. But how?
 
-* The Reservation context has a `Customer-Supplier relationship` with Display, meaning it supplies data in a way that is easy to represent. In this exact case, it's very close to the original format as it's not that complex.
-* Reservation as a whole has a `Conformist relationship` with the Analytics context. This entails that the Analytics service/context dictates how they want data integrated.
-* The Reservation context and the VerificationCode context have a `Published language relationship` which is a somewhat convoluted way of expressing that the security side will present a documented API to use.
+- The Reservation context has a `Customer-Supplier relationship` with Display, meaning it supplies data in a way that is easy to represent. In this exact case, it's very close to the original format as it's not that complex.
+- Reservation as a whole has a `Conformist relationship` with the Analytics context. This entails that the Analytics service/context dictates how they want data integrated.
+- The Reservation context and the VerificationCode context have a `Published language relationship` which is a somewhat convoluted way of expressing that the security side will present a documented API to use.
 
 ![Expressing the Relationships in a complete Context Map.](<../.gitbook/assets/Get-A-Room Context Map.png>)
 

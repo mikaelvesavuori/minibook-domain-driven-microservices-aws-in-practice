@@ -46,7 +46,7 @@ This opinion is contentious and debated, as witnessed in [this response by Subha
 >
 > The issue is also muddied when you consider other design philosophies like Clean Architecture, which advocates using an abstract repository in the domain layer while providing concrete implementations in the infrastructure layer.
 >
-> — [https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to)
+> — [Stack Exchange: "Which layer do DDD Repositories belong to?"](https://softwareengineering.stackexchange.com/questions/396151/which-layer-do-ddd-repositories-belong-to)
 
 In the spirit of pragmatism, the approach I am using is more relaxed, going with one Repository per persistence mechanism—DynamoDB and local/mock use. Because the solution itself is one deployable artifact and because there are no overlapping concepts, this is not problematic since there is no confusion or logical overstepping happening.
 

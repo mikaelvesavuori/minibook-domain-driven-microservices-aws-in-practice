@@ -1,5 +1,5 @@
 ---
-description: Where to get—and see—stuff.
+description: Where to get stuff.
 ---
 
 # Project resources

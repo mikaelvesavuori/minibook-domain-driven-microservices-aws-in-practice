@@ -25,7 +25,7 @@ Microservices have grown in popularity as they, among other things, make it easi
 > - Decentralized
 > - Built and released with automated processes
 >
-> — [https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/)
+> — [Mac Slocum: Microservices: A quick and simple definition](https://www.oreilly.com/content/a-quick-and-simple-definition-of-microservices/)
 
 {% hint style="info" %}
 For more reading, see for example:
