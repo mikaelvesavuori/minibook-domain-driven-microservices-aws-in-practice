@@ -9,47 +9,56 @@ The Lambda authorizer is somewhat convoluted due to the particulars of how AWS' 
 Here's the code:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/authorizers/Authorizer.ts" lineNumbers="true" %}
-
 ```typescript
-import { APIGatewayProxyResult } from "aws-lambda";
+import { APIGatewayProxyResult, AuthResponse } from 'aws-lambda';
 
-import fetch from "node-fetch";
+import fetch, { Response } from 'node-fetch';
 
-import { AuthorizationHeaderError } from "../../application/errors/AuthorizationHeaderError";
-import { InvalidVerificationCodeError } from "../../application/errors/InvalidVerificationCodeError";
-import { MissingSecurityApiEndpoint } from "../../application/errors/MissingSecurityApiEndpoint";
+import { AuthorizationHeaderError } from '../../application/errors/AuthorizationHeaderError';
+import { InvalidVerificationCodeError } from '../../application/errors/InvalidVerificationCodeError';
+import { MissingSecurityApiEndpoint } from '../../application/errors/MissingSecurityApiEndpoint';
 
-const SECURITY_API_ENDPOINT_VERIFY =
-  process.env.SECURITY_API_ENDPOINT_VERIFY || "";
+const SECURITY_API_ENDPOINT_VERIFY = process.env.SECURITY_API_ENDPOINT_VERIFY || '';
 
 /**
  * @description Authorizer that will check the `event.Authorization` header
- * for a slot ID (separated by a pound sign, or "hashtag") and a verification code
+ * for a slot ID (separated by a pound sign, or "hash tag") and a verification code
  * and validate it against the Security API.
  *
  * @example `Authorization: b827bb85-7665-4c32-bb3c-25bca5d3cc48#abc123` header.
  */
-export async function handler(
-  event: Record<string, any>
-): Promise<APIGatewayProxyResult> {
+export async function handler(event: EventInput): Promise<AuthResponse> {
   try {
-    if (event.httpMethod === "OPTIONS") return handleCors();
+    // @ts-ignore
+    if (event.httpMethod === 'OPTIONS') return handleCors();
     if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
-    // Get required values
-    const header = event.headers["Authorization"];
-    const [slotId, verificationCode] = header.split("#");
+    const { slotId, verificationCode } = getValues(event);
     if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
 
     // Verify code
     const isCodeValid = await validateCode(slotId, verificationCode);
     if (!isCodeValid) throw new InvalidVerificationCodeError();
 
-    return generatePolicy(verificationCode, "Allow", event.methodArn, "");
+    return generatePolicy(verificationCode, 'Allow', event.methodArn, '');
   } catch (error: any) {
     console.error(error.message);
-    return generatePolicy("failed", "Deny", event.methodArn, {});
+    const { slotId } = getValues(event);
+    const id = slotId ? slotId : 'UNKNOWN';
+    return generatePolicy(id, 'Deny', event.methodArn, {}); // TODO: Ensure this works if not same as in the OK one above
   }
+}
+
+/**
+ * @description Get required values
+ */
+function getValues(event: EventInput) {
+  const header = event.headers['Authorization'] || '';
+  const [slotId, verificationCode] = header.split('#');
+  return {
+    slotId,
+    verificationCode
+  };
 }
 
 /**
@@ -59,18 +68,19 @@ function handleCors() {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Credentials": true,
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-      Vary: "Origin",
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+      Vary: 'Origin'
     },
-    body: JSON.stringify("OK"),
+    body: JSON.stringify('OK')
   } as APIGatewayProxyResult;
 }
 
 /**
  * @description Creates the IAM policy for the response.
+ * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
  */
 const generatePolicy = (
   principalId: string,
@@ -78,59 +88,57 @@ const generatePolicy = (
   resource: string,
   data: string | Record<string, any>
 ) => {
-  // @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
-  const authResponse: any = {
+  return {
     principalId,
-  };
-
-  if (effect && resource) {
-    const policyDocument = {
-      Version: "2012-10-17",
+    context: {
+      stringKey: JSON.stringify(data)
+    },
+    policyDocument: {
+      Version: '2012-10-17',
       Statement: [
         {
-          Action: "execute-api:Invoke",
+          Action: 'execute-api:Invoke',
           Effect: effect,
-          Resource: resource,
-        },
-      ],
-    };
-
-    authResponse.policyDocument = policyDocument;
-  }
-
-  authResponse.context = {
-    stringKey: JSON.stringify(data),
+          Resource: resource
+        }
+      ]
+    }
   };
-
-  return authResponse;
 };
 
 /**
  * @description Validate a code.
  */
-async function validateCode(
-  slotId: string,
-  verificationCode: string
-): Promise<boolean> {
+async function validateCode(slotId: string, verificationCode: string): Promise<boolean> {
   return await fetch(SECURITY_API_ENDPOINT_VERIFY, {
     body: JSON.stringify({
       slotId,
-      code: verificationCode,
+      code: verificationCode
     }),
-    method: "POST",
+    method: 'POST'
   })
-    .then((response) => response.json())
-    .then((result) => {
+    .then((response: Response) => response.json())
+    .then((result: boolean) => {
       if (result === true) return true;
       return false;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.error(error.message);
       return false;
     });
 }
-```
 
+/**
+ * @description Very basic approximation of the
+ * required parts of the incoming event.
+ */
+type EventInput = {
+  headers: Record<string, string>;
+  httpMethod: 'GET' | 'POST' | 'PATCH' | 'OPTIONS';
+  methodArn: string;
+};
+
+```
 {% endcode %}
 
 Most of its contents are pure boilerplate that you can copy between projects to your heart's content.
@@ -138,19 +146,21 @@ Most of its contents are pure boilerplate that you can copy between projects to 
 The particulars in the handler are:
 
 ```typescript
+if (event.httpMethod === 'OPTIONS') return handleCors();
+
 if (!SECURITY_API_ENDPOINT_VERIFY) throw new MissingSecurityApiEndpoint();
 
-// Get required values
-const header = event.headers["Authorization"];
-const [slotId, verificationCode] = header.split("#");
+const { slotId, verificationCode } = getValues(event);
 if (!slotId || !verificationCode) throw new AuthorizationHeaderError();
 
 // Verify code
 const isCodeValid = await validateCode(slotId, verificationCode);
 if (!isCodeValid) throw new InvalidVerificationCodeError();
+
+return generatePolicy(verificationCode, 'Allow', event.methodArn, '');
 ```
 
-First of all, we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll know it's a configuration issue and nothing else.
+First of all, if this is a call from a source where CORS might be an issue we handle that case. Next, we ensure there is a constant set for our endpoint, or we throw an error. This one is serious if we hit this one, but at least we'll know it's a configuration issue and nothing else.
 
 Then we see how the implementation expects an `Authorization` header to have a specific format with `{SLOT_ID}#{VERIFICATION_CODE}`. Therefore we'll split by the hash, check their presence of them, and throw an error if either is missing.
 

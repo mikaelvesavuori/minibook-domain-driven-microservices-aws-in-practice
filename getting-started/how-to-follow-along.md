@@ -46,11 +46,11 @@ For dynamic values, set the field similar to the format `"<Some description here
 
 The below commands are those I believe you will want to use. See `package.json` for more commands!
 
-* `npm start`: Runs Serverless Framework in offline mode
+* `npm start`: Runs Serverless Framework in [offline mode](https://www.serverless.com/plugins/serverless-offline)
 * `npm test`: Tests code
+* `npm run docs`: Generates documentation
 * `npm run deploy`: Deploys code with Serverless Framework
-* `npm run release`: Run [standard-version](https://github.com/conventional-changelog/standard-version#cutting-releases)
-* `npm run build`: Package and build the code with Serverless Framework
+* `npm run teardown`: Package and build the code with Serverless Framework
 
 {% hint style="info" %}
 Also note that the code's "[mono repo](https://monorepo.tools)" structure is more for convenience than a true "decision" as such.
@@ -60,8 +60,4 @@ Also note that the code's "[mono repo](https://monorepo.tools)" structure is mor
 
 _These only apply if you want to deploy code._
 
-* Amazon Web Services (AWS) account with sufficient permissions so that you can deploy infrastructure. A naive but simple policy would be full rights for CloudWatch, Lambda, API Gateway, X-Ray, S3, and CodeDeploy.
-
-### 1. Clone or fork the repo
-
-Clone and fork the repo as you normally would.
+* Amazon Web Services (AWS) account with sufficient permissions so that you can deploy infrastructure.

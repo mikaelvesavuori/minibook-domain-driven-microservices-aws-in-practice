@@ -15,7 +15,6 @@ The semantic concept of "handler" is somewhat particular to have we talk about _
 Enough introduction, let's go ahead and look at a handler:
 
 {% code title="code/Reservation/Reservation/src/infrastructure/adapters/web/ReserveSlot.ts" lineNumbers="true" %}
-
 ```typescript
 import {
   APIGatewayProxyEvent,
@@ -78,7 +77,6 @@ export async function handler(
   }
 }
 ```
-
 {% endcode %}
 
 At the top, we get the imports, nothing much to add there, and we see that the handler is exported as an async function. This is per Lambda convention.
@@ -88,7 +86,6 @@ At the top, we get the imports, nothing much to add there, and we see that the h
 I've been somewhat loose on the parameters, as the `event` is just any old Record (object) but the `context` is an actual typed AWS context object. This is up for opinion, sure, but I find that the event itself is just easier to deal with when it is untyped and because its structure may significantly change based on which integration mechanism is used—in our case if it's via API Gateway or EventBridge. They ensure this doesn't blow up or bloat _all_ of our functions in this service we've made a small `getDTO()` utility function to accurately piece together a fully formed Data Transfer Object from the input. Because it's a utility and not business-oriented we want to avoid any deep considerations or logic in that function, as seen below:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/utils/getDTO.ts" lineNumbers="true" %}
-
 ```typescript
 import { AnalyticalRecord } from "../../interfaces/AnalyticalRecord";
 
@@ -132,7 +129,6 @@ function createApiGatewayDto(body: any) {
   };
 }
 ```
-
 {% endcode %}
 
 We use the Data Transfer Object, or DTO, simply to carry around a representation of data. We could call this object `Input` or something if we wanted, but I'll keep it simply as `data` here.
@@ -164,7 +160,6 @@ await AddRecordUseCase(dependencies, data);
 Notice that there's a dedicated utility function `setupDependencies()` to create various required dependencies. For this particular service, we need only a database.
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/utils/setupDependencies.ts" lineNumbers="true" %}
-
 ```typescript
 import { Dependencies } from "../../interfaces/Dependencies";
 
@@ -185,14 +180,13 @@ export function setupDependencies(localUse = false): Dependencies {
   };
 }
 ```
-
 {% endcode %}
 
 In the other services we use this same pattern but sometimes return more objects depending on the exact needs. In this case, we are receiving either the mock database (for testing and development) or we are getting an instance of DynamoDB. This means we are encapsulating the logic for when we test, rather than spreading this across everything—note that there are still places where we do need to interact prior to tests, but this is the most important bit.
 
-Why bother with this at all? Well, pretty easy. If we want to follow Uncle Bob's Clean Architecture, as well as following the [D](https://en.wikipedia.org/wiki/Dependency_inversion_principle) in [SOLID](https://en.wikipedia.org/wiki/SOLID), we have to bring lower-level (more concrete; more volatile; less business-oriented) components _into_ those that are more business oriented. The magic disconnection we want to create between the infrastructural components (like the database or repository) and the actual use case is now in place.
+Why bother with this at all? Well, pretty easy. If we want to follow Uncle Bob's Clean Architecture, as well as following the [D](https://en.wikipedia.org/wiki/Dependency\_inversion\_principle) in [SOLID](https://en.wikipedia.org/wiki/SOLID), we have to bring lower-level (more concrete; more volatile; less business-oriented) components _into_ those that are more business oriented. The magic disconnection we want to create between the infrastructural components (like the database or repository) and the actual use case is now in place.
 
-Note how we just run the use case, injecting it with a set of dependencies making it very easy to replicate and test. We call this pattern [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) (DI)—more specifically some have called the approach used here "poor man's DI" or "pure DI". In my opinion, it's just the way that makes the most sense: It adds no dependencies, it's easy to use, and it is completely non-magical. You have this [opinion echoed by people like Khalil Stemmler](https://khalilstemmler.com/articles/software-design-architecture/coding-without-di-container/) as well.
+Note how we just run the use case, injecting it with a set of dependencies making it very easy to replicate and test. We call this pattern [dependency injection](https://en.wikipedia.org/wiki/Dependency\_injection) (DI)—more specifically some have called the approach used here "poor man's DI" or "pure DI". In my opinion, it's just the way that makes the most sense: It adds no dependencies, it's easy to use, and it is completely non-magical. You have this [opinion echoed by people like Khalil Stemmler](https://khalilstemmler.com/articles/software-design-architecture/coding-without-di-container/) as well.
 
 Finally, the correct place to set this "object graph" of dependencies is in what is called the "[composition root](https://blog.ploeh.dk/2011/07/28/CompositionRoot/)", which in our case is the handler function, just like we see it being used here.
 
@@ -203,5 +197,3 @@ So if all these smart patterns are already happening in the handler, are there a
 Wiring up your handlers this way allows you to be very nimble and totally divorce the connection between the _use case_ that orchestrates business logic, and the boilerplate needed to ensure basic conformity with the handler, its API, and all of that. Using DI we also make future testing a lot easier as we can drive the use case with any repository or other dependencies we want.
 
 All in all, for some this might have been obvious and for others, this might be eye-opening, but if nothing else, I definitely saw my own code improve a lot when I started using these patterns.
-
-Next up: Testing!
