@@ -1,6 +1,6 @@
 # Open slot
 
-TODO diagram
+<figure><img src="../../../.gitbook/assets/Get-A-Room Solution 5.png" alt=""><figcaption><p>The slot opening happens in <code>9d</code> and <code>11</code>.</p></figcaption></figure>
 
 TODO
 

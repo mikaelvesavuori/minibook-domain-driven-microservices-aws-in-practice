@@ -1,8 +1,8 @@
 # Close slots
 
-TODO diagram
+<figure><img src="../../../.gitbook/assets/Get-A-Room Solution 8.png" alt=""><figcaption><p>To close a slot means we have to ensure the read-copy, or projection, in <code>Display</code> also knows what is going on.</p></figcaption></figure>
 
-TODO
+Closing slots is what we have to do when a slot is no longer reservable.
 
 {% code title="code/Reservation/Reservation/serverless.yml" %}
 ```yaml
