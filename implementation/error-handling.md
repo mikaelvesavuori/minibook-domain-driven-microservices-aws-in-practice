@@ -56,4 +56,4 @@ constructor(inputMessage: string) {
 }
 ```
 
-TODO
+Using custom errors is something that is going to help you significantly as you'll begin to operate your solution.

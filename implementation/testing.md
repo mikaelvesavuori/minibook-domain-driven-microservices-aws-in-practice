@@ -105,5 +105,13 @@ function MessagePrinter(message: string) {
 A useful related pattern that deserves to be mentioned and be inspired by is the "[guard clause](https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html)", a pattern in which we return early on pre-conditions and can effectively cut back on `if-else` statements. The reason I am bringing it up is that we should strive to keep functions and methods as flat (on the left margin) as possible, meaning more readable (and possibly testable!) code.
 {% endhint %}
 
-TODO
+## In closing
+
+Testing starts at 100%. After you get to—our near to 100%—you'll begin to see the outlines of some of the additional, less obvious checks and tests you have to have.
+
+More importantly for the current context, writing code in a DDD + CA project is going to accelerate your journey to good, testable code because it's already practically in the same territory as ATDD (acceptance test driven design).
+
+Ensuring that you structure code in a way that cannot be misunderstood and misused, as well as having complex domain classes (like Entities) that can never be in invalid states is going to be a complete game-changer for developers who are frustrated with poor quality and testing practices.
+
+If good code is what you want, DDD is one very concrete way to get there.
 
