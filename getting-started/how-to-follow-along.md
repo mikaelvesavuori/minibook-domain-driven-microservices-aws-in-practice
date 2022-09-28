@@ -52,4 +52,8 @@ Also note that the code's "[mono repo](https://monorepo.tools)" structure is mor
 
 _These only apply if you want to deploy code._
 
-- Amazon Web Services (AWS) account with sufficient permissions so that you can deploy infrastructure.
+- You have a recent Node version, ideally version 18 or later
+- You have an AWS account
+- You have sufficient AWS credentials to deploy the required infrastructure (including API Gateway, Lambda, S3 and more)
+- You are logged into AWS in your environment
+- You follow any additional instructions per each each Bounded Context's (microservice's) `README.md`
