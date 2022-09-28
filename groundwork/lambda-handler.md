@@ -6,7 +6,7 @@ description: >-
 
 # Lambda handler
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 2.png" alt=""><figcaption><p>Handlers (a type of controller) reside in the Adapter layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 2.png" alt=""><figcaption><p>Handlers (a type of controller) reside in the Adapter layer.</p></figcaption></figure>
 
 As I wrote in one of the introductory chapters, a relatively common "misimplementation" is to think of the Lambda handler as the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.
 

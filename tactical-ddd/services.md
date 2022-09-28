@@ -55,7 +55,7 @@ The intuitive difference should be clear, but I've found that it may take a refa
 
 ## Application Services or use cases?
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 3.png" alt=""><figcaption><p>Application Services reside in the Application layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 3.png" alt=""><figcaption><p>Application Services reside in the Application layer.</p></figcaption></figure>
 
 Application Services and (Clean Architecture) use cases are somewhat equivalent, and we are using both concepts in our example code.
 
@@ -118,7 +118,7 @@ It has a single public method, `getVerificationCode()`. Using it, one can call a
 
 ## Domain Services
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Domain Services reside in the Domain layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 4.png" alt=""><figcaption><p>Domain Services reside in the Domain layer.</p></figcaption></figure>
 
 Domain services encapsulate, as expected, domain logic — you'll therefore want this to match the ubiquitous language of your domain. Domain services would be recommended in case you have to interact with multiple Aggregates, for example, otherwise, keep it simple and let it be part of the Aggregate itself.
 

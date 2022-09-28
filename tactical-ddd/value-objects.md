@@ -14,7 +14,7 @@ description: >-
 **Value Objects** are like non-unique Entities. You use them in much the same way, except they bear no own identity. An instance of a **Value Object** is equivalent to another instance if they have the same properties and values. They are excellent for containing complex creational logic and work well when combined on Entities that contain **Value Objects** as part of their data.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Value Objects reside in the Domain layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 4.png" alt=""><figcaption><p>Value Objects reside in the Domain layer.</p></figcaption></figure>
 
 Value objects are a Godsend.
 
@@ -37,7 +37,6 @@ If there is something I know I need to build more often, it's Value Objects.
 Get-A-Room doesn't have very many Value Objects (two, in fact). Let's look at the `TimeSlot`. This is how it's used:
 
 {% code title="code/Reservation/SlotReservation/src/domain/aggregates/Slot.ts" lineNumbers="true" %}
-
 ```typescript
 const timeSlot = new TimeSlot();
 const currentTime = this.getCurrentTime();
@@ -50,13 +49,11 @@ for (let slotCount = 0; slotCount < numberHours; slotCount++) {
   slots.push(newSlot);
 }
 ```
-
 {% endcode %}
 
 And the Value Object itself:
 
 {% code title="code/Reservation/SlotReservation/src/domain/valueObjects/TimeSlot.ts" overflow="wrap" lineNumbers="true" %}
-
 ````typescript
 import { TimeSlotDTO } from "../../interfaces/TimeSlot";
 
@@ -105,7 +102,6 @@ export class TimeSlot {
   }
 }
 ````
-
 {% endcode %}
 
 To save on memory we are reusing the same `TimeSlot` instance and calling it several times throughout the loop. This is probably not the right way to do it in certain circumstances, but here I feel it makes sense as we are never relying on the instance of the Value Object itself, just asking it to return a Data Transfer Object based on the input data. Perhaps this can be seen as acceptable in the limited range of uses that we get to use `TimeSlot` for.

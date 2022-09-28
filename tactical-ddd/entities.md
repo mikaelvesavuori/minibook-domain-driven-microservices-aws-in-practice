@@ -19,7 +19,7 @@ Every **Entity** has a unique identity. We use **Entities** to wedge in domain l
 **Entities** and Aggregates are practically the same, with the difference being that an **Entity** is a _thing_ while an Aggregate represents a cluster of _things_.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>Entities reside in the Domain layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 4.png" alt=""><figcaption><p>Entities reside in the Domain layer.</p></figcaption></figure>
 
 Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _is not the same thing_.
 
@@ -45,8 +45,8 @@ In the world of traditional back-end engineering, you might find something like 
 
 It's not uncommon that we for example:
 
-- Go with a data synchronization approach, where we duplicate data on our end (this may even be two-way but let's skip that idea for now). While it's easier today in the public cloud to set these things up, many times you'll still face the consequences of having to deal with data decoupled from the business logic (behavior). Further, you may get a problematic mix of eventual and strong consistency which could break transactional flows.
-- Decide to only read back data, making integration easier, but the resiliency and performance worse. An issue here is that at any point where a feature is needed that can update data, you will have a hard time getting that solution to be scalable, secure, and logical as the landscape is now polluted with multiple writers of the same leading data.
+* Go with a data synchronization approach, where we duplicate data on our end (this may even be two-way but let's skip that idea for now). While it's easier today in the public cloud to set these things up, many times you'll still face the consequences of having to deal with data decoupled from the business logic (behavior). Further, you may get a problematic mix of eventual and strong consistency which could break transactional flows.
+* Decide to only read back data, making integration easier, but the resiliency and performance worse. An issue here is that at any point where a feature is needed that can update data, you will have a hard time getting that solution to be scalable, secure, and logical as the landscape is now polluted with multiple writers of the same leading data.
 
 Either case will be poor in different ways.
 
@@ -94,12 +94,12 @@ Invariants are "consistency rules that must be maintained whenever data changes"
 
 To actually be to have an always-valid domain model, what would you need to keep in mind?
 
-> - Your domain model should be valid at all times.
-> - For that, do the following:
->   - Make the boundary of your domain model explicit.
->   - Validate all external requests before they cross that boundary.
->   - Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
->   - You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
+> * Your domain model should be valid at all times.
+> * For that, do the following:
+>   * Make the boundary of your domain model explicit.
+>   * Validate all external requests before they cross that boundary.
+>   * Don’t use domain classes to carry data that come from the outside world. Use DTOs for that purpose.
+>   * You cannot strengthen the invariants in your domain model as it would break backward compatibility with the existing data. You need to come up with a transition plan.
 >
 > — [Vladimir Khorikov: Always valid vs not always valid domain model](https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/)
 
@@ -113,18 +113,17 @@ In plain English, by having moved all the actual domain logic and validations an
 
 Before we go to the code, let's revisit some highlights.
 
-- Entities are objects that have a unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
-- Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to a POJO/POCO/JSON object.
-- Entities typically use verbs to express their commands—its public interface.
-- We use the ubiquitous language to name these actions and anything else to do with the Entity.
-- Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
+* Entities are objects that have a unique identity. They are the most closely connected to the domain and its business logic of all DDD concepts.
+* Entities represent our "dumb data" as actual "things" (nouns) and makes it smart by enabling us a programmatic way to interact with the data in a logical manner rather than just supplying getters and setters to a POJO/POCO/JSON object.
+* Entities typically use verbs to express their commands—its public interface.
+* We use the ubiquitous language to name these actions and anything else to do with the Entity.
+* Entities must always be valid. _Invariants_ is the preferred term for our consistency (and validation) rules.
 
 ## The Slot entity
 
 Be ready for one of our biggest and most important classes, the `Slot`.
 
 {% code title="code/Reservation/SlotReservation/src/domain/entities/Slot.ts" lineNumbers="true" %}
-
 ````typescript
 import { randomUUID } from "crypto";
 
@@ -526,7 +525,6 @@ export interface SlotCommand {
   newStatus: Status;
 }
 ````
-
 {% endcode %}
 
 There's a bunch of private and public methods here, with a slightly higher public method count than on the private side. You'll notice that there are a couple of patterns that keep repeating like those that return `SlotCommand` and those that check rules.
@@ -639,7 +637,6 @@ The fields act as a well-known interface/type (`SlotDTO`) and we can now trivial
 Business logic. Domain logic. Both sound _big_. Dangerous. In our case it's literally a check on the expected, valid `slotStatus`.
 
 {% code lineNumbers="true" %}
-
 ```typescript
 /**
  * @description Can this `Slot` be reserved?
@@ -649,7 +646,6 @@ private canBeReserved(): boolean {
   return true;
 }
 ```
-
 {% endcode %}
 
 Now that's some nice, basic logic right there! No need for enums or anything, we just need to check for an open status.
@@ -673,7 +669,6 @@ Nothing is blocking you to conduct much deeper checking, though that seems overb
 Our Domain Service, `ReservationService`, calls each Slot's `isGracePeriodOver()` method when checking if we have any reservations that have expired their 10-minute grace period.
 
 {% code lineNumbers="true" %}
-
 ```typescript
  /**
  * @description Check if our 10 minute grace period has ended,
@@ -695,7 +690,6 @@ private getGracePeriodEndTime(startTime: string): string {
   return new Date(new Date(startTime).getTime() + minutes * msPerMinute).toISOString();
 }
 ```
-
 {% endcode %}
 
 The internal logic is here a tiny bit more elaborate than the super-simple ones from the last example. All the logic around this is neatly stored within the Entity and we are left with a clean, nice public interface to get our answer.
@@ -705,7 +699,6 @@ The internal logic is here a tiny bit more elaborate than the super-simple ones 
 Here's now an example of the actual reservation logic.
 
 {% code lineNumbers="true" %}
-
 ```typescript
 /**
  * @description Updates a Slot to be in `RESERVED` invariant state.
@@ -734,7 +727,6 @@ public reserve(hostName: string): SlotCommand {
   };
 }
 ```
-
 {% endcode %}
 
 It will throw an error if it cannot be reserved, which is [cruder than how we could do it](https://enterprisecraftsmanship.com/posts/always-valid-domain-model/). Nevertheless, this seems like a reasonable version 1 of our solution. Next, we will set a new status, update the host name and status internally, and then return a `SlotCommand` which is a type of object that we can create an actual Domain Event from later. Note how, at this point, we have not persisted anything, just made sure that it's all valid, our object is in a regulated and valid state, and that we feed back the basis of our upcoming event for our integration purposes.

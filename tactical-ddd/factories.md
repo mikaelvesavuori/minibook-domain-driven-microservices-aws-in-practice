@@ -14,9 +14,9 @@ description: >-
 The **Factory** pattern is a classic creational pattern. Some important reasons to use the pattern include that it appropriately encapsulates creation logic, as well as provides a structured way of creating objects in a deterministic manner.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 3.png" alt=""><figcaption><p>Factories reside in the Application layer.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 3.png" alt=""><figcaption><p>Factories reside in the Application layer.</p></figcaption></figure>
 
-Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD (instead, please see [_Design Patterns: Elements of Reusable Object-Oriented Software_](https://www.goodreads.com/book/show/85009.Design_Patterns)). In the context of DDD, we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an Entity or Aggregate.
+Factories encapsulate the creation of, primarily, complex objects such as those in the domain layer. The pattern itself has nothing to do with DDD (instead, please see [_Design Patterns: Elements of Reusable Object-Oriented Software_](https://www.goodreads.com/book/show/85009.Design\_Patterns)). In the context of DDD, we gain even better enforcement of encapsulation, which is especially meaningful when we need to construct an Entity or Aggregate.
 
 Factories help us to hide implementation and construction logic and always return valid invariants of the class ("product") that we have created. However, invariant logic and validation should as far as possible be deferred to the product being created itself, which makes perfect sense if we are using Factories to create complex objects like Entities and Aggregates that already have such logic baked in.
 
@@ -35,7 +35,6 @@ Often you will find factories in an object-oriented class shape, but here we wil
 Several factories have been used to remove some of the ugly `new SomeClass()` calls. I'll happily use it whenever I want to avoid letting a user directly access a class, like this:
 
 {% code title="code/Analytics/SlotAnalytics/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
-
 ```typescript
 /**
  * @description Factory function to create a DynamoDB repository.
@@ -44,19 +43,16 @@ export function createNewDynamoDbRepository(): DynamoDbRepository {
   return new DynamoDbRepository();
 }
 ```
-
 {% endcode %}
 
 This also works well in creating concrete instances of services that need some values for setting them up:
 
 {% code title="code/Reservation/Reservation/src/application/services/VerificationCodeService.ts" lineNumbers="true" %}
-
 ```typescript
 export function createVerificationCodeService(securityApiEndpoint: string) {
   return new ConcreteVerificationCodeService(securityApiEndpoint);
 }
 ```
-
 {% endcode %}
 
 More on the `VerificationCodeService` later.
@@ -64,7 +60,6 @@ More on the `VerificationCodeService` later.
 We can also use it to package some important checks or validations we may have, like with the EventBridge emitter:
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
-
 ```typescript
 /**
  * @description Factory function to return freshly minted EventBridge instance.
@@ -78,7 +73,6 @@ export const makeNewEventBridgeEmitter = (region: string) => {
   return new EventBridgeEmitter(region);
 };
 ```
-
 {% endcode %}
 
 While very basic, all of these (especially the two last ones) get the point across; A Factory can hide some of the ugly details involved in creating important objects.

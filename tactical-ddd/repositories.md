@@ -14,7 +14,7 @@ description: >-
 When it's time to do the inevitable persisting or loading of data, it's a **Repository** you want. Similar to the Factory, a **Repository** makes its core actions (loading, saving) a deterministic and easy-to-use operation. By separating this logic out, we can avoid polluting actual domain logic with this low-level (though important) detail.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/CA + DDD selected 1.png" alt=""><figcaption><p>Repositories reside in the Infrastructure layer (in my take on DDD + CA).</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/CA + DDD 1.png" alt=""><figcaption><p>Repositories reside in the Infrastructure layer (in my take on DDD + CA).</p></figcaption></figure>
 
 Good old Repositories! This is by my very unscientific gut feeling maybe the most used and best-known of patterns. Well, at least in terms of its nominal recognition.
 
@@ -53,7 +53,6 @@ In the spirit of pragmatism, the approach I am using is more relaxed, going with
 First of all, let's see one of the use cases and understand where we are loading the Slot:
 
 {% code title="code/Reservation/Reservation/src/application/usecases/CancelSlotUseCase.ts" lineNumbers="true" %}
-
 ```typescript
 import { Reservation } from "../../domain/aggregates/Reservation";
 
@@ -76,7 +75,6 @@ export async function CancelSlotUseCase(
   await reservation.cancel(slotDto);
 }
 ```
-
 {% endcode %}
 
 {% hint style="success" %}
@@ -97,7 +95,6 @@ This same pattern is used for all similar use cases.
 Now for one of the actual Repositories.
 
 {% code title="code/Reservation/Reservation/src/infrastructure/repositories/DynamoDbRepository.ts" lineNumbers="true" %}
-
 ```typescript
 import { randomUUID } from "crypto";
 import {
@@ -266,7 +263,6 @@ class DynamoDbRepository implements Repository {
   }
 }
 ```
-
 {% endcode %}
 
 We `implement` the class based on a base class (abstraction), allowing us to make a dedicated local test variant as well.
