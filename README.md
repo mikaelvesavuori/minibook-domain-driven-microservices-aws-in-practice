@@ -10,7 +10,7 @@ coverY: 0
 This online book aims to explain and demonstrate how one might practically apply [Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) (DDD) to a room-booking application using a microservices pattern that we will build on [Amazon Web Services (AWS)](https://aws.amazon.com).
 
 {% hint style="info" %}
-The application, consisting of four distinct services divided into three domains, is provided in a reference shape and throughout the book we will refer to this example.
+[The application, consisting of four distinct services divided into three domains, is provided in a reference shape](https://github.com/mikaelvesavuori/get-a-room-ddd-example) and throughout the book we will refer to this example.
 {% endhint %}
 
 **Domain Driven Design** is a software design approach that has been around for almost 20 years, gaining massive renewed attention with the surge of microservices and related technologies in the last decade. DDD focuses on the logical, semantic, and structural sides of software development (heavily leaning on the business end) more than on prescriptive implementation, though it does also provide several good design patterns. DDD is an ideal approach for complex and/or enterprise-leaning software but can be cumbersome for small, self-contained projects. While our own application will not be deeply complex, it is sufficiently advanced to warrant a structured, domain-oriented approach.
