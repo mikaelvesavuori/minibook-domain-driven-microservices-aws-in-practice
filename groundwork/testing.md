@@ -6,7 +6,7 @@ description: >-
 
 # Testing
 
-The testing approach used here is (for the theoretically minded) in the mostly "classicist" testing camp, which means that we test behaviors and expected output, but nothing regarding the actual implementation details _within_ the thing we test.
+The testing approach used here is (for the theoretically minded) in the mostly ["classicist" testing camp](https://martinfowler.com/articles/mocksArentStubs.html#ClassicalAndMockistTesting), which means that we test behaviors and expected output, but nothing regarding the actual implementation details _within_ the thing we test.
 
 Like much programming, **writing good tests should depend on abstractions (interfaces), not concretions**. We can use _test doubles_ (mocks, stubs, spies, fakes) to work for us, rather than using infrastructure and implementations that might be problematic. Examples of that could be external services, unfinished services, anything going over a network, persistence technologies, and so on.
 

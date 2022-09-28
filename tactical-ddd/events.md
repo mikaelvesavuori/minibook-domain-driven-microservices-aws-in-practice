@@ -9,12 +9,12 @@ description: Events make your distributed services world "go round, round, round
 {% hint style="success" %}
 **TL;DR**
 
-When we say **Events** we in practice always refer to Domain Events. They are a way of decoupling parts of your solution or landscape while expressing what is going on in the terms of ubiquitous language. **Events** can be used with any technology and DDD has no opinion on that side of things.
+When we say **Events** we in practice always refer to [Domain Events](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation). They are a way of decoupling parts of your solution or landscape while expressing what is going on in the terms of ubiquitous language. **Domain Events** can be used with any technology and DDD has no opinion on that side of things.
 {% endhint %}
 
 <figure><img src="../.gitbook/assets/CA + DDD selected 4.png" alt=""><figcaption><p>(Domain) Events reside in the Domain layer.</p></figcaption></figure>
 
-_Domain Events_ indicate **significant occurrences that have occurred in the domain** and need to be reported to other stakeholders belonging to the domain. Aggregates are responsible for publishing events, though we saw how in our example project it is the Domain Service wrapping the `Entity` that actually does that work for reasons mentioned in that section. Domain Events drive transactions and can make commands to other systems.
+_Domain Events_ indicate **significant events that have occurred in the domain** and need to be reported to other stakeholders belonging to the domain. Aggregates are responsible for publishing events, though we saw how in our example project it is the Domain Service wrapping the `Entity` that actually does that work for reasons mentioned in that section. Domain Events drive transactions and can make commands to other systems.
 
 At a high level, events and event-driven architecture mean that we can—and should—decouple systems from each other. This enables us to practically build and sustain an intentional architecture, as promoted by Domain Driven Design, Clean Architecture, and most serious software engineering principles today.
 
@@ -29,28 +29,28 @@ As seen in the diagrams, a typical domain event could be `OrderStarted` if we ar
 {% hint style="info" %}
 See more at:
 
-* [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
-* [https://martinfowler.com/bliki/DomainDrivenDesign.html](https://martinfowler.com/bliki/DomainDrivenDesign.html)
-* [https://en.wikipedia.org/wiki/Domain-driven\_design](https://en.wikipedia.org/wiki/Domain-driven\_design)
-* [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
-* [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-* [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
-{% endhint %}
+- [https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design)
+- [https://martinfowler.com/bliki/DomainDrivenDesign.html](https://martinfowler.com/bliki/DomainDrivenDesign.html)
+- [https://en.wikipedia.org/wiki/Domain-driven_design](https://en.wikipedia.org/wiki/Domain-driven_design)
+- [https://www.infoq.com/articles/ddd-in-practice/](https://www.infoq.com/articles/ddd-in-practice/)
+- [https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165)
+  {% endhint %}
 
 ## Naming, exactness and uniqueness of an event <a href="#naming-exactness-and-uniqueness-of-an-event" id="naming-exactness-and-uniqueness-of-an-event"></a>
 
 Domain events should translate into clearly named and partitioned and non-overlapping names. Names are, as implied, domain-based and must use nomenclature and language that people understand in the particular domain. Key goals for us include:
 
-* Removing **semantic ambiguity** (not understanding what something refers to)
-* Removing **terminological contention** (many contexts claiming the same terms)
-* Increasing and enforcing **domain language** (using the same terms that our domain stakeholders use and express)
+- Removing **semantic ambiguity** (not understanding what something refers to)
+- Removing **terminological contention** (many contexts claiming the same terms)
+- Increasing and enforcing **domain language** (using the same terms that our domain stakeholders use and express)
 
 Domain nomenclature is ultimately _only valid and meaningful within the domain_. Therefore, as a logical consequence, we should not spend time synchronizing nomenclature _across_ domains.
 
 **Bad name example**
 
-* `OrderUpdated`
-* `ErrorOccurred`
+- `OrderUpdated`
+- `ErrorOccurred`
 
 **Why?**
 
@@ -58,8 +58,8 @@ Too broad term; very inspecific; easy to see that others may make claims to the 
 
 **Good name examples**
 
-* `SalesOrderDeliveryFieldChanged`
-* `ManufacturingOrderDispatched`
+- `SalesOrderDeliveryFieldChanged`
+- `ManufacturingOrderDispatched`
 
 **Why?**
 
@@ -75,17 +75,17 @@ It's wise to store a history of all events that have occurred. This makes it pos
 
 Personally, I find full-on CQRS to be _a lot_ to deal with, and modern cloud architectures can mitigate and improve some of the conditions from which original CQRS evolved. I would however highly advise you to:
 
-* Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
-* Use an event store to persist all events when you emit Domain Events.
+- Use [CQS (Command Query Separation)](https://martinfowler.com/bliki/CommandQuerySeparation.html) when naming. This forms the philosophical underpinning of CQRS itself, meaning that you create a very crisp and elegant nomenclature around events themselves. CQS "weighs" nothing and everyone wins.
+- Use an event store to persist all events when you emit Domain Events. This can be as [simple as in our example codebase](https://github.com/mikaelvesavuori/get-a-room-ddd-example/blob/main/code/Reservation/Reservation/src/domain/services/ReservationService.ts#L64), or become full-blown [event sourcing](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-data-persistence/service-per-team.html).
 
 The solution used here is manual and is done completely in code, on behalf of the Domain Service (that stands in for the Aggregate orchestration), doing this type of transactional dance (in the case of the Reservation solution)
 
-* Update the Slot table with the updated item
-* Update the Slot table with the event
-* Emit the Domain Event
+- Update the Slot table with the updated item
+- Update the Slot table with the event
+- Emit the Domain Event
 
 {% hint style="info" %}
-AWS natives will maybe point to a more elegant solution using DynamoDB streams as an outbox pattern, which could definitely work. I am 50/50 which I like the most because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
+AWS natives will maybe point to a more elegant solution using [DynamoDB streams as an outbox pattern](https://engineering.zalando.com/posts/2022/02/transactional-outbox-with-aws-lambda-and-dynamodb.html), which could definitely work. I am 50/50 which I like the most because doing so would mean you still have to implement some mechanism like a Lambda that can "translate" the DynamoDB table item changes into actual Domain Events.
 {% endhint %}
 
 ## Resiliency
@@ -99,12 +99,12 @@ This is left to you as an optional exercise should you want to do this.
 {% hint style="info" %}
 See the following for more information:
 
-* [https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog](https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog)
-* [https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/](https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/)
-* [https://www.youtube.com/watch?v=I6cXfiMkh-U](https://www.youtube.com/watch?v=I6cXfiMkh-U)
-* [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename)
-* [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
-{% endhint %}
+- [https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog](https://serverlessland.com/blog/building-resilient-serverless-patterns-by-combining-messaging-services--aws-compute-blog)
+- [https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/](https://aws.amazon.com/blogs/compute/improved-failure-recovery-for-amazon-eventbridge/)
+- [https://www.youtube.com/watch?v=I6cXfiMkh-U](https://www.youtube.com/watch?v=I6cXfiMkh-U)
+- [https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html#cfn-sqs-queue-queuename)
+- [https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/](https://aws.amazon.com/blogs/compute/designing-durable-serverless-apps-with-dlqs-for-amazon-sns-amazon-sqs-aws-lambda/)
+  {% endhint %}
 
 ## Emitting events
 
@@ -116,11 +116,11 @@ To work with Domain Events in a controlled manner we'll however need more than j
 
 Our project uses:
 
-* The `SlotCommand` output from the Slot Entity, which dictates the majority of actual content coming from changes.
-* `EventEmitter` abstraction that does the infrastructural work. This has both a "local/mock" and an EventBridge implementation.
-* A `DomainEventPublisher` Application Service that wraps the event emitter (which will emit two events—one for actual use and one for the analytics service—and log out the event).
-* An `EmittableEvent` abstraction class that handles all the logic of producing the right shape and metadata and other such laborious things.
-* A range of Events (one for each Domain Event) that extends the `EmittableEvent`.
+- The `SlotCommand` output from the Slot Entity, which dictates the majority of actual content coming from changes.
+- `EventEmitter` abstraction that does the infrastructural work. This has both a "local/mock" and an EventBridge implementation.
+- A `DomainEventPublisher` Application Service that wraps the event emitter (which will emit two events—one for actual use and one for the analytics service—and log out the event).
+- An `EmittableEvent` abstraction class that handles all the logic of producing the right shape and metadata and other such laborious things.
+- A range of Events (one for each Domain Event) that extends the `EmittableEvent`.
 
 {% hint style="success" %}
 A Domain Event is therefore always constructed from a `SlotCommand`. The `DomainEventPublisher` is the Application Service that is injected into `ReservationService`.
@@ -129,6 +129,7 @@ A Domain Event is therefore always constructed from a `SlotCommand`. The `Domain
 ### The event emitter
 
 {% code title="code/Reservation/SlotReservation/src/infrastructure/emitters/EventBridgeEmitter.ts" lineNumbers="true" %}
+
 ```typescript
 import {
   EventBridgeClient,
@@ -174,6 +175,7 @@ class EventBridgeEmitter implements EventEmitter {
   }
 }
 ```
+
 {% endcode %}
 
 We see that there is a basic Factory there, and then the `EventBridgeEmitter` just implements the overall `EventEmitter` which is just a simple interface so we can create other emitter infrastructure in the future. We want to separate the emitters primarily for testing (and local development) reasons so that we can use a local mock rather than the full-blown EventBridge client.
@@ -181,6 +183,7 @@ We see that there is a basic Factory there, and then the `EventBridgeEmitter` ju
 ### Domain event publisher service
 
 {% code title="code/Reservation/Reservation/src/application/services/DomainEventPublisherService.ts" lineNumbers="true" %}
+
 ```typescript
 import { MikroLog } from "mikrolog";
 
@@ -250,6 +253,7 @@ class ConcreteDomainEventPublisherService
   }
 }
 ```
+
 {% endcode %}
 
 As written previously, this one adds a layer of extra spice with the multiple emitted events and logging. Other than that it's not much else under the hood. At least it makes it much easier and one step more removed from the real infrastructure.
@@ -259,6 +263,7 @@ As written previously, this one adds a layer of extra spice with the multiple em
 The `EmittableEvent` Value Object might look long and daunting, but it's actually very simple. The situation we have to deal with is that the event shape is rather deep meaning it does take some energy to construct it.
 
 {% code title="code/Reservation/SlotReservation/src/domain/valueObjects/Event.ts" lineNumbers="true" %}
+
 ```typescript
 import { randomUUID } from "crypto";
 
@@ -508,6 +513,7 @@ export class ClosedEvent extends EmittableEvent {
   //
 }
 ```
+
 {% endcode %}
 
 {% hint style="warning" %}
@@ -538,9 +544,9 @@ In order to use the class (remember, data _and_ behavior!) rather than a dumb pl
 
 Just as the regular `get()` method, the `getAnalyticsVariant()` method returns a representation of the event. The reasons we want to have this as a specific method are:
 
-* The analytics event bus is not the same as the regular one
-* We want to redact the (potentially sensitive) ID
-* The analytics context does not need the slot status
+- The analytics event bus is not the same as the regular one
+- We want to redact the (potentially sensitive) ID
+- The analytics context does not need the slot status
 
 ### Extended classes
 
