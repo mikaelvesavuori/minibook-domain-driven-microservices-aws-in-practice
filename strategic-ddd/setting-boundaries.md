@@ -65,7 +65,7 @@ It was clear early on that there are multiple solutions, or Bounded Contexts, in
 
 This should not be too controversial, I think.
 
-## Subdomain or bounded context?
+## Subdomain or Bounded Context?
 
 > One confusion that Evans sometimes notices in teams is differentiating between bounded contexts and subdomains. In an ideal world, they coincide, but in reality, they are often misaligned. He uses an example of a bank structured around cash accounts and credit cards. These two subdomains in the banking domain are also bounded contexts. After reorganizing the business around business accounts and personal accounts, there are now two other subdomains, but the bounded contexts stay the same, which means they are now misaligned with the new subdomains. This often results in two teams having to work in the same bounded contexts with an increased risk of ending up with a big ball of mud.
 >
@@ -93,7 +93,7 @@ In terms of integrations, it should be clear that these somehow need to interact
 * Reservation as a whole has a `Conformist relationship` with the Analytics context. This entails that the Analytics service/context dictates how they want data integrated.
 * The Reservation context and the VerificationCode context have a `Published language relationship` which is a somewhat convoluted way of expressing that the security side will present a documented API to use.
 
-![Expressing the Relationships in a complete Context Map.](<../.gitbook/assets/Get-A-Room Context Map (2).png>)
+![Expressing the Relationships in a complete Context Map.](<../.gitbook/assets/Get-A-Room Context Map (3).png>)
 
 ## In summary
 

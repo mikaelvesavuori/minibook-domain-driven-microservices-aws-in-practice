@@ -5,7 +5,7 @@ description: >-
   could also say.
 ---
 
-# Tactical DDD
+# 🤹 Tactical DDD
 
 It's high time to put those "tactical" patterns in Domain Driven Design to work, breathing life into our domain model.
 
@@ -15,15 +15,15 @@ DDD has deep ties to object-oriented programming and its ways of thinking. We wi
 
 We will inspect and analyze some of the usages of all of the tactical patterns:
 
-- Modules
-- Factories
-- Repositories
-- Services
-- Entities
-- Aggregates
-- Value Objects
-- Domain Events
+* Modules
+* Factories
+* Repositories
+* Services
+* Entities
+* Aggregates
+* Value Objects
+* Domain Events
 
 {% hint style="warning" %}
-In the "blue and red books" you will see that the order that these are presented is different. My reason for presenting the patterns in this particular order is because I believe it makes for easier guiding, starting with those that are more basic and moving into the deeper domain objects halfway through.&#x20;
+In the "blue and red books" you will see that the order that these are presented is different. My reason for presenting the patterns in this particular order is because I believe it makes for easier guiding, starting with those that are more basic and moving into the deeper domain objects halfway through.
 {% endhint %}
