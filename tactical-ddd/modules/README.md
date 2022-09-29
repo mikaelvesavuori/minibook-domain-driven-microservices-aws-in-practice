@@ -149,7 +149,7 @@ You will notice that here adapters are part of the infrastructure layer rather t
 
 If we use a tool like [Madge](https://github.com/pahen/madge) to generate a diagram of the code, we should be able to see the same [acyclic flow ](https://en.wikipedia.org/wiki/Directed_acyclic_graph)that we want (given that we actually also write the code in the "clean" way!). Below is an example of the `Reservation` solution.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2022-09-23 at 18.14.09.png" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/code-diagram.svg" alt=""><figcaption><p>Code diagram of the <code>Reservation</code> solution, generated with <a href="https://github.com/pahen/madge">Madge</a>.</p></figcaption></figure>
 
 {% hint style="warning" %}
 Note that the above diagram excludes certain code paths—such as those which represent test data, utilities, and interfaces—which can either be used across all levels (or "depths") or add no meaningful detail to the diagram. They just make the diagram overly busy and are an acceptable omission.
