@@ -10,7 +10,13 @@ The reason we have API schemas is that they serve as human- and machine-readable
 
 ## Choosing AsyncAPI
 
-In a modern, hybrid landscape where we have both REST and event-driven APIs, it makes sense to reach for the new kid on the block, [AsyncAPI](https://www.asyncapi.com), rather than [OpenAPI](https://www.openapis.org). While OpenAPI is well-known and has a proven track record, it won't cut it in the more confusing technical landscapes of today. With AsyncAPI we get the possibility to not just get some [smooth tooling](https://github.com/asyncapi), but we'll also be able to actually [describe a system that has events and asynchronous responses](https://www.asyncapi.com/docs/tutorials/getting-started/coming-from-openapi). Before we move on, please know that AsyncAPI does not reinvent the wheel—it actually has some support for both OpenAPI and [JSON Schema](https://json-schema.org) for their respective powerful features.
+In a modern, hybrid landscape where we have both REST and event-driven APIs, it makes sense to reach for the new kid on the block, [AsyncAPI](https://www.asyncapi.com), rather than [OpenAPI](https://www.openapis.org). While OpenAPI is well-known and has a proven track record, it won't cut it in the more confusing technical landscapes of today. With AsyncAPI we get the possibility to not just get some [smooth tooling](https://github.com/asyncapi), but we'll also be able to actually [describe a system that has events and asynchronous responses](https://www.asyncapi.com/docs/tutorials/getting-started/coming-from-openapi).
+
+> AsyncAPI is an open source initiative that seeks to improve the current state of Event-Driven Architectures (EDA). Our long-term goal is to make working with EDAs as easy as it is to work with REST APIs. That goes from documentation to code generation, from discovery to event management. Most of the processes you apply to your REST APIs nowadays would be applicable to your event-driven/asynchronous APIs too.
+>
+> — [https://www.asyncapi.com/docs/tutorials/getting-started](https://www.asyncapi.com/docs/tutorials/getting-started)
+
+Before we move on, please know that AsyncAPI does not reinvent the wheel—it actually has some support for both OpenAPI and [JSON Schema](https://json-schema.org) for their respective powerful features.
 
 {% hint style="info" %}
 I am writing this while AsyncAPI literally just today came out with version `2.5.0`.
@@ -24,9 +30,16 @@ Regardless: You should definitely put familiarity with this new specification hi
 
 Anyway, time to get to it.
 
-## Why
+## Writing the schema
 
-The schema looks like this.
+The schema looks like the below. Notice the top-level objects:
+
+* `info`: General useful information like the contact person for the service, the service's name, and description...
+* `externalDocs`: Any links to external documentation
+* `servers`: Where can you actually run the events and requests?
+* `channels`: The addressable components, or "things", as it were
+* `components`: Reusable objects, such as messages
+* `schemas`: Definition of inputs and outputs
 
 ```json
 {
@@ -227,8 +240,22 @@ The schema looks like this.
 }
 ```
 
-With some good IDE tooling, you should be able to get a good experience already in the IDE, but you can also put this in the [AsyncAPI Studio](https://studio.asyncapi.com) and get a visualized and live result to work on. Fancy indeed!
+{% hint style="info" %}
+Note that you can use both JSON and YAML formats when writing the schema, but because JSON is typically more portable I've gone with that here.
+{% endhint %}
+
+{% hint style="success" %}
+Absolutely do try out some of the [nice tutorials they have prepared](https://www.asyncapi.com/docs/tutorials/getting-started).
+{% endhint %}
+
+With some [good IDE tooling](https://github.com/asyncapi/vs-asyncapi-preview), you should be able to get a good experience already in your IDE, but you can also copy the schema above into the online [AsyncAPI Studio](https://studio.asyncapi.com) and get a visualized and live result to work on. Fancy indeed!
+
+Even cooler is that that tooling is available for you to use as well, so you can generate these views during your Continuous Integration for example.
 
 <figure><img src="../.gitbook/assets/asyncapi-1.png" alt=""><figcaption><p>Split view with all kinds of information/navigation to the far left, the schema in the middle, and the visualization on the right.</p></figcaption></figure>
 
 <figure><img src="../.gitbook/assets/asyncapi-2.png" alt=""><figcaption><p>You can even follow the flows of "published" and "subscribed" events. Because we are doing HTTP this of course translates conceptually to requests and responses.</p></figcaption></figure>
+
+And with this work behind us, we have now come through on our promise to have a "published language" that describes how our service works. In fact, we have done this even before building the actual API in the first place!
+
+Brilliant.
