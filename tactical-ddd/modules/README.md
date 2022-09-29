@@ -119,7 +119,7 @@ Robert Martin writes about the _dependency rule_ like this:
 
 The intention with all of these ideas for how to structure an application is all well-meaning, but I've also seen and reflected on how a higher level of "layers" or "circles" can complicate things quite quickly.
 
-Let's at least look at the levels and some examples of what would into them.
+Let's at least look at the levels and some examples of what would go into each, respectively.
 
 - **Entities**: "Business objects of the application"
 - **Use cases**: "Use cases orchestrate the flow of data to and from the Entities, and direct those Entities to use their enterprise wide business rules to achieve the goals of the use case"
