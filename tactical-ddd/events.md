@@ -4,7 +4,7 @@ description: Events make your distributed services world "go round, round, round
 
 # Domain Events
 
-<figure><img src="../.gitbook/assets/undraw_Solution_mindset_re_57bf.png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
+<figure><img src="../.gitbook/assets/undraw_Solution_mindset_re_57bf (1).png" alt=""><figcaption><p>Illustration from <a href="https://undraw.co/">Undraw</a></p></figcaption></figure>
 
 {% hint style="success" %}
 **TL;DR**
@@ -22,7 +22,7 @@ See the diagrams below from [Microsoft](https://docs.microsoft.com/en-us/dotnet/
 
 ![Domain events to enforce consistency between multiple Aggregates within the same domain.](../.gitbook/assets/domain-model-ordering-microservice.png)
 
-![Handling multiple actions per domain.](<../.gitbook/assets/aggregate-domain-event-handlers (1).png>)
+![Handling multiple actions per domain.](../.gitbook/assets/aggregate-domain-event-handlers.png)
 
 As seen in the diagrams, a typical domain event could be `OrderStarted` if we are in a commercial domain. This event would be sent to our domain’s event bus which all systems in the scope of our domain may subscribe to.
 

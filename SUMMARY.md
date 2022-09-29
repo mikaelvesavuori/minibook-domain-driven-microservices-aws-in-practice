@@ -26,6 +26,7 @@
   * [Error handling](groundwork/error-handling.md)
   * [Testing](groundwork/testing.md)
   * [Lambda authorizer](groundwork/lambda-authorizer.md)
+* [API schema](api-schema.md)
 * [🤹 Tactical DDD](tactical-ddd/README.md)
   * [Modules](tactical-ddd/modules/README.md)
     * [Domain driven Lambdas with a use case approach](tactical-ddd/modules/domain-driven-lambdas-with-a-use-case-approach/README.md)
