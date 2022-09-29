@@ -6,7 +6,7 @@ description: Keep your promises and make what you do crystal-clear with an API s
 
 You may remember that back in the strategic DDD section—during the context mapping to be exact—we decided that the `VerificationCode` subdomain and `Reservation` subdomain would have a `Published Language` relationship. Now is the time to address that fact.
 
-The reason we have API schemas is that they serve as human- and machine-readable documentation, and are far better and more portable than any old Word file, Google Doc, or Sharepoint site. **This is the way you should document** and it's not that hard either, once you start getting the hang of it!
+The reason we have API schemas is that they serve as human- and machine-readable documentation, and are far better and more portable than any old Word file, Google Doc, or Sharepoint site. **Using a standardized API specification is the way you **_**should**_** document** and it's not that hard either, once you start getting the hang of it!
 
 ## Choosing AsyncAPI
 
@@ -21,9 +21,9 @@ Before we move on, please know that AsyncAPI does not reinvent the wheel—it ac
 {% hint style="info" %}
 I am writing this while AsyncAPI literally just today came out with version `2.5.0`.
 
-It's worth mentioning that indeed the API documentation experience for what we have here, a _de facto_ RESTish API, could have been done with OpenAPI 3 just as well. We have to approach this in a bit of a hackish way to make it semantic without the boundaries of the standards.
+It's worth mentioning that indeed the API documentation experience for what we have here, a _de facto_ RESTish API, could have been done with OpenAPI 3 just as well. We have to approach this in a bit of a hackish way to make it semantic within the boundaries of the standard.
 
-AsyncAPI is expected to bring major improvements for this overall area, though unclear exactly which set of such improvements, in the next major version.
+AsyncAPI is expected to bring major improvements to this overall area, though unclear exactly which set of such improvements, in the next major version.
 
 Regardless: You should definitely put familiarity with this new specification high on your list of things to look into.
 {% endhint %}
@@ -250,7 +250,7 @@ Absolutely do try out some of the [nice tutorials they have prepared](https://ww
 
 With some [good IDE tooling](https://github.com/asyncapi/vs-asyncapi-preview), you should be able to get a good experience already in your IDE, but you can also copy the schema above into the online [AsyncAPI Studio](https://studio.asyncapi.com) and get a visualized and live result to work on. Fancy indeed!
 
-Even cooler is that that tooling is available for you to use as well, so you can generate these views during your Continuous Integration for example.
+Even cooler is that that tooling is available for you to use as well, so you can generate these views during your Continuous Integration step for example.
 
 <figure><img src="../.gitbook/assets/asyncapi-1.png" alt=""><figcaption><p>Split view with all kinds of information/navigation to the far left, the schema in the middle, and the visualization on the right.</p></figcaption></figure>
 
