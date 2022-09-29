@@ -229,6 +229,6 @@ The schema looks like this.
 
 With some good IDE tooling, you should be able to get a good experience already in the IDE, but you can also put this in the [AsyncAPI Studio](https://studio.asyncapi.com) and get a visualized and live result to work on. Fancy indeed!
 
-<figure><img src=".gitbook/assets/asyncapi-1.png" alt=""><figcaption><p>Split view with all kinds of information/navigation to the far left, the schema in the middle, and the visualization on the right.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/asyncapi-1.png" alt=""><figcaption><p>Split view with all kinds of information/navigation to the far left, the schema in the middle, and the visualization on the right.</p></figcaption></figure>
 
-<figure><img src=".gitbook/assets/asyncapi-2.png" alt=""><figcaption><p>You can even follow the flows of "published" and "subscribed" events. Because we are doing HTTP this of course translates conceptually to requests and responses.</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/asyncapi-2.png" alt=""><figcaption><p>You can even follow the flows of "published" and "subscribed" events. Because we are doing HTTP this of course translates conceptually to requests and responses.</p></figcaption></figure>
