@@ -10,7 +10,7 @@ description: >-
 
 As I wrote in one of the introductory chapters, a relatively common "misimplementation" is to think of the Lambda handler as the _full extent_ of the function. This is all straightforward in trivial contexts, but we gain a significant improvement by being able to remove the pure setup and boilerplate from the business side of things.
 
-The semantic concept of "handler" is somewhat particular to have we talk about _function handlers_ or _event handlers_. On a more generic software architecture note, this layer could often be translated into what goes into the "controller" term in the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) school. I've been known to use the "controller" term and set a dedicated folder in the structure at an earlier stage in my career, but I now refrain from it and go with "[adapters](https://alistair.cockburn.us/hexagonal-architecture/)" instead, simply as its an ever wider concept and since we now open for _any_ type of driver of our functions.
+The semantic concept of "handler" is somewhat particular to how we talk about _function handlers_ or _event handlers_. On a more generic software architecture note, this layer could often be translated into what goes into the "controller" term in the [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) school. I've been known to use the "controller" term and set a dedicated folder in the structure at an earlier stage in my career, but I now refrain from it and go with "[adapters](https://alistair.cockburn.us/hexagonal-architecture/)" instead, simply as its an ever wider concept and since we now open for _any_ type of driver of our functions.
 
 Enough introduction, let's go ahead and look at a handler:
 
