@@ -20,19 +20,19 @@ Already Vernon wrote in his first book that sometimes DDD is "first embraced as 
 
 ## What is DDD?
 
-The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven\_design) definition is actually very good and condensed. I'm going to reference it as-is. It says that...
+The [Wikipedia](https://en.wikipedia.org/wiki/Domain-driven_design) definition is actually very good and condensed. I'm going to reference it as-is. It says that...
 
-> **Domain-driven design** (**DDD**) is a [software design](https://en.wikipedia.org/wiki/Software\_design) approach focusing on modelling software to match a [domain](https://en.wikipedia.org/wiki/Domain\_\(software\_engineering\)) according to input from that domain's experts.
+> **Domain-driven design** (**DDD**) is a [software design](https://en.wikipedia.org/wiki/Software_design) approach focusing on modelling software to match a [domain](<https://en.wikipedia.org/wiki/Domain_(software_engineering)>) according to input from that domain's experts.
 >
-> In terms of [object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented\_programming) it means that the structure and language of software code (class names, [class methods](https://en.wikipedia.org/wiki/Class\_method), [class variables](https://en.wikipedia.org/wiki/Class\_variable)) should match the [business domain](https://en.wikipedia.org/wiki/Business\_domain). For example, if a software processes loan applications, it might have classes like `LoanApplication` and `Customer`, and methods such as `AcceptOffer` and `Withdraw`.
+> In terms of [object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented_programming) it means that the structure and language of software code (class names, [class methods](https://en.wikipedia.org/wiki/Class_method), [class variables](https://en.wikipedia.org/wiki/Class_variable)) should match the [business domain](https://en.wikipedia.org/wiki/Business_domain). For example, if a software processes loan applications, it might have classes like `LoanApplication` and `Customer`, and methods such as `AcceptOffer` and `Withdraw`.
 >
 > DDD connects the [implementation](https://en.wikipedia.org/wiki/Implementation) to an evolving model.
 >
 > Domain-driven design is predicated on the following goals:
 >
-> * placing the project's primary focus on the core [domain](https://en.wikipedia.org/wiki/Domain\_\(software\_engineering\)) and domain logic;
-> * basing complex designs on a model of the domain;
-> * initiating a creative collaboration between technical and [domain experts](https://en.wikipedia.org/wiki/Domain\_expert) to iteratively refine a conceptual model that addresses particular domain problems.
+> - placing the project's primary focus on the core [domain](<https://en.wikipedia.org/wiki/Domain_(software_engineering)>) and domain logic;
+> - basing complex designs on a model of the domain;
+> - initiating a creative collaboration between technical and [domain experts](https://en.wikipedia.org/wiki/Domain_expert) to iteratively refine a conceptual model that addresses particular domain problems.
 
 For a software engineer or architect, the above should at least superficially sound clear and reasonable. Two terms, however, should outline themselves as being in repeated use and being somewhat mysterious or vague in meaning: _**domain**_ and _**model**_. These are core to understanding Domain Driven Design.
 
@@ -42,7 +42,7 @@ The domain can be thought of as the principal subject or material of the project
 
 > \[...] a sphere of knowledge, influence, or activity. The subject area to which the user applies a program is the domain of the software.
 >
-> — [Eric Evans: Domain-Driven Design Reference: Definitions and Pattern Summaries](https://domainlanguage.com/wp-content/uploads/2016/05/DDD\_Reference\_2015-03.pdf)
+> — [Eric Evans: Domain-Driven Design Reference: Definitions and Pattern Summaries](https://domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)
 
 It should be somewhat clear in most circumstances what the implicit domain boundaries are. DDD eschews implicit boundaries and is particular on boundaries being collaboratively and explicitly defined.
 
@@ -52,11 +52,11 @@ Eric Evans spends quite some space at the start of his book on the notion of a "
 
 The intangible _domain_ can be distilled into a tangible and malleable _(domain) model,_ which can act as a vehicle for securing shared understanding. It is the "[organized and structured knowledge of the problem](https://stackoverflow.com/questions/68463938/what-is-model-in-ddd)". In total, the domain model can exist as one or more individual pieces of documentation (text, diagrams, code...) as long as it adequately represents the problem in a meaningful, truthful, but necessarily simplified meaning.
 
-There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge\_Luis\_Borges) quote that you may be familiar with:
+There is a beautiful [Borges](https://en.wikipedia.org/wiki/Jorge_Luis_Borges) quote that you may be familiar with:
 
 > “In this empire, the art of cartography was taken to such a peak of perfection that the map of a single province took up an entire city and the map of the empire, an entire province. **In time, these oversize maps outlived their usefulness and the college of cartographers drew a map of the empire equal in format to the empire itself, coinciding with it point by point**. The following generations, less obsessed with the study of cartography, decided that this overblown map was useless and somewhat impiously abandoned it to the tender mercies of the sun and seasons. There are still some remains of this map in the western desert, though in very poor shape, the abode of beasts and beggars. No other traces of the geographical disciplines are to be seen throughout the land.”\
 > \
-> — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A\_Universal\_History\_of\_Infamy) (1946; from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
+> — Jorge Luis Borges in [_A Universal History of Infamy_](http://en.wikipedia.org/wiki/A_Universal_History_of_Infamy) (1946; from [https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html](https://www.thepolisblog.org/2012/10/jorge-luis-borges-on-empire-and.html))
 
 Besides being the nightmare of enterprise architects and surveyors, **grand maps (or schemas) that intend to explain everything can devolve into reprehensible detail**. That's where the very human ability to abstract complex knowledge into models comes in. DDD taps into this quality while being completely open to the ways in which a group might do it.
 
@@ -70,7 +70,7 @@ Domain Driven Design is not just something that makes you sound smart, but it's 
 
 <figure><img src="../.gitbook/assets/DDD model.png" alt=""><figcaption><p>How the patterns match up, as presented in Eric Evans's book (2003) and re-drawn by myself.</p></figcaption></figure>
 
-It may look overwhelmin but don't fear!
+It may look overwhelming but don't fear!
 
 The central concept is _Model-Driven Design_, which I am sure to come as no surprise—without that, there is nothing more than _either_ theory or some sound coding advice.
 

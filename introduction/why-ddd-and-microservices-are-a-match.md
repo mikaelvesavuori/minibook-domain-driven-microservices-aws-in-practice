@@ -42,10 +42,6 @@ With the advent of Kubernetes and serverless functions, the practical operations
 
 Using primarily messaging mechanisms—such as Kafka or AWS EventBridge—we can make the domains and their respective bounded contexts able to communicate with each other. Certainly, you can use traditional request/reply communication via REST APIs (and similar).
 
-{% hint style="info" %}
-I am writing another book for events that will go deeper on this subject.
-{% endhint %}
-
 What's worth keeping in mind is that there is little that is "new" with this way compared to traditional service-to-service communication. Ideally, we would have:
 
 - Documentation for the API and events (using a modern schema format like [AsyncAPI](https://www.asyncapi.com))
@@ -71,7 +67,7 @@ For more examples (including books going as far back as the 1970s!) see [https:/
 
 Principles and broad patterns simply don't age as much as (most) languages and pretty much anything that is only implementation-oriented. It's safe to say that DDD and its patterns have survived many changes in technology without losing its relevance—though absolutely there are other approaches to DDD popping up.
 
-The bigger issue with DDD and related terms are that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is_domain_driven_design_still_the_recommended/)":
+The bigger issue with DDD and related terms is that with popularity and the acronym going into more widespread use, we start to have a less cohesive understanding of the term. This is not unique to DDD in any way! The sentiment is echoed very well by `aryehof` on Reddit's thread "[Is Domain Driven Design still the recommended approach for enterprise applications or has any newer approach superseded it?](https://www.reddit.com/r/java/comments/n0kukj/is_domain_driven_design_still_the_recommended/)":
 
 > **Well what is in the original DDD book is not what tends to be written about or used in practice**. The book is about how to successfully and repeatedly implement plumbing to support a complex problem domain object model. It advocates that standard plumbing so you can _concentrate_ on object modeling the problem domain.
 >

@@ -23,7 +23,7 @@ UnattendSlots:
 {% hint style="warning" %}
 You will note that this logic is not fail-safe. If you were to book a slot at 10:11 for the 10-11 window nothing will "unattend" the slot if you did not check-in.
 
-Good enough is sometimes just that. And as the requirements are vague and this is no more than a demonstration project, we can leave it at that.
+_Good enough_ is sometimes just that. And as the requirements are vague and this is no more than a demonstration project, we can leave it at that.
 {% endhint %}
 
 We'll use a service called `SlotLoaderService`, instead of directly perusing the Repository to load the complete set of today's Slots. Then, we are going to pass them into the `checkForUnattended()` method where the domain service will actually contain the business/domain logic to determine whether or not a slot is attended.

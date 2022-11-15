@@ -16,7 +16,7 @@ In this chapter, I want to elevate some of the issues that I have seen in unders
 
 ## Not just back-end engineers work with servers these days
 
-I am one of those developers who became awestruck when I started to learn about and use serverless functions, in my case back in 2017. At that time these were much more primitive than today. Personally, I didn't want to become an expert on Redis caches or server maintenance, and really avoided lunch conversations with the backend people. As a front-end developer (and some Node) the things _around_ the server wasn't really that enticing. You couldn't see what was going on, and it seemed like lots of heavy lifting for pretty much no gain—after all, people like myself were building the majority of the application! (Or so I thought...:smile:)
+I am one of those developers who became awestruck when I started to learn about and use serverless functions, in my case back in 2017. At that time these were much more primitive than today. Personally, I didn't want to become an expert on Redis caches or server maintenance, and really avoided lunch conversations with the back-end people. As a front-end developer (and some Node) the things _around_ the server weren't really that enticing. You couldn't see what was going on, and it seemed like lots of heavy lifting for pretty much no gain—after all, people like myself were building the majority of the application! (Or so I thought...:smile:)
 
 In the years since, I've had the possibility and fortune to onboard and move many developers into the cloud and various serverless products running on Azure, Google Cloud, and AWS. To be fair, the entire stacks have been primarily serverless. But why were they?
 

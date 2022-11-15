@@ -1,6 +1,6 @@
 ---
 description: >-
-  Don't get me wrong but your code will break, so let's just aggressively
+  Don't get me wrong: Your code _will_ break, so let's just aggressively
   prepare for handling errors and exceptions rather than pulling out the ukulele and
   singing Kumbaya.
 ---

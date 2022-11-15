@@ -21,7 +21,7 @@ Every **Entity** has a unique identity. We use **Entities** to wedge in domain l
 
 <figure><img src="../.gitbook/assets/CA + DDD 4.png" alt=""><figcaption><p>Entities reside in the Domain layer.</p></figcaption></figure>
 
-Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _is not the same thing_.
+Entities and Aggregates are perhaps the most "prominent" of the tactical patterns. It's important to understand that the notion of Entities in database-adjacent contexts and in implementation-oriented tools like Entity Framework _are not the same thing_.
 
 {% hint style="info" %}
 **Beware of snake oil salesmen**
