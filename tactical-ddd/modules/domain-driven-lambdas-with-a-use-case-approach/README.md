@@ -13,23 +13,23 @@ On this page I will attempt to dispell some misunderstandings and problematic in
 
 Keeping it super short:
 
-- If you build a "flat landscape" using only Lambdas, then you are close to the "single purpose function" situation. While this is convenient and locally completely suitable in many solutions, as a way to structure an entire organization's landscape you are in for hell. Some reasons include having to deal with chattiness, latency, many surfaces that need to interact and suboptimal logical cohesion.
-- This dogmatism is unrealistic and trivializes the complexity of developing for non-trivial implementation. It also practically eliminates all logical reuse of code and patterns as it cannot be colocated.
-- The infrastructure needed for a service is never just Lambda. You need S3 to store the Lambda code, IAM roles, quite realistically an API Gateway and then whatever assortment of candy on top you need to do the work. You need to have a concise notion of what the deployment process is, and what resources it will contain. The "wrapping" on top of that single function is considerable.
+* If you build a "flat landscape" using only Lambdas, then you are close to the "single purpose function" situation. While this is convenient and locally completely suitable in many solutions, as a way to structure an entire organization's landscape you are in for hell. Some reasons include having to deal with chattiness, latency, many surfaces that need to interact and suboptimal logical cohesion.
+* This dogmatism is unrealistic and trivializes the complexity of developing for non-trivial implementation. It also practically eliminates all logical reuse of code and patterns as it cannot be colocated.
+* The infrastructure needed for a service is never just Lambda. You need S3 to store the Lambda code, IAM roles, quite realistically an API Gateway and then whatever assortment of candy on top you need to do the work. You need to have a concise notion of what the deployment process is, and what resources it will contain. The "wrapping" on top of that single function is considerable.
 
 You might be interested in [Setting boundaries in your serverless application](https://serverlessfirst.com/setting-boundaries/) also.
 {% endhint %}
 
 Features of my approach will mean that:
 
-- We aim for simplicity and clarity of execution using a "one function per use case" type of microservice organization
-- Hence, we prefer a functional or procedural style for _most_ of the code
-- We can use microservices through an API Gateway to expose our well-defined use cases as URL paths
-- We use a rich, powerful object-oriented approach for all _complex_ components (i.e. Entities and Aggregates) to get the benefits of classic "real engineering master race" (insert meme)
-- We'll get the expressive Clean Architecture-style layering
-- We set everything in order so we can use the tactical patterns in DDD (which we will come to later)
-- We can easily test our application using best practices and a "[classicist](https://martinfowler.com/articles/mocksArentStubs.html#ClassicalAndMockistTesting)" approach, meaning it scales well without any test doubles, "test-speak jargon" or other bullshit
-- The approach should be able to translate fluidly into any similar language like C# or Java
+* We aim for simplicity and clarity of execution using a "one function per use case" type of microservice organization
+* Hence, we prefer a functional or procedural style for _most_ of the code
+* We can use microservices through an API Gateway to expose our well-defined use cases as URL paths
+* We use a rich, powerful object-oriented approach for all _complex_ components (i.e. Entities and Aggregates) to get the benefits of classic "real engineering master race" (insert meme)
+* We'll get the expressive Clean Architecture-style layering
+* We set everything in order so we can use the tactical patterns in DDD (which we will come to later)
+* We can easily test our application using best practices and a "[classicist](https://martinfowler.com/articles/mocksArentStubs.html#ClassicalAndMockistTesting)" approach, meaning it scales well without any test doubles, "test-speak jargon" or other bullshit
+* The approach should be able to translate fluidly into any similar language like C# or Java
 
 {% hint style="info" %}
 Compared to [Khalil Stemmler's excellent DDD approach](https://khalilstemmler.com/articles/categories/domain-driven-design/) the approach presented here is intentionally _simpler_ in terms of technical implementation.
@@ -47,9 +47,9 @@ You may also find various Node + DDD projects out in the wild. Without mentionin
 
 There are a number of different takes on how one would relate and size Lambdas, deployments, and how they map to DDD concepts. You will continuously want to question if decisions make
 
-- **local complexity** (i.e. the bounded context or solution itself),
-- **global complexity** (i.e. the total landscape),
-- **integration complexit**y (i.e. how hard it is to make relevant solutions communicate with each other
+* **local complexity** (i.e. the bounded context or solution itself),
+* **global complexity** (i.e. the total landscape),
+* **integration complexit**y (i.e. how hard it is to make relevant solutions communicate with each other
 
 better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates is all part of the same game. Vlad Khononov (and I) would recommend moving towards services that hide significant business logic (ultimately providing something very rich to the user) with the smallest possible surface area (API):
 
@@ -61,7 +61,7 @@ better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates 
 >
 > — _Learning Domain Driven Design_ (Khononov 2021, p.224)
 
-For me all of this spells out that use case-oriented APIs, rather than resource-based getter/setter APIs, are what we are aiming form. He also writes more on the actual sizing and boundaries:
+For me all of this spells out that use case-oriented APIs, rather than resource-based getter/setter APIs, are what we are aiming for. He also writes more on the actual sizing and boundaries:
 
 > Both microservices and bounded contexts are physical boundaries. Microservices, as bounded contexts, are owned by a single team. As in bounded contexts, conflicting models cannot be implemented in a microservice, resulting in complex interfaces. Microservices are indeed bounded contexts. \[...]
 >
@@ -81,8 +81,8 @@ Finally, when it comes to heuristics he writes that:
 
 In our case we will see that we did not have to fully follow this advice, however I do see it being a powerful way of closing the loop between:
 
-- The Bounded Context, which is our "designed" and smallest component of the solution
-- The subdomain, which acts as the logical container for related components in the domain
+* The Bounded Context, which is our "designed" and smallest component of the solution
+* The subdomain, which acts as the logical container for related components in the domain
 
 If nothing else makes sense, then a sufficiently well-understood subdomain could be packed into a single solution. The beauty of microservices in Lambda, as we will see, is that we can speak of logical monoliths, while still having the individual Lambda functions to work for us.
 
@@ -132,12 +132,12 @@ Let's say that again: A microservice is not the individual function, it's the bo
 
 Continuing with some of the features I listed at the start of this page, we can attain the following benefits:
 
-- Functions that are truly independent
-- Ability to use any number of functions that may or may not interact with each other (or other systems)
-- Colocation of code that is logically shared (i.e. bounded context)
-- Ability to atomically deploy (i.e. individual functions) or update the whole microservice (i.e. Bounded Context)
-- Complete isolation from code and artifacts from other bounded contexts
-- Logically and technically scalable solution
+* Functions that are truly independent
+* Ability to use any number of functions that may or may not interact with each other (or other systems)
+* Colocation of code that is logically shared (i.e. bounded context)
+* Ability to atomically deploy (i.e. individual functions) or update the whole microservice (i.e. Bounded Context)
+* Complete isolation from code and artifacts from other bounded contexts
+* Logically and technically scalable solution
 
 ## Clean architecture-style use cases
 
@@ -149,8 +149,8 @@ Read more at [https://www.culttt.com/2014/12/10/modules-domain-driven-design](ht
 
 This far we have seen how these might work:
 
-- The "blue" ring, as pure infrastructure
-- The "green" ring, as our Lambda handler
+* The "blue" ring, as pure infrastructure
+* The "green" ring, as our Lambda handler
 
 Now, the "red" ring—use cases—is next up!
 
@@ -167,7 +167,6 @@ Now, the "red" ring—use cases—is next up!
 It should sound logical enough. If we look at a very, very basic example it should look like this:
 
 {% code title="code/Reservation/Reservation/src/application/usecases/ReserveSlotUseCase.ts" lineNumbers="true" %}
-
 ```typescript
 import { ReservationService } from "../../domain/services/ReservationService";
 
@@ -202,15 +201,14 @@ export async function ReserveSlotUseCase(
   );
 }
 ```
-
 {% endcode %}
 
 There's not that much going on here. We import and use interface definitions, take in dependencies and the record data, and then it's just two commands.
 
 If you have been around the block, maybe you feel one or more of the below:
 
-- "OK, this seems like just adding more chaff into the mix, doesn't it?"
-- "Isn't this a _Transaction Script_... WTH mate?"
+* "OK, this seems like just adding more chaff into the mix, doesn't it?"
+* "Isn't this a _Transaction Script_... WTH mate?"
 
 When it comes to the question of adding more (useless?) code and more layers of abstractions, rather we should see the benefits. Because we broke up the handler and its boilerplate from our business and use case, **the use case is the first meaningfully \_testable**\_\*\* layer\*\*. That is, the surface for our widest unit testing is the _use case_ as it effectively exercises the full flow and we can afford to be totally oblivious about anything in the handler itself. So, yes indeed, it does add a further layer but again we get something better back as a result for that minimal investment.
 
@@ -236,7 +234,6 @@ This pattern scales well, as long as the deeper layers (entities etc.) are doing
 We can also look at how this scales to a much more complex case. In this case though, you will never see that complexity! It looks almost the same:
 
 {% code title="code/Reservation/SlotReservation/src/application/usecases/CreateSlotsUseCase.ts" lineNumbers="true" %}
-
 ```typescript
 import { Slot } from "../../domain/aggregates/Slot";
 import { Dependencies } from "../../interfaces/Dependencies";
@@ -251,7 +248,6 @@ export async function CreateSlotsUseCase(
   return await slot.makeDailySlots();
 }
 ```
-
 {% endcode %}
 
 You'll have to trust me on this one for now, but yes, the above _is_ more complex. However, the orchestration that we have to do is not. If the use case, for example, would demand several Entities to interact or connect somehow, or multiple operations to be done, then using the use case file/function/layer is the right place to string together the logic.
