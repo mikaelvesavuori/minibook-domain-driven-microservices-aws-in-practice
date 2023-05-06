@@ -49,7 +49,7 @@ There are a number of different takes on how one would relate and size Lambdas, 
 
 * **local complexity** (i.e. the bounded context or solution itself),
 * **global complexity** (i.e. the total landscape),
-* **integration complexit**y (i.e. how hard it is to make relevant solutions communicate with each other
+* **integration complexity** (i.e. how hard it is to make relevant solutions communicate with each other
 
 better or worse. Your sizing of microservices vs Bounded Contexts vs Aggregates is all part of the same game. Vlad Khononov (and I) would recommend moving towards services that hide significant business logic (ultimately providing something very rich to the user) with the smallest possible surface area (API):
 
